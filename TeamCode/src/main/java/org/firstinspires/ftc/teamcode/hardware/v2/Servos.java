@@ -20,7 +20,6 @@ public class Servos {
     public Servo intakeDropper;
     public CRServo blockWheel;
     public Servo armRControl;
-    public Servo armLControl;
     public Servo capstoneRelease;
     public Servo leds;
     public Servo blockGrabberR;
@@ -39,7 +38,6 @@ public class Servos {
         intakeDropper = hwMap.get(Servo.class, "intakeDropper");
         blockWheel = hwMap.get(CRServo.class, "blockWheel");
         armRControl = hwMap.get(Servo.class, "blockArmR");
-        armLControl = hwMap.get(Servo.class, "blockArmL");
         capstoneRelease = hwMap.get(Servo.class, "capstoneRelease");
         blockGrabberR = hwMap.get(Servo.class, "blockGrabberR");
         leds = hwMap.get(Servo.class, "leds");
