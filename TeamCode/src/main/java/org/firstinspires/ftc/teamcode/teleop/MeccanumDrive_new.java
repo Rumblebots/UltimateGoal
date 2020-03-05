@@ -1,5 +1,6 @@
  package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -84,7 +85,7 @@ public class MeccanumDrive_new extends OpMode
         telemetry.addData("current gear", lifterShifter.CurrentGear);
         telemetry.addData("current encoder pos", auxMotors_TeleOpEncoders.GetCurrentPos());
         auxMotors_TeleOpEncoders.ResetEncoders();
-        servos.leds.setPosition(0.65);
+        servos.leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
     }
 
     /**

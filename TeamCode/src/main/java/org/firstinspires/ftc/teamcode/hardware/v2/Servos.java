@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware.v2;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -21,7 +22,7 @@ public class Servos {
     public CRServo blockWheel;
     public Servo armRControl;
     public Servo capstoneRelease;
-    public Servo leds;
+    public RevBlinkinLedDriver leds;
     public Servo blockGrabberR;
 
     /**
@@ -40,7 +41,7 @@ public class Servos {
         armRControl = hwMap.get(Servo.class, "blockArmR");
         capstoneRelease = hwMap.get(Servo.class, "capstoneRelease");
         blockGrabberR = hwMap.get(Servo.class, "blockGrabberR");
-        leds = hwMap.get(Servo.class, "leds");
+        leds = hwMap.get(RevBlinkinLedDriver.class, "leds");
     }
     public void teleOpInit(HardwareMap hwMap) {
         init(hwMap);
