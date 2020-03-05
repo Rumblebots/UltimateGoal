@@ -16,6 +16,7 @@ import java.util.Map;
 @TeleOp(name="New Meccanum Drive", group="default")
 public class MeccanumDrive_new extends OpMode
 {
+    //TODO: Make sure the capstone toggle serve doesn't open on init
     int cpos = 0;
     int rpos = 0;
     private enum Extender
@@ -83,7 +84,6 @@ public class MeccanumDrive_new extends OpMode
         telemetry.addData("current gear", lifterShifter.CurrentGear);
         telemetry.addData("current encoder pos", auxMotors_TeleOpEncoders.GetCurrentPos());
         auxMotors_TeleOpEncoders.ResetEncoders();
-        servos.capstoneRelease.setPosition(0);
         servos.leds.setPosition(0.65);
     }
 
