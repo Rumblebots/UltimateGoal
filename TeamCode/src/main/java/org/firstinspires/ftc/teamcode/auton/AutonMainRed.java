@@ -83,6 +83,7 @@ public class AutonMainRed extends LinearOpMode {
             //telemetry.update();
         }
         waitForStart();
+        //webcam.stopTFOD();
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 encoderDrive(4, 3, "BACKWARD", 0.2);
