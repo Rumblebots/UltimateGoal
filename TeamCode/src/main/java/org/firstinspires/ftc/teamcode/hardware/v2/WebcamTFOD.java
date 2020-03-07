@@ -90,4 +90,7 @@ public class WebcamTFOD {
         }
         return returner;
     }
+    public void stopTFOD() {
+        tfod.shutdown();
+    }
 }
