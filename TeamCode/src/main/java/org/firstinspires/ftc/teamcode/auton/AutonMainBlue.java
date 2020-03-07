@@ -136,8 +136,8 @@ public class AutonMainBlue extends LinearOpMode {
     void moveUntilDistance(int dist) {
         mainMotors.RunToPos(false);
         Motors_Drive.Common mover = new Motors_Drive().new Common();
-        while (Double.isNaN(sensors.armLeft.getDistanceIn()) || sensors.armLeft.getDistanceIn() > dist) {
-            telemetry.addData("Distance: ", sensors.armLeft.getDistanceIn());
+        while (Double.isNaN(sensors.distanceSensorLeft.getDistanceIn()) || sensors.distanceSensorLeft.getDistanceIn() > dist) {
+            telemetry.addData("Distance: ", sensors.distanceSensorLeft.getDistanceIn());
             mover.MeccanumDirection("BACKWARD", 0.3);
         }
         mover.Brake();

@@ -13,10 +13,11 @@ public class Sensors
 //    Color blueSideAuto  = new Color("blueSideAuto");
     Color inside1 = new Color("inside1");
     Color inside2 = new Color("inside2");
-    public Distance armLeft = new Distance("armLeft");
-    public Distance armRight = new Distance("armRight");
-    public Touch lifterTouchSensor = new Touch("liftertouch");
+    public Distance distanceSensorLeft = new Distance("distanceSensorLeft");
     public Touch extenderlimit = new Touch("extenderlimit");
+    public Touch lifterTouchSensor = new Touch("liftertouch");
+    public Distance distanceSensorRight = new Distance("distanceSensorRight");
+    // public Distance distanceFrontLeft = new Distance("distanceFrontLeft");
     /* TODO add sensors
      * - Add 2 front facing distance sensors for alignment
      * - Add 2 front facing color sensors for alignment
@@ -24,15 +25,17 @@ public class Sensors
     public void init (HardwareMap hwMap)
     {
 //        Gyro.init(hwMap);
-        armLeft.init(hwMap);
-        armRight.init(hwMap);
+//        distanceSensorLeft.init(hwMap);
+//        armRight.init(hwMap);
         Limit.init(hwMap);
         // redSideAuto.init(hwMap);
         // blueSideAuto.init(hwMap);
         inside1.init(hwMap);
         inside2.init(hwMap);
-        lifterTouchSensor.init(hwMap);
         extenderlimit.init(hwMap);
+        lifterTouchSensor.init(hwMap);
+        distanceSensorLeft.init(hwMap);
+        distanceSensorRight.init(hwMap);
     }
     public double Power (int Direction, double Power)
     {
