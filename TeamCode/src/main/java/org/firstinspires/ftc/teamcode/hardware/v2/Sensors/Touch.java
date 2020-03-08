@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Touch
 {
-    String HwName;
+    private String HwName;
     public static TouchSensor touch;
     public Touch (String NewHwName)
     {

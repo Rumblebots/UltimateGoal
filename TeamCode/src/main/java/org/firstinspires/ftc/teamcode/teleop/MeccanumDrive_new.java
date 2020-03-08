@@ -66,6 +66,8 @@ public class MeccanumDrive_new extends OpMode
         put(7, 4495); // 7 blocks (eighth block)
         put(8, 4934); // 8 blocks (ninth block)
         put(9, 10000); // Encoder value is intentionally out of range to have the lifter extend fully
+                       // you probably won't ever get to this gear because it's out of range anyway
+                       // TODO find out the highest gear the extender can get to with the two stages
     }};
 
     private int extenderMode = 0;
@@ -293,56 +295,23 @@ public class MeccanumDrive_new extends OpMode
 
             {
                 // Extender controls
-                if (sensors.extenderlimit.IsSensorActive())
-                {
+                if (sensors.extenderlimit.IsSensorActive()) {
                     servos.extenderServo.setPower(0.0);
                 }
-                if (gamepad2.dpad_left)
-                {
-                    if (!sensors.extenderlimit.IsSensorActive()) servos.extenderServo.setPower(1.0);
-                }
-                else if (gamepad2.dpad_right)
-                {
-                    if (!sensors.extenderlimit.IsSensorActive()) servos.extenderServo.setPower(-1.0);
+                if (gamepad2.dpad_left) {
+                    if (!sensors.extenderlimit.IsSensorActive())
+                        servos.extenderServo.setPower(0.85);
+                } else if (gamepad2.dpad_right) {
+                    if (!sensors.extenderlimit.IsSensorActive())
+                        servos.extenderServo.setPower(-0.85);
                 }
                 telemetry.addData("extender mode", extender);
                 telemetry.addData("in trans?", inTrans);
                 telemetry.addData("sensor active?", sensors.extenderlimit.IsSensorActive());
+                // TODO remove this later
+                telemetry.addData("is lifter touch sensor active", sensors.lifterTouchSensor.IsSensorActive());
                 telemetry.addData("extender servo power", servos.extenderServo.getPower());
-//                if (gamepad2.left_stick_x != 0)
-//                {
-//                    servos.extenderServo.setPower(gamepad2.left_stick_x);
-//                }
-//                else
-//                {
-//                    servos.extenderServo.setPower(0.0);
-//                }
-//
-//                if (sensors.extenderlimit.IsSensorActive())
-//                {
-//                    if (servos.extenderServo.getPower() != 0) // stop the extender
-//                    {
-//                        servos.extenderServo.setPower(0);
-//                    }
-//                }
-//
-//                if (gamepad2.dpad_right) // going out
-//                {
-//                    servos.extenderServo.setDirection(DcMotorSimple.Direction.FORWARD);
-//                    servos.extenderServo.setPower(1.0);
-//                }
-//                else if (gamepad2.dpad_left) // going in
-//                {
-//                    servos.extenderServo.setDirection(DcMotorSimple.Direction.REVERSE);
-//                    servos.extenderServo.setPower(1.0);
-//                }
-//                else
-//                {
-//                    if (servos.extenderServo.getPower() != 0) {}
-//                    else servos.extenderServo.setPower(0.0);
-//                }
             }
-
             {
                 // Gripper controls
                 if (gamepad2.a)
@@ -354,8 +323,8 @@ public class MeccanumDrive_new extends OpMode
                     grabberToggle.UpdateToggle("OFF");
                 }
 
-                if (s1Vals.get("red") >= 36) grabberToggle.OverrideSetToggle("ON");
-                if (s2Vals.get("red") >= 150) grabberToggle.OverrideSetToggle("OFF");
+                if (s1Vals.get("red") >= 36) grabberToggle.OverrideSetToggle("OFF");
+                if (s2Vals.get("red") >= 150) grabberToggle.OverrideSetToggle("ON");
 
                 if (grabberToggle.Toggle()) servos.gripperServo.setPosition(1);
                 else servos.gripperServo.setPosition(0);

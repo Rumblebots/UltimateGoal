@@ -62,7 +62,7 @@ public class Motors_Aux
         void SetPower (double Power)
         {
             stackerVertical1.setPower(Power);
-            stackerVertical2.setPower(Power);
+            stackerVertical2.setPower(-Power);
         }
         public void ResetEncoders ()
         {
@@ -112,7 +112,7 @@ public class Motors_Aux
                  */
                 if (Math.abs(speed) > 0.8)
                 {
-                    SetPower(speed);
+                    SetPower(-speed);
                 }
                 else
                 {
