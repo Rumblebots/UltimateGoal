@@ -13,8 +13,9 @@ public class Sensors
 //    Color blueSideAuto  = new Color("blueSideAuto");
     Color inside1 = new Color("inside1");
     Color inside2 = new Color("inside2");
-    public Distance armLeft = new Distance("armLeft");
-    public Distance armRight = new Distance("armRight");
+    Color verifyColor = new Color("verifyColor");
+    public Distance armLeft = new Distance("distanceSensorLeft");
+    public Distance armRight = new Distance("distanceSensorRight");
     public Touch lifterTouchSensor = new Touch("liftertouch");
     public Touch extenderlimit = new Touch("extenderlimit");
     /* TODO add sensors
@@ -31,6 +32,7 @@ public class Sensors
         // blueSideAuto.init(hwMap);
         inside1.init(hwMap);
         inside2.init(hwMap);
+        verifyColor.init(hwMap);
         lifterTouchSensor.init(hwMap);
         extenderlimit.init(hwMap);
     }
@@ -104,6 +106,7 @@ public class Sensors
 
     public Map<String, Integer> getInside1SensorVals () { return makeColorSensorMap(inside1); }
     public Map<String, Integer> getInside2SensorVals () { return makeColorSensorMap(inside2); }
+    public Map<String, Integer> getVerifyVals () { return makeColorSensorMap(verifyColor); }
     public boolean getInside1State()
     {
         Map t = getInside1SensorVals();
