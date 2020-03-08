@@ -4,6 +4,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.RobotCore.Utils;
 import org.firstinspires.ftc.teamcode.hardware.v2.Motors_Aux;
@@ -17,6 +18,7 @@ import java.util.Map;
 @TeleOp(name="New Meccanum Drive", group="default")
 public class MeccanumDrive_new extends OpMode
 {
+    public TouchSensor extenderlimit;
     //TODO: Make sure the capstone toggle serve doesn't open on init
     int cpos = 0;
     int rpos = 0;
@@ -88,6 +90,7 @@ public class MeccanumDrive_new extends OpMode
         telemetry.addData("current encoder pos", auxMotors_TeleOpEncoders.GetCurrentPos());
         auxMotors_TeleOpEncoders.ResetEncoders();
         servos.leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+        extenderlimit = hardwareMap.touchSensor.get("extenderlimit");
     }
 
     /**
@@ -294,20 +297,24 @@ public class MeccanumDrive_new extends OpMode
             }
 
             {
-                // Extender controls
-                if (sensors.extenderlimit.IsSensorActive()) {
-                    servos.extenderServo.setPower(0.0);
-                }
-                if (gamepad2.dpad_left) {
-                    if (!sensors.extenderlimit.IsSensorActive())
-                        servos.extenderServo.setPower(0.85);
-                } else if (gamepad2.dpad_right) {
-                    if (!sensors.extenderlimit.IsSensorActive())
+                if (extenderlimit.isPressed())
+                {
+                    if (gamepad2.dpad_right)
+                    {
                         servos.extenderServo.setPower(-0.85);
+                    }
+                    else if (gamepad2.dpad_left)
+                    {
+                        servos.extenderServo.setPower(0.85);
+                    }
+                    else
+                    {
+                        servos.extenderServo.setPower(0.0);
+                    }
                 }
                 telemetry.addData("extender mode", extender);
                 telemetry.addData("in trans?", inTrans);
-                telemetry.addData("sensor active?", sensors.extenderlimit.IsSensorActive());
+                telemetry.addData("sensor active?", extenderlimit.isPressed());
                 // TODO remove this later
                 telemetry.addData("is lifter touch sensor active", sensors.lifterTouchSensor.IsSensorActive());
                 telemetry.addData("extender servo power", servos.extenderServo.getPower());
@@ -359,8 +366,8 @@ public class MeccanumDrive_new extends OpMode
                     capstoneToggle.UpdateToggle("OFF");
                 }
 
-                if (capstoneToggle.Toggle()) servos.capstoneRelease.setPosition(1);
-                else servos.capstoneRelease.setPosition(0);
+                if (capstoneToggle.Toggle()) servos.capstoneRelease.setPosition(0);
+                else servos.capstoneRelease.setPosition(1);
                 telemetry.addData("capstone servo pos", servos.capstoneRelease.getPosition());
             }
         }

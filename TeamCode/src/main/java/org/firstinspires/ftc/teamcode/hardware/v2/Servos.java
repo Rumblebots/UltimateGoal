@@ -24,6 +24,7 @@ public class Servos {
     public Servo capstoneRelease;
     public RevBlinkinLedDriver leds;
     public Servo blockGrabberR;
+    public Servo alignmentArm;
 
     /**
      * Init all of the servos that get used
@@ -42,7 +43,9 @@ public class Servos {
         capstoneRelease = hwMap.get(Servo.class, "capstoneRelease");
         blockGrabberR = hwMap.get(Servo.class, "blockGrabberR");
         leds = hwMap.get(RevBlinkinLedDriver.class, "leds");
+        alignmentArm = hwMap.get(Servo.class, "blockGrabberL");
     }
+
     public void teleOpInit(HardwareMap hwMap) {
         init(hwMap);
         gripperServo.setPosition(0);

@@ -483,4 +483,12 @@ public class Motors_Drive
             ForEachMotor.setPower(0.0);
         }
     }
+
+    public class motorPowerObject
+    {
+        public double frontRight;
+        public double frontLeft;
+        public double backRight;
+        public double backLeft;
+    }
 }
