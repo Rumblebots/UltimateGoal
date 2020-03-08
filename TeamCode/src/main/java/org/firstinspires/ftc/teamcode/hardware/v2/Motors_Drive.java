@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.hardware.v2;
 import android.util.Log;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.RobotCore.Utils;
@@ -95,6 +96,7 @@ public class Motors_Drive
                     BackLeft.setPower(-Power);
                     break;
             }
+
         }
     }
 
@@ -250,12 +252,17 @@ public class Motors_Drive
                 BackRight.setTargetPosition(positionBackRight);
                 BackLeft.setTargetPosition(positionBackLeft);
             }
+            void setDirection(DcMotorSimple.Direction direction) {
+                FrontRight.setDirection(direction);
+                FrontLeft.setDirection(direction);
+                BackLeft.setDirection(direction);
+                BackRight.setDirection(direction);
+            }
         }
         private ForEachMotor ForEachMotor = new ForEachMotor(); // Define ForEachMotor for easy reference
 
         public void setTargetDirection (String Direction, int target_pos)
         {
-            ResetEncoders();
             int newLeftTarget = getFrontLeftPos() + (int) (-target_pos * COUNTS_PER_INCH);
             int newRightTarget = getFrontRightPos() + (int) (-target_pos * COUNTS_PER_INCH);
             int newBackRightTarget = getBackRightPos() + (int) (-target_pos * COUNTS_PER_INCH);
@@ -313,6 +320,7 @@ public class Motors_Drive
         {
             ForEachMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             ForEachMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //ForEachMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
         /**
@@ -429,6 +437,7 @@ public class Motors_Drive
             ForEachMotor.setTargetPosition(position);
             if (RunToPos) RunToPos(true);
         }
+
 
         /**
          * ### OVERLOAD METHOD

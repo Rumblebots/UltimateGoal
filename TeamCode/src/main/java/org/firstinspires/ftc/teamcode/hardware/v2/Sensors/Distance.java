@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Distance {
     private String sensorName;
-    private DistanceSensor distanceSensor;
+    public DistanceSensor distanceSensor;
     public Distance(String sensorName) {
         this.sensorName = sensorName;
     }
