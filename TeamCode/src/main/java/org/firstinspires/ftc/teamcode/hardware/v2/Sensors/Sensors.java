@@ -14,8 +14,8 @@ public class Sensors
     Color inside1 = new Color("inside1");
     Color inside2 = new Color("inside2");
     Color verifyColor = new Color("verifyColor");
-    public Distance armLeft = new Distance("distanceSensorLeft");
-    public Distance armRight = new Distance("distanceSensorRight");
+    public Distance distanceSensorLeft = new Distance("distanceSensorLeft");
+    public Distance distanceSensorRight = new Distance("distanceSensorRight");
     public Touch lifterTouchSensor = new Touch("liftertouch");
     public Touch extenderlimit = new Touch("extenderlimit");
     /* TODO add sensors
@@ -25,8 +25,8 @@ public class Sensors
     public void init (HardwareMap hwMap)
     {
 //        Gyro.init(hwMap);
-        armLeft.init(hwMap);
-        armRight.init(hwMap);
+        distanceSensorLeft.init(hwMap);
+        distanceSensorRight.init(hwMap);
         Limit.init(hwMap);
         // redSideAuto.init(hwMap);
         // blueSideAuto.init(hwMap);

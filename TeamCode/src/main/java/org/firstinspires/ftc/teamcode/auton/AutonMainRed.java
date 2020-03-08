@@ -37,10 +37,6 @@ public class AutonMainRed extends LinearOpMode {
         String pos = "";
         mainMotors.ResetEncoders();
         while (!isStarted()) {
-            telemetry.addData("COLOR", sensors.getVerifyVals().get("argb"));
-            telemetry.update();
-        }
-        while (!isStarted()) {
             List<Recognition> updatedRecognitions = webcam.getUpdatedRecognitions();
 //            telemetry.addData("SIZE", updatedRecognitions.size());
 //            pos = webcam.autoInitDetect();
@@ -83,7 +79,7 @@ public class AutonMainRed extends LinearOpMode {
                 } else {
                     telemetry.addData("Skystone Position", "Not Known");
                 }
-                telemetry.addData("Distance: ", sensors.armLeft.getDistanceIn());
+                telemetry.addData("Distance: ", sensors.distanceSensorLeft.getDistanceIn());
                 telemetry.update();
             }
             //telemetry.update();
@@ -129,9 +125,9 @@ public class AutonMainRed extends LinearOpMode {
     void moveUntilDistance(int dist) {
         mainMotors.RunToPos(false);
         Motors_Drive.Common mover = new Motors_Drive().new Common();
-        while ((Double.isNaN(sensors.armLeft.distanceSensor.getDistance(DistanceUnit.INCH)) || sensors.armLeft.distanceSensor.getDistance(DistanceUnit.INCH) > dist) && opModeIsActive()) {
-            Log.i("DIST", String.valueOf(sensors.armLeft.distanceSensor.getDistance(DistanceUnit.INCH)));
-            telemetry.addData("Distance: ", sensors.armLeft.distanceSensor.getDistance(DistanceUnit.INCH));
+        while ((Double.isNaN(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)) || sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH) > dist) && opModeIsActive()) {
+            Log.i("DIST", String.valueOf(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)));
+            telemetry.addData("Distance: ", sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH));
             mover.MeccanumDirection("BACKWARD", 0.3);
         }
         mover.Brake();
@@ -147,9 +143,9 @@ public class AutonMainRed extends LinearOpMode {
     void strafeUntilDistance(int dist, String direction, double power) {
         mainMotors.RunToPos(false);
         Motors_Drive.Common mover = new Motors_Drive().new Common();
-        while ((Double.isNaN(sensors.armLeft.distanceSensor.getDistance(DistanceUnit.INCH)) || sensors.armLeft.distanceSensor.getDistance(DistanceUnit.INCH) > dist) && opModeIsActive()) {
-            Log.i("DIST", String.valueOf(sensors.armLeft.distanceSensor.getDistance(DistanceUnit.INCH)));
-            telemetry.addData("Distance: ", sensors.armLeft.distanceSensor.getDistance(DistanceUnit.INCH));
+        while ((Double.isNaN(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)) || sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH) > dist) && opModeIsActive()) {
+            Log.i("DIST", String.valueOf(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)));
+            telemetry.addData("Distance: ", sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH));
             mover.MeccanumDirection(direction, power);
         }
         mover.Brake();
