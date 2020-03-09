@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.hardware.v2;
 
 import android.util.Log;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.RobotCore.Utils;
 
 /**
@@ -92,6 +94,18 @@ public class Motors_Drive
                 case "RIGHT":
                     FrontRight.setPower(Power);
                     FrontLeft.setPower(Power);
+                    BackRight.setPower(-Power);
+                    BackLeft.setPower(-Power);
+                    break;
+                case "TURN_R":
+                    FrontRight.setPower(Power);
+                    FrontLeft.setPower(Power);
+                    BackRight.setPower(Power);
+                    BackLeft.setPower(Power);
+                    break;
+                case "TURN_L":
+                    FrontRight.setPower(-Power);
+                    FrontLeft.setPower(-Power);
                     BackRight.setPower(-Power);
                     BackLeft.setPower(-Power);
                     break;
@@ -261,6 +275,41 @@ public class Motors_Drive
         }
         private ForEachMotor ForEachMotor = new ForEachMotor(); // Define ForEachMotor for easy reference
 
+        public int getMotorTarget(String direction, int target) {
+            int newRightTarget = getFrontRightPos() + (int) (-target * COUNTS_PER_INCH);
+
+            switch (direction) {
+                case "BACKWARD":
+                case "TURN_R":
+                case "RIGHT":
+                    newRightTarget*=-1;
+                    break;
+            }
+            return newRightTarget;
+        }
+
+        public boolean needsMove(String direction, int target) {
+            Log.i("TARGET", String.valueOf(target));
+            Log.i("DIR", direction);
+            boolean needsToMove = false;
+            switch (direction) {
+                case "FORWARD" :
+                case "TURN_L":
+                case "LEFT" :
+                    needsToMove =  target < getFrontRightPos();
+                    break;
+                case "BACKWARD":
+                case "TURN_R":
+                case "RIGHT":
+                    needsToMove =  target > getFrontRightPos();
+                    break;
+            }
+            Log.i("TGT", String.valueOf(target < getFrontRightPos()));
+            Log.i("TGT", String.valueOf(target > getFrontRightPos()));
+            Log.i("needsMove", String.valueOf(needsToMove));
+            return needsToMove;
+        }
+
         public void setTargetDirection (String Direction, int target_pos)
         {
             int newLeftTarget = getFrontLeftPos() + (int) (-target_pos * COUNTS_PER_INCH);
@@ -280,7 +329,7 @@ public class Motors_Drive
                     BackRight.setTargetPosition(newBackRightTarget);
                     BackLeft.setTargetPosition(-newBackLeftTarget);
                     break;
-                case "LEFT":
+                case "RIGHT":
                     FrontRight.setTargetPosition(-newRightTarget);
                     FrontLeft.setTargetPosition(-newLeftTarget);
                     BackRight.setTargetPosition(newBackRightTarget);
@@ -292,7 +341,7 @@ public class Motors_Drive
                     BackRight.setTargetPosition(-newBackRightTarget);
                     BackLeft.setTargetPosition(newBackLeftTarget);
                     break;
-                case "RIGHT":
+                case "LEFT":
                     FrontRight.setTargetPosition(newRightTarget);
                     FrontLeft.setTargetPosition(newLeftTarget);
                     BackRight.setTargetPosition(-newBackRightTarget);
@@ -319,7 +368,7 @@ public class Motors_Drive
         public void ResetEncoders ()
         {
             ForEachMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            ForEachMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //ForEachMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             //ForEachMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
@@ -458,12 +507,40 @@ public class Motors_Drive
             else ForEachMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
+        public void runWithEncoders(boolean mode){
+            if (mode) ForEachMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            else ForEachMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+
         /**
          * Set motors to go forward! Woww!!!
          */
         public void autonMove (double power)
         {
             ForEachMotor.setPower(Math.abs(power));
+        }
+        public double gradualSpeed(String direction, double power, int inches) {
+            int target = getFrontRightPos() + (int) (inches * COUNTS_PER_INCH);
+            double distanceLeft = 0;
+            double currentTenth = (inches * COUNTS_PER_INCH)/10.0;
+            double posInc = .15/currentTenth;
+            double negInc = .20/currentTenth;
+            switch (direction) {
+                case "FORWARD":
+                case "LEFT":
+                    distanceLeft = target + getFrontRightPos();
+                    break;
+                case "BACKWARD":
+                case "RIGHT":
+                    distanceLeft = target - getFrontRightPos();
+                    break;
+            }
+            if (currentTenth*3 >= distanceLeft) {
+                power = Range.clip(power+=posInc, 0.1, 1.0);
+            } else {
+                power = Range.clip(power-=negInc, 0.1, 1.0);
+            }
+            return power;
         }
 
         /**

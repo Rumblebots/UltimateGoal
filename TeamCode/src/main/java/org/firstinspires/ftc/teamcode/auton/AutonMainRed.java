@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.auton;
 
 import android.util.Log;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.*;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.hardware.v2.Motors_Drive;
 import org.firstinspires.ftc.teamcode.hardware.v2.Sensors.Sensors;
@@ -20,6 +21,11 @@ public class AutonMainRed extends LinearOpMode {
     WebcamTFOD webcam = new WebcamTFOD();
     Sensors sensors = new Sensors();
     Servos servos = new Servos();
+    private static BNO055IMU imu;
+    private static Orientation getCurrentOrientation ()
+    {
+        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+    }
     private ElapsedTime runtime = new ElapsedTime();
     static final double COUNTS_PER_MOTOR_REV = 537.6;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
@@ -32,6 +38,7 @@ public class AutonMainRed extends LinearOpMode {
         drive_motors.init(hardwareMap);
         webcam.init(hardwareMap);
         webcam.activateTfod();
+        initGyro();
         sensors.init(hardwareMap);
         boolean left = false, right = false, center = true;
         String pos = "";
@@ -86,32 +93,31 @@ public class AutonMainRed extends LinearOpMode {
         }
         waitForStart();
         //webcam.st opTFOD();
-        //encoderStrafe(8, 60, "RIGHT", 0.5);
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 //encoderDrive(4, 3, "BACKWARD", 0.2);
                 //encoderStrafe(4, 22, "RIGHT", 0.45);
                 if (pos.equals("R")) {
-                    encoderStrafe(4, 18, "RIGHT", 0.5);
+                    encoderStrafe(4, 16, "LEFT", 0.5);
                     //encoderStrafe(4, 6, "RIGHT", 0.3);
 //                    encoderDrive(4, 31, "BACKWARD", 0.2);
-                    moveUntilDistance(4);
+                    moveUntilDistance(6);
                     sleep(500);
                     driveAndMoveFoundation(60);
                     break;
                 }
                 if (pos.equals("C")) {
-                    encoderStrafe(4, 12, "RIGHT", 0.3);
+                    encoderStrafe(4, 12, "LEFT", 0.3);
 //                    encoderDrive(4, 26, "BACKWARD", 0.3);
-                    moveUntilDistance(4);
+                    moveUntilDistance(6);
                     sleep(500);
                     driveAndMoveFoundation(55);
                     break;
                 }
                 if (pos.equals("L")) {
-                    encoderStrafe(4, 4, "RIGHT", 0.3);
+                    encoderStrafe(4, 4, "LEFT", 0.3);
 //                    encoderDrive(4, 39, "BACKWARD", 0.2);
-                    //moveUntilDistance(4);
+                    moveUntilDistance(6);
                     sleep(500);
                     driveAndMoveFoundation(50);
                 }
@@ -128,7 +134,7 @@ public class AutonMainRed extends LinearOpMode {
         while ((Double.isNaN(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)) || sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH) > dist) && opModeIsActive()) {
             Log.i("DIST", String.valueOf(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)));
             telemetry.addData("Distance: ", sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH));
-            mover.MeccanumDirection("BACKWARD", 0.3);
+            mover.MeccanumDirection("BACKWARD", 0.4);
         }
         mover.Brake();
         //mainMotors.RunToPos(true);
@@ -150,38 +156,46 @@ public class AutonMainRed extends LinearOpMode {
         }
         mover.Brake();
     }
-    void verifyColorStrafe() {
-
+    void verifyColorStrafe(String direction, double power) {
+        mainMotors.RunToPos(false);
+        Motors_Drive.Common mover = new Motors_Drive().new Common();
+        while (sensors.getVerifySensorVals().get("argb") != 0) {
+            mover.MeccanumDirection(direction, power);
+        }
+        mover.Brake();
     }
     void driveAndMoveFoundation(int strafeDistance) {
         grabBlock();
-        sleep(1000);
-        encoderDrive(4, 6, "FORWARD", 0.2);
-        //encoderStrafe(10, strafeDistance, "RIGHT", 0.3);
+        encoderDrive(4, 6, "FORWARD", 0.5);
+        sleep(100);
         strafeTime("LEFT", 0.8, 2300);
-        //encoderDrive(4, 12, "BACKWARD", 0.3);
         moveUntilDistance(4);
         dropBlock();
         encoderDrive(4, 12, "FORWARD", 0.5);
-        strafeTime("RIGHT", 0.8, 2000);
-        //encoderStrafe(15, strafeDistance + 18, "LEFT", 0.3);
-        moveUntilDistance(4);
+        sleep(100);
+        strafeTime("RIGHT", 0.8, 3500);
+        moveUntilDistance(6);
+        verifyColorStrafe("LEFT", 0.3);
         grabBlock();
-        strafeTime("LEFT", 0.8, 2000);
-        //encoderStrafe(15, strafeDistance + 18, "RIGHT", 0.3);
+        encoderDrive(4, 6, "FORWARD", 0.5);
+        strafeTime("LEFT", 0.8, 3000);
+        //encoderStrafe(15, strafeDistance + 18, "LEFT", 0.3);
         moveUntilDistance(4);
         dropBlock();
         moveFoundation();
+        encoderDrive(4, 40, "FORWARD", 0.5);
     }
 
     private void moveFoundation() {
         encoderDrive(4, 6, "BACKWARD", 0.4);
-        servos.foundationServo1.setPosition(1.0);
-        sleep(500);
-        encoderDrive(4, 12, "FORWARD", 0.5);
-        encoderTurn(4, 20, "90", 0.5);
         servos.foundationServo1.setPosition(0.0);
         sleep(500);
+        encoderDrive(4, 30, "FORWARD", 0.5);
+//        encoderTurn(4, 20, "90", 0.5);
+        gyroTurn(90, 0.3);
+        encoderDrive(4, 20, "BACKWARD", 0.5);
+        servos.foundationServo1.setPosition(1.0);
+        sleep(250);
     }
 
     private void dropBlock() {
@@ -192,13 +206,13 @@ public class AutonMainRed extends LinearOpMode {
 
     private void grabBlock() {
 //        servos.blockGrabberR.setPosition(1.0);
-//        sleep(1000);
+//        sleep(500);
         servos.armRControl.setPosition(0.5);
-        sleep(1000);
+        sleep(500);
 //        servos.blockGrabberR.setPosition(0.2);
-//        sleep(1000);
+//        sleep(500);
         servos.armRControl.setPosition(0.9);
-        sleep(1000);
+        sleep(500);
     }
 
     void encoderDrive(int timeoutS, double inches, String fb, double power) {
@@ -239,15 +253,28 @@ public class AutonMainRed extends LinearOpMode {
         if (opModeIsActive()) {
             mainMotors.ResetEncoders();
             Log.i("POS", String.valueOf(inches));
-            mainMotors.setTargetDirection(direction, (int)inches);
-            mainMotors.RunToPos(true);
+            //mainMotors.setTargetDirection(direction, (int)inches);
+            mainMotors.runWithEncoders(true);
             runtime.reset();
-            mainMotors.autonMove(power);
+            //mainMotors.autonMove(power);
             System.out.println("COUNT: " + (inches * COUNTS_PER_INCH));
             int tenthCnt = 9;
             int oldTenthCnt = 0;
-            while (opModeIsActive() && (runtime.seconds() < timeoutS) &&
-                    (mainMotors.frontLeftBusy() && mainMotors.frontRightBusy() && mainMotors.backLeftBusy() && mainMotors.backLeftBusy())) {
+            int motorTarget = mainMotors.getMotorTarget(direction, (int)inches);
+            Motors_Drive.Common mover = new Motors_Drive().new Common();
+            while (opModeIsActive() && (runtime.seconds() < timeoutS) && mainMotors.needsMove(direction, motorTarget)) {
+                power = mainMotors.gradualSpeed(direction, power, (int)inches);
+                Log.i("POW", String.valueOf(power));
+                mover.MeccanumDirection(direction, power);
+                System.out.println("CURRENT POS: " + mainMotors.getFrontRightPos());
+//                telemetry.addData("Path2", "Running at %7d :%7d",
+//                        mainMotors.getFrontLeftPos(),
+//                        mainMotors.getFrontRightPos());
+//                telemetry.update();
+            }
+            mover.Brake();
+//            while (opModeIsActive() && (runtime.seconds() < timeoutS) &&
+//                    (mainMotors.frontLeftBusy() && mainMotors.frontRightBusy() && mainMotors.backLeftBusy() && mainMotors.backLeftBusy())) {
 //                if (direction.equals("FORWARD") || direction.equals("LEFT")) {
 //                    double distanceLeft = (inches * COUNTS_PER_INCH) - mainMotors.getFrontRightPos();
 //                    System.out.println("LEFT: " + distanceLeft);
@@ -332,18 +359,39 @@ public class AutonMainRed extends LinearOpMode {
 ////                        System.out.println("DEC: " + currentTenth);
 ////                    }
 //                }
-
-                System.out.println("CURRENT POS: " + mainMotors.getFrontRightPos());
-                telemetry.addData("Path2", "Running at %7d :%7d",
-                        mainMotors.getFrontLeftPos(),
-                        mainMotors.getFrontRightPos());
-                telemetry.update();
-            }
-            Motors_Drive.Common mover = new Motors_Drive().new Common();
-            mover.Brake();
-            mainMotors.RunToPos(false);
-            sleep(500);
+//
+//                System.out.println("CURRENT POS: " + mainMotors.getFrontRightPos());
+//                telemetry.addData("Path2", "Running at %7d :%7d",
+//                        mainMotors.getFrontLeftPos(),
+//                        mainMotors.getFrontRightPos());
+//                telemetry.update();
+//            }
             //mainMotors.autonMove(0.0);
         }
+    }
+    void gyroTurn(int angle, double power) {
+        Motors_Drive.Common mover = new Motors_Drive().new Common();
+        while (getCurrentOrientation().thirdAngle < angle) {
+            mover.MeccanumDirection("TURN_R", power);
+        }
+    }
+    void initGyro() {
+        BNO055IMU.Parameters params = new BNO055IMU.Parameters();
+        params.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        params.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        params.calibrationDataFile = "CalibrationData.json";
+        params.loggingTag = "IMU";
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(params);
+    }
+    private double getRawHeading() {
+        return getCurrentOrientation().firstAngle;
+    }
+
+    /**
+     * @return the robot's current heading in radians
+     */
+    public double getHeading() {
+        return (getRawHeading()) % (2.0 * Math.PI);
     }
 }
