@@ -18,6 +18,7 @@ public class Sensors
     public Touch extenderlimit = new Touch("extenderlimit");
     public Touch lifterTouchSensor = new Touch("liftertouch");
     public Distance distanceSensorRight = new Distance("distanceSensorRight");
+    public Distance alignDistance = new Distance("alignDistance");
     // public Distance distanceFrontLeft = new Distance("distanceFrontLeft");
     /* TODO add sensors
      * - Add 2 front facing distance sensors for alignment
@@ -38,6 +39,7 @@ public class Sensors
         lifterTouchSensor.init(hwMap);
         distanceSensorLeft.init(hwMap);
         distanceSensorRight.init(hwMap);
+        alignDistance.init(hwMap);
     }
     public double Power (int Direction, double Power)
     {
@@ -142,5 +144,25 @@ public class Sensors
             put("argb", colorSensor.getARGB());
             put("alpha", colorSensor.getAlpha());
         }};
+    }
+
+    public enum Differential
+    {
+        Right,
+        Left,
+    }
+
+    public Differential getDifferential ()
+    {
+        double right = distanceSensorRight.getDistanceCm();
+        double left = distanceSensorLeft.getDistanceCm();
+        if (right > left)
+        {
+            return Differential.Right;
+        }
+        else
+        {
+            return Differential.Left;
+        }
     }
 }
