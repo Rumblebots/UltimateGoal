@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.RobotCore.Utils;
 import org.firstinspires.ftc.teamcode.RobotCore.Utils.Toggle;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.RobotCore.Utils.Shifter;
 import org.firstinspires.ftc.teamcode.hardware.v2.Motors_Drive;
 import org.firstinspires.ftc.teamcode.hardware.v2.Motors_Aux;
 import org.firstinspires.ftc.teamcode.hardware.v2.Motors_Aux.TeleOpEncoders;
+import org.firstinspires.ftc.teamcode.hardware.v2.Sensors.Touch;
 import org.firstinspires.ftc.teamcode.hardware.v2.Servos;
 import org.firstinspires.ftc.teamcode.hardware.v2.Sensors.Sensors;
 
@@ -40,6 +42,7 @@ public class DistanceSensorTest extends LinearOpMode
     private Toggle grabber = utils.new Toggle(false);
     private Toggle foundation = utils.new Toggle(false);
     private Toggle capstone = utils.new Toggle(false);
+    private TouchSensor extenderlimit;
     private Shifter lifter = utils.new Shifter(1, 6);
     // first gear - 1 block - no previous
     // second gear - 2 blocks - 1 previous
@@ -187,6 +190,7 @@ public class DistanceSensorTest extends LinearOpMode
         /*
          * Pre - init functionality
          */
+        extenderlimit = hardwareMap.touchSensor.get("extenderlimit");
         waitForStart();
         /*
          * Post - init functionality
@@ -196,6 +200,7 @@ public class DistanceSensorTest extends LinearOpMode
         sensors.init(hardwareMap);
         servos.init(hardwareMap);
         motorsDrive.init(hardwareMap);
+        motorsAux.init(hardwareMap);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -311,6 +316,21 @@ public class DistanceSensorTest extends LinearOpMode
             {
                 servos.blockWheel.setPower(0.8);
                 grabber.OverrideSetToggle("ON");
+            }
+            if (extenderlimit.isPressed())
+            {
+                if (gamepad2.dpad_right)
+                {
+                    servos.extenderServo.setPower(-0.85);
+                }
+                else if (gamepad2.dpad_left)
+                {
+                    servos.extenderServo.setPower(0.85);
+                }
+                else
+                {
+                    servos.extenderServo.setPower(0.0);
+                }
             }
         }
     }

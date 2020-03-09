@@ -333,8 +333,8 @@ public class MeccanumDrive_new extends OpMode
                 if (s1Vals.get("red") >= 36) grabberToggle.OverrideSetToggle("OFF");
                 if (s2Vals.get("red") >= 150) grabberToggle.OverrideSetToggle("ON");
 
-                if (grabberToggle.Toggle()) servos.gripperServo.setPosition(1);
-                else servos.gripperServo.setPosition(0);
+                if (grabberToggle.Toggle()) servos.gripperServo.setPosition(0);
+                else servos.gripperServo.setPosition(1);
 
                 telemetry.addData("gripper servo pos", servos.gripperServo.getPosition());
             }
