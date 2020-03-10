@@ -104,7 +104,7 @@ public class AutonMainRed extends LinearOpMode {
 //                    encoderDrive(4, 31, "BACKWARD", 0.2);
                     moveUntilDistance(7);
                     sleep(500);
-                    driveAndMoveFoundation(60);
+                    driveAndMoveFoundation(60, 2300);
                     break;
                 }
                 if (pos.equals("C")) {
@@ -112,7 +112,7 @@ public class AutonMainRed extends LinearOpMode {
 //                    encoderDrive(4, 26, "BACKWARD", 0.3);
                     moveUntilDistance(7);
                     sleep(500);
-                    driveAndMoveFoundation(55);
+                    driveAndMoveFoundation(55, 2400);
                     break;
                 }
                 if (pos.equals("L")) {
@@ -120,7 +120,7 @@ public class AutonMainRed extends LinearOpMode {
 //                    encoderDrive(4, 39, "BACKWARD", 0.2);
                     moveUntilDistance(7);
                     sleep(500);
-                    driveAndMoveFoundation(50);
+                    driveAndMoveFoundation(50, 2500);
                 }
                 break;
             }
@@ -167,26 +167,24 @@ public class AutonMainRed extends LinearOpMode {
         }
         mover.Brake();
     }
-    void driveAndMoveFoundation(int strafeDistance) {
+    void driveAndMoveFoundation(int strafeDistance, int time) {
         grabBlock();
         encoderDrive(4, 6, "FORWARD", 0.5);
-        sleep(100);
-        strafeTime("LEFT", 0.8, 2300);
+        strafeTime("LEFT", 1, time);
         moveUntilDistance(4);
         dropBlock();
         encoderDrive(4, 12, "FORWARD", 0.5);
-        sleep(100);
-        strafeTime("RIGHT", 0.8, 3500);
+        strafeTime("RIGHT", 1, time + 1200);
         moveUntilDistance(6);
         verifyColorStrafe("LEFT", 0.5);
         grabBlock();
         encoderDrive(4, 6, "FORWARD", 0.5);
-        strafeTime("LEFT", 0.8, 3000);
+        strafeTime("LEFT", 1, time + 700);
         //encoderStrafe(15, strafeDistance + 18, "LEFT", 0.3);
         moveUntilDistance(4);
         dropBlock();
         moveFoundation();
-        encoderDrive(4, 40, "FORWARD", 0.5);
+        encoderDrive(4, 40, "FORWARD", 0.8);
     }
 
     private void moveFoundation() {
