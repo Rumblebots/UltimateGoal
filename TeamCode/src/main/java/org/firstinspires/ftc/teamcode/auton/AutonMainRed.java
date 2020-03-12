@@ -43,6 +43,7 @@ public class AutonMainRed extends LinearOpMode {
         boolean left = false, right = false, center = true;
         String pos = "";
         mainMotors.ResetEncoders();
+        //grabBlock();
         while (!isStarted()) {
             List<Recognition> updatedRecognitions = webcam.getUpdatedRecognitions();
 //            telemetry.addData("SIZE", updatedRecognitions.size());
@@ -98,28 +99,28 @@ public class AutonMainRed extends LinearOpMode {
                 //encoderDrive(4, 3, "BACKWARD", 0.2);
                 //encoderStrafe(4, 22, "RIGHT", 0.45);
                 if (pos.equals("R")) {
-                    encoderStrafe(4, 16, "LEFT", 0.5);
+                    encoderStrafe(4, 18, "LEFT", 0.5);
                     //encoderStrafe(4, 6, "RIGHT", 0.3);
 //                    encoderDrive(4, 31, "BACKWARD", 0.2);
-                    moveUntilDistance(6);
+                    moveUntilDistance(7);
                     sleep(500);
-                    driveAndMoveFoundation(60);
+                    driveAndMoveFoundation(60, 2300);
                     break;
                 }
                 if (pos.equals("C")) {
                     encoderStrafe(4, 12, "LEFT", 0.3);
 //                    encoderDrive(4, 26, "BACKWARD", 0.3);
-                    moveUntilDistance(6);
+                    moveUntilDistance(7);
                     sleep(500);
-                    driveAndMoveFoundation(55);
+                    driveAndMoveFoundation(55, 2400);
                     break;
                 }
                 if (pos.equals("L")) {
                     encoderStrafe(4, 4, "LEFT", 0.3);
 //                    encoderDrive(4, 39, "BACKWARD", 0.2);
-                    moveUntilDistance(6);
+                    moveUntilDistance(7);
                     sleep(500);
-                    driveAndMoveFoundation(50);
+                    driveAndMoveFoundation(50, 2500);
                 }
                 break;
             }
@@ -131,10 +132,12 @@ public class AutonMainRed extends LinearOpMode {
     void moveUntilDistance(int dist) {
         mainMotors.RunToPos(false);
         Motors_Drive.Common mover = new Motors_Drive().new Common();
-        while ((Double.isNaN(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)) || sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH) > dist) && opModeIsActive()) {
+        double distRead = sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH);
+        while ((Double.isNaN(distRead) || distRead > dist) && opModeIsActive()) {
             Log.i("DIST", String.valueOf(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)));
             telemetry.addData("Distance: ", sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH));
             mover.MeccanumDirection("BACKWARD", 0.4);
+            distRead = sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH);
         }
         mover.Brake();
         //mainMotors.RunToPos(true);
@@ -164,26 +167,24 @@ public class AutonMainRed extends LinearOpMode {
         }
         mover.Brake();
     }
-    void driveAndMoveFoundation(int strafeDistance) {
+    void driveAndMoveFoundation(int strafeDistance, int time) {
         grabBlock();
         encoderDrive(4, 6, "FORWARD", 0.5);
-        sleep(100);
-        strafeTime("LEFT", 0.8, 2300);
+        strafeTime("LEFT", 1, time);
         moveUntilDistance(4);
         dropBlock();
         encoderDrive(4, 12, "FORWARD", 0.5);
-        sleep(100);
-        strafeTime("RIGHT", 0.8, 3500);
+        strafeTime("RIGHT", 1, time + 1200);
         moveUntilDistance(6);
-        verifyColorStrafe("LEFT", 0.3);
+        verifyColorStrafe("LEFT", 0.5);
         grabBlock();
         encoderDrive(4, 6, "FORWARD", 0.5);
-        strafeTime("LEFT", 0.8, 3000);
+        strafeTime("LEFT", 1, time + 700);
         //encoderStrafe(15, strafeDistance + 18, "LEFT", 0.3);
         moveUntilDistance(4);
         dropBlock();
         moveFoundation();
-        encoderDrive(4, 40, "FORWARD", 0.5);
+        encoderDrive(4, 40, "FORWARD", 0.8);
     }
 
     private void moveFoundation() {
@@ -192,7 +193,7 @@ public class AutonMainRed extends LinearOpMode {
         sleep(500);
         encoderDrive(4, 30, "FORWARD", 0.5);
 //        encoderTurn(4, 20, "90", 0.5);
-        gyroTurn(90, 0.3);
+        gyroTurn(90, 0.5);
         encoderDrive(4, 20, "BACKWARD", 0.5);
         servos.foundationServo1.setPosition(1.0);
         sleep(250);
@@ -200,18 +201,19 @@ public class AutonMainRed extends LinearOpMode {
 
     private void dropBlock() {
         servos.armRControl.setPosition(0.5);
-//        servos.blockGrabberR.setPosition(1.0);
+        servos.blockGrabberR.setPosition(1.0);
+        sleep(500);
         servos.armRControl.setPosition(0.8);
     }
 
     private void grabBlock() {
-//        servos.blockGrabberR.setPosition(1.0);
-//        sleep(500);
-        servos.armRControl.setPosition(0.5);
+        servos.blockGrabberR.setPosition(1.0);
         sleep(500);
-//        servos.blockGrabberR.setPosition(0.2);
-//        sleep(500);
-        servos.armRControl.setPosition(0.9);
+        servos.armRControl.setPosition(0.2);
+        sleep(600);
+        servos.blockGrabberR.setPosition(0.0);
+        sleep(1000);
+        servos.armRControl.setPosition(0.5);
         sleep(500);
     }
 

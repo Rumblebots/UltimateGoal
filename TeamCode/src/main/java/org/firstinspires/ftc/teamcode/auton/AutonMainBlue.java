@@ -4,9 +4,11 @@
 package org.firstinspires.ftc.teamcode.auton;
 
 import android.util.Log;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.navigation.*;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.hardware.MotorsDrive;
 import org.firstinspires.ftc.teamcode.hardware.v2.Motors_Drive;
@@ -25,6 +27,11 @@ public class AutonMainBlue extends LinearOpMode {
     WebcamTFOD webcam = new WebcamTFOD();
     //    Sensors sensors = new Sensors();
     Servos servos = new Servos();
+    private static BNO055IMU imu;
+    private static Orientation getCurrentOrientation ()
+    {
+        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+    }
     private ElapsedTime runtime = new ElapsedTime();
     static final double COUNTS_PER_MOTOR_REV = 537.6;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
@@ -96,42 +103,47 @@ public class AutonMainBlue extends LinearOpMode {
                     encoderStrafe(4, 28, "RIGHT", 0.3);
                     moveUntilDistance(7);
                     sleep(500);
-                    driveToFoundation(72);
+                    driveToFoundation(72, 2300);
                     break;
                 }
                 if (pos.equals("C")) {
                     encoderDrive(4, 18, "RIGHT", 0.5);
                     moveUntilDistance(7);
                     sleep(500);
-                    driveToFoundation(66);
+                    driveToFoundation(66, 2400);
                     break;
                 }
                 if (pos.equals("R")) {
                     encoderStrafe(4, 8, "RIGHT", 0.5);
                     moveUntilDistance(7);
                     sleep(500);
-                    driveToFoundation(60);
+                    driveToFoundation(60, 2500);
                 }
                 break;
             }
         }
 
     }
-    void driveToFoundation(int strafeDistance) {
+    void driveToFoundation(int strafeDistance, int time) {
         grabBlock();
         encoderDrive(4, 6, "FORWARD", 0.5);
-        encoderStrafe(10, strafeDistance, "LEFT", 0.6);
-        sleep(500);
-        moveUntilDistance(7);
+        strafeTime("RIGHT", 1, time);
+        //encoderStrafe(10, strafeDistance, "LEFT", 0.6);
+        moveUntilDistance(4);
         dropBlock();
         encoderDrive(4, 12, "FORWARD", 0.5);
-        encoderStrafe(15, strafeDistance + 18, "RIGHT", 0.6);
-        moveUntilDistance(7);
+        strafeTime("LEFT", 1, time+1200);
+        //encoderStrafe(15, strafeDistance + 18, "RIGHT", 0.6);
+        moveUntilDistance(6);
+        verifyColorStrafe("RIGHT", 0.5);
         grabBlock();
-        encoderStrafe(15, strafeDistance + 18, "LEFT", 0.6);
-        moveUntilDistance(7);
+        encoderDrive(4, 6, "FORWARD", 0.5);
+        strafeTime("RIGHT", 1, time+700);
+        //encoderStrafe(15, strafeDistance + 18, "LEFT", 0.6);
+        moveUntilDistance(4);
         dropBlock();
         moveFoundation();
+        encoderDrive(4, 40, "FORWARD", 0.8);
     }
     void moveUntilDistance(int dist) {
         mainMotors.RunToPos(false);
@@ -143,17 +155,47 @@ public class AutonMainBlue extends LinearOpMode {
         mover.Brake();
         mainMotors.RunToPos(true);
     }
+    void strafeTime(String direction, double power, int time) {
+        mainMotors.RunToPos(false);
+        Motors_Drive.Common mover = new Motors_Drive().new Common();
+        mover.MeccanumDirection(direction, power);
+        sleep(time);
+        mover.Brake();
+    }
+    void strafeUntilDistance(int dist, String direction, double power) {
+        mainMotors.RunToPos(false);
+        Motors_Drive.Common mover = new Motors_Drive().new Common();
+        while ((Double.isNaN(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)) || sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH) > dist) && opModeIsActive()) {
+            Log.i("DIST", String.valueOf(sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH)));
+            telemetry.addData("Distance: ", sensors.distanceSensorLeft.distanceSensor.getDistance(DistanceUnit.INCH));
+            mover.MeccanumDirection(direction, power);
+        }
+        mover.Brake();
+    }
+    void verifyColorStrafe(String direction, double power) {
+        mainMotors.RunToPos(false);
+        Motors_Drive.Common mover = new Motors_Drive().new Common();
+        while (sensors.getVerifySensorVals().get("argb") != 0) {
+            mover.MeccanumDirection(direction, power);
+        }
+        mover.Brake();
+    }
     private void moveFoundation() {
         encoderDrive(4, 6, "BACKWARD", 0.4);
         servos.foundationServo1.setPosition(0.0);
-        encoderDrive(4, 12, "FORWARD", 0.5);
-        encoderTurn(4, 20, "90", 0.5);
+        sleep(500);
+        encoderDrive(4, 30, "FORWARD", 0.5);
+//        encoderTurn(4, 20, "90", 0.5);
+        gyroTurn(-90, 0.5);
+        encoderDrive(4, 20, "BACKWARD", 0.5);
         servos.foundationServo1.setPosition(1.0);
+        sleep(250);
     }
 
     private void dropBlock() {
         servos.armRControl.setPosition(0.5);
         servos.blockGrabberR.setPosition(1.0);
+        sleep(500);
         servos.armRControl.setPosition(0.8);
     }
 
@@ -295,5 +337,26 @@ public class AutonMainBlue extends LinearOpMode {
             mover.Brake();
             mainMotors.RunToPos(false);
         }
+    }
+    void gyroTurn(int angle, double power) {
+        Motors_Drive.Common mover = new Motors_Drive().new Common();
+        if (angle > 0) {
+            while (getCurrentOrientation().thirdAngle < angle) {
+                mover.MeccanumDirection("TURN_R", power);
+            }
+        } else {
+            while (getCurrentOrientation().thirdAngle < angle) {
+                mover.MeccanumDirection("TURN_L", power);
+            }
+        }
+    }
+    void initGyro() {
+        BNO055IMU.Parameters params = new BNO055IMU.Parameters();
+        params.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        params.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        params.calibrationDataFile = "CalibrationData.json";
+        params.loggingTag = "IMU";
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(params);
     }
 }
