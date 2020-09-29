@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.skystone.auton;
 import android.util.Log;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.*;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.skystone.hardware.v2.WebcamTFOD;
 
 import java.util.List;
 
+@Disabled
 @Autonomous(name = "AutonRedMain", group = "MainAuto")
 public class AutonMainRed extends LinearOpMode {
     Motors_Drive drive_motors = new Motors_Drive();

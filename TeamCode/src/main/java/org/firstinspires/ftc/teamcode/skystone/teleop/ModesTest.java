@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.skystone.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Aux;
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive;
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Sensors.Sensors;
 
+@Disabled
 @TeleOp (name = "Modes Test", group = "default")
 public class ModesTest extends LinearOpMode
 {

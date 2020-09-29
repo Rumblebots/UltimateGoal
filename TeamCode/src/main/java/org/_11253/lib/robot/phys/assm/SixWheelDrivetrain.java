@@ -53,7 +53,7 @@ import org._11253.lib.robot.phys.components.Motor;
  * @author Colin Robertson
  * @see Drivetrain
  */
-public class SixWheelDrivetrain extends Subsystem {
+public class SixWheelDrivetrain {
     public static Motor frontRight;
     public static Motor midRight;
     public static Motor backRight;

@@ -48,7 +48,7 @@ import org._11253.lib.robot.phys.components.Motor;
  *
  * @author Colin Robertson
  */
-public class Drivetrain extends Subsystem {
+public class Drivetrain {
     public static Motor frontRight;
     public static Motor frontLeft;
     public static Motor backRight;
