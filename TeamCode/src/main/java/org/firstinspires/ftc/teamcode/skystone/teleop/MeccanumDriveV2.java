@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.skystone.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive.motorPow
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Sensors.Sensors;
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Servos;
 
+@Disabled
 public class MeccanumDriveV2 extends LinearOpMode {
     private Motors_Drive motorsDrive = new Motors_Drive();
     private Motors_Aux motorsAux = new Motors_Aux();

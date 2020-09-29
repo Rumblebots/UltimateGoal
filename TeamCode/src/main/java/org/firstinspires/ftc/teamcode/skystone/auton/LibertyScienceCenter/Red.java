@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.skystone.auton.LibertyScienceCenter;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive;
 
-
+@Disabled
 @Autonomous(name = "Red", group = "Auto")
 public class Red extends LinearOpMode
 {

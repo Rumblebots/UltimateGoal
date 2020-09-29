@@ -70,7 +70,7 @@ public class Meccanum extends TeleOp {
      * </p>
      */
     public Meccanum() {
-        beforeStart.add(
+        onStart.add(
                 new Runnable() {
                     @Override
                     public void run() {

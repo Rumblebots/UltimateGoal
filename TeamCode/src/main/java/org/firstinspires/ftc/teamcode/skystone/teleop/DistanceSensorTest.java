@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.skystone.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,6 +25,8 @@ import static org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive.B
 import static org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive.BackRight;
 import static org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive.FrontLeft;
 import static org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive.FrontRight;
+
+@Disabled
 
 @TeleOp(name="Distance Sensor Test", group="default")
 public class DistanceSensorTest extends LinearOpMode

@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.skystone.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+@Disabled
 @TeleOp(name="MagLim Sensor Test", group="default")
 public class MagLimTest extends LinearOpMode
 {

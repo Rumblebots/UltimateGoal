@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.skystone.auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -45,6 +46,8 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
+
+@Disabled
 @Autonomous(name = "Webcam Test", group = "Tests")
 public class DetectSkyStone extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";

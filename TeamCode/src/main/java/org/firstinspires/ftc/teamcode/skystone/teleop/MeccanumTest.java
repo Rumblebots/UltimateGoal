@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.skystone.teleop;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive;
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Sensors.Sensors;
-
+@Disabled
 @TeleOp(name = "test", group = "default")
 public class MeccanumTest extends OpMode
 {
