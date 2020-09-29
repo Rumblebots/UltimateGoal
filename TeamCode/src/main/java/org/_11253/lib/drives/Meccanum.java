@@ -82,8 +82,8 @@ public class Meccanum extends TeleOp {
                                     @Override
                                     public void run() {
                                         double speed = controller1.getLeftY();
-                                        double turn = controller1.getInvLeftX();
-                                        double strafe = controller1.getRightX();
+                                        double strafe = controller1.getInvLeftX();
+                                        double turn = controller1.getRightX();
                                         drivetrain.setPower(
                                                 new MotorPower(
                                                         Math.clip(speed) - Math.clip(turn) + Math.clip(strafe),
