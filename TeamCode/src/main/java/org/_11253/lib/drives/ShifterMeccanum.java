@@ -2,11 +2,12 @@ package org._11253.lib.drives;
 
 import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.utils.Command;
+import org._11253.lib.utils.telem.Telemetry;
 
 public class ShifterMeccanum extends Meccanum {
-    const double FAST = 1.0;
-    const double NORMAL = 0.5;
-    const double SLOW = 0.25;
+    final double FAST = 1.0;
+    final double NORMAL = 0.5;
+    final double SLOW = 0.25;
 
     public ShifterMeccanum() {
         onStart.add(
@@ -24,7 +25,7 @@ public class ShifterMeccanum extends Meccanum {
                                                 "_1125c_MULTIPLIER",
                                                 "Multiplier",
                                                 ": ",
-                                                FAST
+                                                String.valueOf(FAST)
                                         );
                                     }
                                 };
@@ -41,7 +42,7 @@ public class ShifterMeccanum extends Meccanum {
                                                 "_1125c_MULTIPLIER",
                                                 "Multiplier",
                                                 ": ",
-                                                SLOW
+                                                String.valueOf(SLOW)
                                         );
                                     }
                                 };
@@ -58,7 +59,7 @@ public class ShifterMeccanum extends Meccanum {
                                                     "_1125c_MULTIPLIER",
                                                     "Multiplier",
                                                     ": ",
-                                                    NORMAL
+                                                    String.valueOf(NORMAL)
                                             );
                                         }
                                     }

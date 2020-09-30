@@ -70,11 +70,16 @@ public class Meccanum extends TeleOp {
      * </p>
      */
     public Meccanum() {
+        beforeStart.add(new Runnable() {
+            @Override
+            public void run() {
+                drivetrain.init();
+            }
+        });
         onStart.add(
                 new Runnable() {
                     @Override
                     public void run() {
-                        drivetrain.init();
                         controller1.map.bind(ControllerMap.States.STICK, new Command() {
                             @Override
                             public Runnable active() {
@@ -82,7 +87,7 @@ public class Meccanum extends TeleOp {
                                     @Override
                                     public void run() {
                                         double speed = controller1.getLeftY();
-                                        double strafe = controller1.getInvLeftX();
+                                        double strafe = controller1.getLeftX();
                                         double turn = controller1.getRightX();
                                         drivetrain.setPower(
                                                 new MotorPower(

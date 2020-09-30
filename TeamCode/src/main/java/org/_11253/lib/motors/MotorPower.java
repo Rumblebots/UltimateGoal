@@ -44,6 +44,13 @@ public class MotorPower {
         this(0, 0, 0, 0);
     }
 
+    public MotorPower(double power) {
+        frontRightPower = power;
+        frontLeftPower = power;
+        backRightPower = power;
+        backLeftPower = power;
+    }
+
     public MotorPower(double fr, double fl, double br, double bl) {
         frontRightPower = fr;
         frontLeftPower = fl;

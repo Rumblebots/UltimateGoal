@@ -177,8 +177,6 @@ public class Template extends LinearOpMode {
         Global.setTelem(telemetry);
         telem = new Telemetry();
 
-        initOp();
-
         fBeforeStart();
 
         waitForStart();
