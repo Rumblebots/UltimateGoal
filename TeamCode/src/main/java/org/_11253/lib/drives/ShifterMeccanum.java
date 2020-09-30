@@ -4,6 +4,10 @@ import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.utils.Command;
 
 public class ShifterMeccanum extends Meccanum {
+    const double FAST = 1.0;
+    const double NORMAL = 0.5;
+    const double SLOW = 0.25;
+
     public ShifterMeccanum() {
         onStart.add(
                 new Runnable() {
@@ -15,7 +19,13 @@ public class ShifterMeccanum extends Meccanum {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-                                        drivetrain.setMultiplier(2.0);
+                                        drivetrain.setMultiplier(FAST);
+                                        Telemetry.addData(
+                                                "_1125c_MULTIPLIER",
+                                                "Multiplier",
+                                                ": ",
+                                                FAST
+                                        );
                                     }
                                 };
                             }
@@ -26,7 +36,13 @@ public class ShifterMeccanum extends Meccanum {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-                                        drivetrain.setMultiplier(0.5);
+                                        drivetrain.setMultiplier(SLOW);
+                                        Telemetry.addData(
+                                                "_1125c_MULTIPLIER",
+                                                "Multiplier",
+                                                ": ",
+                                                SLOW
+                                        );
                                     }
                                 };
                             }
@@ -37,7 +53,13 @@ public class ShifterMeccanum extends Meccanum {
                                     @Override
                                     public void run() {
                                         if (controller1.getRightTrigger() == 0) {
-                                            drivetrain.setMultiplier(1.0);
+                                            drivetrain.setMultiplier(NORMAL);
+                                            Telemetry.addData(
+                                                    "_1125c_MULTIPLIER",
+                                                    "Multiplier",
+                                                    ": ",
+                                                    NORMAL
+                                            );
                                         }
                                     }
                                 };
