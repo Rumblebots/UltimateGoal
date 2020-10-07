@@ -11,6 +11,12 @@ import org._11253.lib.drives.ShifterMeccanum;
 @TeleOp(name = "Meccanum Drive", group = "TeleOp")
 public class MeccanumDrive extends ShifterMeccanum {
     public MeccanumDrive() {
-        // Cock and balls. And ballsack.
+        onStart.add(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                }
+        );
     }
 }
