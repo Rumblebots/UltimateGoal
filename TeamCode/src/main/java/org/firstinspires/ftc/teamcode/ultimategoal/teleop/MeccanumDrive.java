@@ -5,6 +5,7 @@ import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.drives.ShifterMeccanum;
 import org._11253.lib.robot.phys.assm.Intake;
 import org._11253.lib.utils.Command;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Shooter;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 
 /**
@@ -15,6 +16,9 @@ import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 @TeleOp(name = "Meccanum Drive", group = "TeleOp")
 public class MeccanumDrive extends ShifterMeccanum {
     Intake intake = new Intake();
+    Storage storage = new Storage();
+    Shooter shooter = new Shooter();
+
     public MeccanumDrive() {
         beforeStart.add(new Runnable() {
             @Override
@@ -54,7 +58,8 @@ public class MeccanumDrive extends ShifterMeccanum {
         onStartRun.add(new Runnable() {
             @Override
             public void run() {
-                Storage.showCount();
+                storage.showCount();
+                shooter.showActive();
             }
         });
     }
