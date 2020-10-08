@@ -62,12 +62,7 @@ public class Drivetrain {
     public boolean isRound = false;
 
     public MotorPower getPower() {
-        return new MotorPower() {
-            double frontRightPower = frontRight.getPower();
-            double frontLeftPower = frontLeft.getPower();
-            double backRightPower = backRight.getPower();
-            double backLeftPower = backLeft.getPower();
-        };
+        return new MotorPower(frontRight.getPower(), frontLeft.getPower(), backRight.getPower(), backLeft.getPower());
     }
 
     public void setPower(MotorPower motorPower) {
