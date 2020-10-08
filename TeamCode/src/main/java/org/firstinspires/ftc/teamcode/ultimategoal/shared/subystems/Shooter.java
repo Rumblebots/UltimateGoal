@@ -20,6 +20,14 @@ public class Shooter {
     public boolean isShooterActive = false;
     public boolean isLoaderActive = false;
     public boolean isPusherActive = false;
+    public boolean isActive = false;
+
+    final int shootLength = 1000;
+    final int shootDelay = 1000;
+    final int loadLength = 1000;
+    final int loadDelay = 1000;
+    final int pushLength = 1000;
+    final int pushDelay = 1000;
 
     public void startShooter() {
         isShooterActive = true;
@@ -37,7 +45,7 @@ public class Shooter {
         if (!isShooterActive) {
             StringEvents.schedule(
                     "Shooter_shoot",
-                    1000,
+                    shootLength,
                     0,
                     new Timed() {
                         @Override
@@ -79,7 +87,7 @@ public class Shooter {
         if (!isLoaderActive) {
             StringEvents.schedule(
                     "Shooter_load",
-                    1000,
+                    loadLength,
                     0,
                     new Timed() {
                         @Override
@@ -121,7 +129,7 @@ public class Shooter {
         if (!isPusherActive) {
             StringEvents.schedule(
                     "Shooter_push",
-                    1000,
+                    pushLength,
                     0,
                     new Timed() {
                         @Override
@@ -150,62 +158,91 @@ public class Shooter {
     }
 
     public void shootRing() {
-        StringEvents.schedule(
-                "Shooter_shooter_loader",
-                0,
-                0,
-                new Timed() {
-                    @Override
-                    public Runnable close() {
-                        return new Runnable() {
-                            @Override
-                            public void run() {
-                                load();
-                            }
-                        };
-                    }
-                },
-                false
-        );
-        StringEvents.schedule(
-                "Shooter_shooter_pusher",
-                0,
-                1000,
-                new Timed() {
-                    @Override
-                    public Runnable close() {
-                        return new Runnable() {
-                            @Override
-                            public void run() {
-                                push();
-                            }
-                        };
-                    }
-                },
-                false
-        );
-        StringEvents.schedule(
-                "Shooter_shooter_shooter",
-                0,
-                2000,
-                new Timed() {
-                    @Override
-                    public Runnable close() {
-                        return new Runnable() {
-                            @Override
-                            public void run() {
-                                shoot();
-                            }
-                        };
-                    }
-                },
-                false
-        );
+        if (!isActive) {
+            StringEvents.schedule(
+                    "Shooter_shooter_loader",
+                    0,
+                    loadDelay,
+                    new Timed() {
+                        @Override
+                        public Runnable close() {
+                            return new Runnable() {
+                                @Override
+                                public void run() {
+                                    load();
+                                }
+                            };
+                        }
+                    },
+                    false
+            );
+            StringEvents.schedule(
+                    "Shooter_shooter_pusher",
+                    0,
+                    loadDelay + pushDelay,
+                    new Timed() {
+                        @Override
+                        public Runnable close() {
+                            return new Runnable() {
+                                @Override
+                                public void run() {
+                                    push();
+                                }
+                            };
+                        }
+                    },
+                    false
+            );
+            StringEvents.schedule(
+                    "Shooter_shooter_shooter",
+                    0,
+                    loadDelay + pushDelay + shootDelay,
+                    new Timed() {
+                        @Override
+                        public Runnable close() {
+                            return new Runnable() {
+                                @Override
+                                public void run() {
+                                    shoot();
+                                }
+                            };
+                        }
+                    },
+                    false
+            );
+            StringEvents.schedule(
+                    "Shooter_shooter_activity",
+                    loadDelay + pushDelay + shootDelay,
+                    0,
+                    new Timed() {
+                        @Override
+                        public Runnable open() {
+                            return new Runnable() {
+                                @Override
+                                public void run() {
+                                    isActive = true;
+                                }
+                            };
+                        }
+
+                        @Override
+                        public Runnable close() {
+                            return new Runnable() {
+                                @Override
+                                public void run() {
+                                    isActive = false;
+                                }
+                            };
+                        }
+                    },
+                    false
+            );
+        }
     }
 
     public void init() {
         if (Global.getHwMap() == null) {
-            throw new NullPointerException("Global hardware map has to be initialized before initializing the drive train.");
+            throw new NullPointerException("Global hardware map has to be initialized before initializing the shooter.");
         }
 
         flywheel1 = new Motor(flywheel1Name);
