@@ -5,6 +5,9 @@ import org._11253.lib.robot.phys.components.CRServo;
 import org._11253.lib.robot.phys.components.Motor;
 import org._11253.lib.utils.Timed;
 import org._11253.lib.utils.async.event.StringEvents;
+import org._11253.lib.utils.telem.Telemetry;
+
+import java.util.Arrays;
 
 public class Shooter {
     public Motor flywheel1;
@@ -28,6 +31,9 @@ public class Shooter {
     final int loadDelay = 1000;
     final int pushLength = 1000;
     final int pushDelay = 1000;
+
+    private int timeRemaining = 0;
+    private int timeElapsed = 0;
 
     public void startShooter() {
         isShooterActive = true;
@@ -157,6 +163,16 @@ public class Shooter {
         }
     }
 
+    private int getLongestLength() {
+        int[] delays = {
+                loadDelay + loadLength,
+                pushDelay + pushLength,
+                shootDelay + shootLength
+        };
+        Arrays.sort(delays);
+        return delays[0];
+    }
+
     public void shootRing() {
         if (!isActive) {
             StringEvents.schedule(
@@ -179,7 +195,7 @@ public class Shooter {
             StringEvents.schedule(
                     "Shooter_shooter_pusher",
                     0,
-                    loadDelay + pushDelay,
+                    pushDelay,
                     new Timed() {
                         @Override
                         public Runnable close() {
@@ -196,7 +212,7 @@ public class Shooter {
             StringEvents.schedule(
                     "Shooter_shooter_shooter",
                     0,
-                    loadDelay + pushDelay + shootDelay,
+                    shootDelay,
                     new Timed() {
                         @Override
                         public Runnable close() {
@@ -212,15 +228,35 @@ public class Shooter {
             );
             StringEvents.schedule(
                     "Shooter_shooter_activity",
-                    loadDelay + pushDelay + shootDelay,
+                    getLongestLength(),
                     0,
                     new Timed() {
+                        int longest = getLongestLength();
+                        long last = 0;
+                        long difference = 0;
+
                         @Override
                         public Runnable open() {
                             return new Runnable() {
                                 @Override
                                 public void run() {
                                     isActive = true;
+                                    timeElapsed = 0;
+                                    timeRemaining = longest;
+                                }
+                            };
+                        }
+
+                        @Override
+                        public Runnable during() {
+                            return new Runnable() {
+                                @Override
+                                public void run() {
+                                    long current = System.currentTimeMillis();
+                                    difference = current - last;
+                                    last = current;
+                                    timeElapsed += difference;
+                                    timeRemaining -= difference;
                                 }
                             };
                         }
@@ -231,6 +267,8 @@ public class Shooter {
                                 @Override
                                 public void run() {
                                     isActive = false;
+                                    timeElapsed = 0;
+                                    timeRemaining = 0;
                                 }
                             };
                         }
@@ -238,6 +276,28 @@ public class Shooter {
                     false
             );
         }
+    }
+
+    private String getShooterStatus() {
+        if (isActive) return "active";
+        else return "inactive";
+    }
+
+    private String getRemainingMs() {
+        return timeRemaining + "ms";
+    }
+
+    private String getElapsedMs() {
+        return timeElapsed + "ms";
+    }
+
+    public void showActive() {
+        Telemetry.addData(
+                "Shooter_status",
+                "Shooter " + getShooterStatus(),
+                " for ",
+                getElapsedMs() + ", " + getRemainingMs() + " remaining"
+        );
     }
 
     public void init() {
