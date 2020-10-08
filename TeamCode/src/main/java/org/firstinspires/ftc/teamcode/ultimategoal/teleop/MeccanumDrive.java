@@ -5,6 +5,7 @@ import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.drives.ShifterMeccanum;
 import org._11253.lib.robot.phys.assm.Intake;
 import org._11253.lib.utils.Command;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 
 /**
  * Default drive code for this year's driver-controlled period. Because I'm a complete and utter savage (and want to
@@ -49,6 +50,12 @@ public class MeccanumDrive extends ShifterMeccanum {
                 });
             }
         });
-        // Cock and balls. And ballsack.
+
+        onStartRun.add(new Runnable() {
+            @Override
+            public void run() {
+                Storage.showCount();
+            }
+        });
     }
 }
