@@ -5,6 +5,8 @@ import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.drives.ShifterMeccanum;
 import org._11253.lib.robot.phys.assm.Intake;
 import org._11253.lib.utils.Command;
+import org._11253.lib.utils.Timed;
+import org._11253.lib.utils.async.event.StringEvents;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Shooter;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 
@@ -53,13 +55,27 @@ public class MeccanumDrive extends ShifterMeccanum {
                     }
                 });
             }
-        });
-
-        onStartRun.add(new Runnable() {
+        }, new Runnable() {
             @Override
             public void run() {
-                storage.showCount();
-                shooter.showActive();
+                StringEvents.schedule(
+                        "Telemetry_statuses",
+                        250,
+                        0,
+                        new Timed() {
+                            @Override
+                            public Runnable open() {
+                                return new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        storage.showCount();
+                                        shooter.showActive();
+                                    }
+                                };
+                            }
+                        },
+                        true
+                );
             }
         });
     }
