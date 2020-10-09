@@ -1,39 +1,54 @@
 package org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems;
 
 import org._11253.lib.Global;
-import org._11253.lib.robot.phys.components.CRServo;
 import org._11253.lib.robot.phys.components.Motor;
+import org._11253.lib.robot.phys.components.Servo;
 import org._11253.lib.utils.Timed;
 import org._11253.lib.utils.async.event.StringEvents;
 import org._11253.lib.utils.telem.Telemetry;
 
 import java.util.Arrays;
 
+/**
+ * A quick (and hopefully) functional shooter subsystem. Because FTC software runs incredibly well, regardless of it's
+ * very poor optimization, a lot of this is done using StringEvents to operate several different sub-sub-systems at the
+ * same time. In other words, you can press a single button and the entire shooting process will be cycled. Say, for
+ * example, you press A. Immediately after, the {@link #shootRing()} function will start - and swaggy things happen
+ * from there.
+ */
 public class Shooter {
-    public Motor flywheel1;
-    public Motor flywheel2;
-    public CRServo loader;
-    public CRServo pusher;
+    public Motor   flywheel1;                   // Flywheels are very cool, I know. Very, very cool.
+                                                // The first of two flywheels. Used in the portion of the shooter which actually
+                                                // shoots things out.
+                                                // Note that the two flywheels used here are chained together. They don't actually
+                                                // spin independently - Brodie says that they can both spin in the same direction.
+    public Motor   flywheel2;                   // Our second flywheel! Even cooler than the first, interestingly enough.
+    public Servo   loader;                      // I'm not entirely sure all of this works, but the goal of the loader is to load a
+                                                // ring into a system which will then push the ring into a shooting device and finally
+                                                // will be shot out of the robot.
+    public Servo   pusher;                      // The purpose of the pusher is to push a ring into the flywheels, from the loader, in
+                                                // order for them to get shot out. This is a servo - might be interesting to try to
+                                                // switch it up and use a CR servo so things actually work better?
 
-    public String flywheel1Name = "flywheel1";
-    public String flywheel2Name = "flywheel2";
-    public String loaderName = "loader";
-    public String pusherName = "pusher";
+    public String  flywheel1Name = "flywheel1";
+    public String  flywheel2Name = "flywheel2";
+    public String  loaderName = "loader";
+    public String  pusherName = "pusher";
 
     public boolean isShooterActive = false;
     public boolean isLoaderActive = false;
     public boolean isPusherActive = false;
     public boolean isActive = false;
 
-    final int shootLength = 1000;
-    final int shootDelay = 1000;
-    final int loadLength = 1000;
-    final int loadDelay = 1000;
-    final int pushLength = 1000;
-    final int pushDelay = 1000;
+    final int      shootLength = 1000;
+    final int      shootDelay = 1000;
+    final int      loadLength = 1000;
+    final int      loadDelay = 1000;
+    final int      pushLength = 1000;
+    final int      pushDelay = 1000;
 
-    private int timeRemaining = 0;
-    private int timeElapsed = 0;
+    private int    timeRemaining = 0;
+    private int    timeElapsed = 0;
 
     public void startShooter() {
         isShooterActive = true;
@@ -81,12 +96,12 @@ public class Shooter {
 
     public void startLoader() {
         isLoaderActive = true;
-        loader.setPower(1.0);
+        loader.setPosition(1.0);
     }
 
     public void stopLoader() {
         isLoaderActive = false;
-        loader.setPower(0.0);
+        loader.setPosition(0.0);
     }
 
     public void load() {
@@ -123,12 +138,12 @@ public class Shooter {
 
     public void startPusher() {
         isPusherActive = true;
-        pusher.setPower(1.0);
+        pusher.setPosition(1.0);
     }
 
     public void stopPusher() {
         isPusherActive = false;
-        pusher.setPower(0.0);
+        pusher.setPosition(0.0);
     }
 
     public void push() {
@@ -307,7 +322,7 @@ public class Shooter {
 
         flywheel1 = new Motor(flywheel1Name);
         flywheel2 = new Motor(flywheel2Name);
-        loader = new CRServo(loaderName);
-        pusher = new CRServo(pusherName);
+        loader = new Servo(loaderName);
+        pusher = new Servo(pusherName);
     }
 }
