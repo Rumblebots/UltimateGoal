@@ -181,6 +181,8 @@ public class Template extends LinearOpMode {
 
         waitForStart();
 
+        Telemetry.scheduleTelemetryUpdater();
+
         fOnStart();
 
         while (opModeIsActive()) {

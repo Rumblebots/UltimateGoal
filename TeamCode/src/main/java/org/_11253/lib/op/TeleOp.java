@@ -76,12 +76,12 @@ public class TeleOp extends Template {
      * </p>
      */
     private void addToOnFinishRun() {
-        onFinishRun.add(new Runnable() {
-            @Override
-            public void run() {
-                Telemetry.printTelemetry();
-            }
-        });
+//        onFinishRun.add(new Runnable() {
+//            @Override
+//            public void run() {
+//                Telemetry.printTelemetry();
+//            }
+//        });
     }
 
     /**

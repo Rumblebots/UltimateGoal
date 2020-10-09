@@ -29,6 +29,8 @@
 package org._11253.lib.utils.telem;
 
 import org._11253.lib.Global;
+import org._11253.lib.utils.Timed;
+import org._11253.lib.utils.async.event.StringEvents;
 
 import java.util.HashMap;
 
@@ -79,6 +81,22 @@ import java.util.HashMap;
  *     probably clinically insane enough to be reading this right now
  *     and be understanding every single word of it anyway.
  * </p>
+ * <p>
+ *     Here's a pretty (not really) cool fact - telemetry only updates every 250ms! FTC, by default, includes a
+ *     throttling system to ensure there's not too much traffic between the robot phone and driver phone.
+ *     According to the JavaDocs in the RobotController, there's a variable named "msTransmissionInterval." As you could
+ *     probably guess, this is the interval (in ms) between telemetry transmissions. Look here!
+ *     <code>
+ *     "Actual transmission to the driver station is throttled to avoid use of excessive bandwidth. By default,
+ *     transmission will occur at most every 250ms. This interval can be controlled with setMsTransmissionInterval().
+ *     Any update()s which occur more frequently will not be transmitted if superseded by a subsequent update() before
+ *     the transmission interval expires."
+ *     </code>
+ *     In order to not use up too much processing power, telemetry will (by default) (probably) be limited to only
+ *     updating every 125ms (half of the 250ms FTC uses by default, just to ensure we're as updated as we can be
+ *     without overdoing it). Of course, this can be changed. I'm not entirely sre why you'd want to change it, but...
+ *     oh well.
+ * </p>
  *
  * @author Colin Robertson
  */
@@ -96,11 +114,28 @@ public class Telemetry {
      * </p>
      */
     public static HashMap<String, Telem> telemetry = new HashMap<String, Telem>();
+
     /**
      * The highest number temp there is / can be
      * or whatever the hell it's supposed to be.
      */
     private static int currentTemporaryCap = 0;
+
+    /**
+     * A boolean, indicating whether or not the automatic
+     * updating system hsa been scheduled in the StringEvents
+     * system.
+     */
+    private static boolean hasUpdaterBeenScheduled = false;
+
+    /**
+     * How often, in ms, should telemetry be updated? I set
+     * this to 125 by default - half of the native telemetry
+     * transmission interval, just to ensure data is always as
+     * updated as possible without using too much processing
+     * power on our robot.
+     */
+    private static int updateInterval = 125;
 
     /**
      * Temporary access for telemetry, specifically the
@@ -265,6 +300,49 @@ public class Telemetry {
             }
         }
         t.update();
+    }
+
+    /**
+     * Modify how long in between updates our telemetry
+     * software should go.
+     * @param ms a delay, in ms
+     */
+    public static void setUpdateInterval(int ms) {
+        updateInterval = ms;
+    }
+
+    /**
+     * Schedule automated telemetry printing to optimize CPU
+     * usage in a <b>WONDERFUL</b> balance with keeping all of
+     * the data that could possibly be used updated.
+     */
+    public static void scheduleTelemetryUpdater() {
+        StringEvents.schedule(
+                "_1125c_AUTOTELEMETRY",
+                updateInterval,
+                0,
+                new Timed() {
+                    @Override
+                    public Runnable open() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                printTelemetry();
+                            }
+                        };
+                    };
+                },
+                true
+        );
+    }
+
+    /**
+     * Literally just unschedule that event. This will
+     * presumably only be used to modify the delay between
+     * telemetry updates, but hey... you do you.
+     */
+    public static void unscheduleTelemetryUpdater() {
+        StringEvents.clear("_1125c_AUTOTELENETRY");
     }
 
     /**

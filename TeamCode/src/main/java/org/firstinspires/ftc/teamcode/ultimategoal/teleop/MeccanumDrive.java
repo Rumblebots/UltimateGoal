@@ -5,6 +5,10 @@ import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.drives.ShifterMeccanum;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Intake;
 import org._11253.lib.utils.Command;
+import org._11253.lib.utils.Timed;
+import org._11253.lib.utils.async.event.StringEvents;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Shooter;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 
 /**
  * Default drive code for this year's driver-controlled period. Because I'm a complete and utter savage (and want to
@@ -14,6 +18,9 @@ import org._11253.lib.utils.Command;
 @TeleOp(name = "Meccanum Drive", group = "TeleOp")
 public class MeccanumDrive extends ShifterMeccanum {
     Intake intake = new Intake();
+    Storage storage = new Storage();
+    Shooter shooter = new Shooter();
+
     public MeccanumDrive() {
         beforeStart.add(new Runnable() {
             @Override
@@ -48,7 +55,28 @@ public class MeccanumDrive extends ShifterMeccanum {
                     }
                 });
             }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                StringEvents.schedule(
+                        "Telemetry_statuses",
+                        250,
+                        0,
+                        new Timed() {
+                            @Override
+                            public Runnable open() {
+                                return new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        storage.showCount();
+                                        shooter.showActive();
+                                    }
+                                };
+                            }
+                        },
+                        true
+                );
+            }
         });
-        // Cock and balls. And ballsack.
     }
 }
