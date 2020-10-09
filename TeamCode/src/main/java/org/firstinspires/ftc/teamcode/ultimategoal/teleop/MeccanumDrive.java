@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.ultimategoal.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.drives.ShifterMeccanum;
-import org._11253.lib.robot.phys.assm.Intake;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Intake;
 import org._11253.lib.utils.Command;
 
 /**

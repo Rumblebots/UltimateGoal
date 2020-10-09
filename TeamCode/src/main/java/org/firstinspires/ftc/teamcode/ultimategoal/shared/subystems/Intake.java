@@ -3,7 +3,7 @@
  * Made on Thursday, October 08, 2020
  * File Name: Intake
  * Package: org._11253.lib.robot.phys.assm*/
-package org._11253.lib.robot.phys.assm;
+package org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org._11253.lib.Global;
@@ -27,7 +27,7 @@ public class Intake {
 
     public void init() {
         if (Global.getHwMap() == null) {
-            throw new NullPointerException("Global hardware map has to be initialized before initializing the drive train.");
+            throw new NullPointerException("Global hardware map has to be initialized before initializing the intake.");
         }
 
         leftIntakeMotor = new Motor(leftMotorName);

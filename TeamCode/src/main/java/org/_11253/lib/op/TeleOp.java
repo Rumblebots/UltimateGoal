@@ -58,11 +58,12 @@ public class TeleOp extends Template {
      * </p>
      */
     public TeleOp() {
-        addToStart();
+        addToBeforeStart();
         mapStartButton();
         addToOnStartRun();
         addToOnFinishRun();
     }
+
 
     /**
      * Update telem after run loop finishes
@@ -127,8 +128,8 @@ public class TeleOp extends Template {
      * both of the controllers for use in other files.
      * </p>
      */
-    private void addToStart() {
-        onStart.add(new Runnable() {
+    private void addToBeforeStart() {
+        beforeStart.add(new Runnable() {
             @Override
             public void run() {
                 Global.setGamepad1(gamepad1);
