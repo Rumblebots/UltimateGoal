@@ -75,9 +75,15 @@ public class Shooter {
     final int        pushLength = 1000;  // The length for which the pusher servo will be active.
     /** Delay! For the pusher! */        //
     final int        pushDelay = 1000;   // Read the above comments - swag.
+                                         //
+    private int      timeRemaining = 0;  //
+    private int      timeElapsed = 0;    //
+                                         //
+    private Storage storage;             // Storage, used for tracking magazine.
 
-    private int      timeRemaining = 0;
-    private int      timeElapsed = 0;
+    public Shooter(Storage storage) {
+        this.storage = storage;
+    }
 
     /** Used in {@link #shoot()} */
     private void startShooter() {
@@ -241,7 +247,7 @@ public class Shooter {
      * {@link #shoot()} {@link #shootDelay} {@link #shootLength}
      */
     public void shootRing() {
-        if (!isActive) {
+        if (!isActive && storage.canShoot()) {
             StringEvents.schedule(
                     "Shooter",
                     0,
