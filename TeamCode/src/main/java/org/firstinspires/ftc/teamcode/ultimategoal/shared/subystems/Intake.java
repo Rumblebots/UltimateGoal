@@ -7,7 +7,6 @@ package org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org._11253.lib.Global;
-import org._11253.lib.motors.MotorPower;
 import org._11253.lib.robot.phys.components.Motor;
 
 /***

@@ -30,7 +30,8 @@ package org._11253.lib.robot.phys.components.sensors;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import org._11253.lib.robot.phys.components.Component;
-import org._11253.lib.utils.async.tasks.RepeatingTask;
+import org._11253.lib.utils.Timed;
+import org._11253.lib.utils.async.event.StringEvents;
 
 /**
  * Component which stores a color sensor.
@@ -51,20 +52,6 @@ public class Color extends Component {
      * The actual sensor component which we're going to be using.
      */
     ColorSensor sensor;
-    /**
-     * An asynchronous task, complete with a runnable.
-     * <p>
-     * This runnable is executed once every some number
-     * of milliseconds. You can always get 'map'
-     * to get the most recently updated values.
-     * </p>
-     */
-    RepeatingTask task = new RepeatingTask(new Runnable() {
-        @Override
-        public void run() {
-            update();
-        }
-    });
 
     /**
      * Creates a new component, takes a class (component type) as well as
@@ -75,7 +62,17 @@ public class Color extends Component {
     public Color(String name) {
         super(ColorSensor.class, name);
         sensor = (ColorSensor) component;
-        task.scheduleRepeatingTask(100); // TODO: make sure this value is good enough
+        StringEvents.schedule("_1125c_SENSORS", 600, 0, new Timed() {
+            @Override
+            public Runnable open() {
+                return new Runnable() {
+                    @Override
+                    public void run() {
+                        update();
+                    }
+                };
+            }
+        }, true);
     }
 
     /**

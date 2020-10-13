@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 public class MeccanumDrive extends ShifterMeccanum {
     Intake intake = new Intake();
     Storage storage = new Storage();
-    Shooter shooter = new Shooter();
+    Shooter shooter = new Shooter(storage);
 
     public MeccanumDrive() {
         beforeStart.add(new Runnable() {

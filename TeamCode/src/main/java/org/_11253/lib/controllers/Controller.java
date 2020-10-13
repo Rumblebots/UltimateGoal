@@ -30,6 +30,8 @@ package org._11253.lib.controllers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import java.util.HashMap;
+
 /**
  * Wrapper class for FTC's default Gamepad
  * <p>

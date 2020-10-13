@@ -32,6 +32,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import org._11253.lib.robot.phys.components.Component;
 import org._11253.lib.utils.Timed;
 import org._11253.lib.utils.async.event.Events;
+import org._11253.lib.utils.async.event.StringEvents;
 import org._11253.lib.utils.async.tasks.RepeatingTask;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -69,7 +70,7 @@ public class Distance extends Component {
     public Distance(String name) {
         super(DistanceSensor.class, name);
         sensor = (DistanceSensor) component;
-        Events.Events.schedule(600, 0, new Timed() {
+        StringEvents.schedule("_1125c_SENSORS", 600, 0, new Timed() {
             @Override
             public Runnable open() {
                 return new Runnable() {
