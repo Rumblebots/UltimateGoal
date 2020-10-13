@@ -59,7 +59,7 @@ public class MeccanumDrive extends ShifterMeccanum {
             @Override
             public void run() {
                 StringEvents.schedule(
-                        "Telemetry_statuses",
+                        "_1125c_AUTOTELEMETRY",
                         250,
                         0,
                         new Timed() {
