@@ -95,4 +95,8 @@ public class CRServo extends Component {
     public void setDirection(DcMotorSimple.Direction direction) {
         crServoComponent.setDirection(direction);
     }
+
+    public com.qualcomm.robotcore.hardware.CRServo getCrServoComponent() {
+        return crServoComponent;
+    }
 }

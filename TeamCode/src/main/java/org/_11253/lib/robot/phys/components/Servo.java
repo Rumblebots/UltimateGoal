@@ -59,4 +59,8 @@ public class Servo extends Component {
     public void setPosition(double position) {
         servoComponent.setPosition(position);
     }
+
+    public com.qualcomm.robotcore.hardware.Servo getServoComponent() {
+        return servoComponent;
+    }
 }

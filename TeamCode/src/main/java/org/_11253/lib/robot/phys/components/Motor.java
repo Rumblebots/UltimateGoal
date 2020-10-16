@@ -144,4 +144,8 @@ public class Motor extends Component {
         dcMotorComponent.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dcMotorComponent.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
+    public DcMotor getDcMotorComponent() {
+        return dcMotorComponent;
+    }
 }
