@@ -158,6 +158,32 @@ public class Template extends LinearOpMode {
      * entirely needed and doesn't really do much,
      * but it provides an extra degree of information...
      * just in case you'd ever want it.
+     * 
+     * <p>
+     * Just to be 100% clear here - these settings will NOT
+     * make the whole robot break. They're simply here in case
+     * you'd like to tweak some certain aspects of the robot.
+     * This is all variable, so you can load different settings
+     * at different times, for different parts of your robot's
+     * operation.
+     * </p>
+     * <p>
+     * The settings you MIGHT want to change, and the reason for it,
+     * are as follows...
+     * <ul>
+     *   <li>showExecutionTime to FALSE, rather than true.
+     *       The reasoning behind this is as follows:
+     *       showing execution time in telemetry doesn't help
+     *       anything at all and is, in most cases, entirely
+     *       not needed. You never know.</li>
+     *   <li>automaticButtonMapping to FALSE, rather than true.
+     *       The reasoning behind this is as follows:
+     *       automatic button mapping simply takes up buttons to
+     *       ensure the binding system is working. If you have a
+     *       controller totally jam-packed with bindings, this just
+     *       wastes a button or two for no reason.</li>
+     * </ul>
+     * </p>
      *
      * @param settings a HashMap containing settings
      */

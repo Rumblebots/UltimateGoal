@@ -23,7 +23,24 @@ import java.util.Objects;
 public class Odometry extends ThreeTrackingWheelLocalizer {
     OdometryWheels wheels;
 
+    /**
+     * A HashMap of all of our motors. You can access these by using
+     * the getMotor() function and one of the enumerated wheels.
+     */
     final HashMap<OdometryWheels.wheels, Motor> motors;
+
+    /**
+     * Another HashMap, also of our motors.
+     * <p>
+     * Rather than using our cool (very cool, indeed, the coolest, even)
+     * and swaggy custom motors, these are FTC's default motors. In 
+     * addition to being very lame, uncool, and not very swaggy (sadly),
+     * these motors give you a much more direct access to the position
+     * of the motor's encoder. You don't need it, but RoadRunner
+     * (apparently) does, and I don't feel like re-writing an entire 2d
+     * motion planning library. 
+     * </p>
+     */
     final HashMap<OdometryWheels.wheels, DcMotor> dcMotors;
 
     private DcMotor getMotor(OdometryWheels.wheels wheel) {
