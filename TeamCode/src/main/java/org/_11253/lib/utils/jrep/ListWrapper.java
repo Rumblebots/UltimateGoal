@@ -46,18 +46,49 @@ import java.util.List;
  * @author Colin Robertson
  */
 public class ListWrapper<E> {
+    /**
+     * The list itself.
+     */
     public List<E> list;
 
+    /**
+     * Create an entirely empty list without any content.
+     */
     public ListWrapper() {
         list = new ArrayList<>();
     }
 
+    /**
+     * Create a list based on another, already existing
+     * ArrayList of the same type.
+     */
     public ListWrapper(ArrayList<E> list) {
         this.list = list;
     }
 
+    /**
+     * Add an element (or several elements) to list.
+     */
     @SafeVarargs
     public final void add(E... es) {
         list.addAll(Arrays.asList(es));
+    }
+
+    /**
+     * Prepend something to a list.
+     *
+     * <p>
+     * Java's default list doesn't contain a prepend method,
+     * so I added it here. This is (probably) pretty important
+     * for setting things up in the right order, especially when
+     * the order in which instructions are processed is VERY
+     * important.
+     * </p>
+     */
+    public final void prepend(E e) {
+        List<E> previous = list;
+        list.removeAll();
+        add(e);
+        add(previous);
     }
 }

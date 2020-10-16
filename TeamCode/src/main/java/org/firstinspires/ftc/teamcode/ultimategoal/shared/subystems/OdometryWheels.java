@@ -83,6 +83,16 @@ public class OdometryWheels {
 
     }
 
+    /**
+     * Initialize the three custom motors and the three DcMotors.
+     * 
+     * <p>
+     * Much like the initialize process for every other physical
+     * subsystem on the entire robot, you need to initialize it
+     * before you can actually use it. For the most part, subsystems
+     * are usually initialized during the beforeStart list.
+     * </p>
+     */
     public void init() {
       left = new Motor(leftName);
       right = new Motor(rightName);
