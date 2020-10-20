@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.ultimategoal.shared;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org._11253.lib.robot.phys.components.Motor;
@@ -21,7 +22,9 @@ import java.util.Objects;
  * </p>
  */
 public class Odometry extends ThreeTrackingWheelLocalizer {
-    OdometryWheels wheels;
+    public Pose2d currentPose = new Pose2d();
+
+    private OdometryWheels wheels;
 
     /**
      * A HashMap of all of our motors. You can access these by using
@@ -113,5 +116,10 @@ public class Odometry extends ThreeTrackingWheelLocalizer {
                 getPositionInches(OdometryWheels.wheels.RIGHT),
                 getPositionInches(OdometryWheels.wheels.BACK)
         );
+    }
+
+    public void updateOdometry() {
+        this.update();
+        currentPose = this.getPoseEstimate();
     }
 }
