@@ -98,9 +98,9 @@ public class OdometryWheels {
       right = new Motor(rightName);
       back = new Motor(backName);
 
-      _left = left.getDcMotorComponent;
-      _right = right.getDcMotorComponent;
-      _back = back.getDcMotorComponent;
+      _left = left.getDcMotorComponent();
+      _right = right.getDcMotorComponent();
+      _back = back.getDcMotorComponent();
     }
 
     /**
