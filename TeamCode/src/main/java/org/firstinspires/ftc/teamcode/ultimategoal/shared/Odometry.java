@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org._11253.lib.robot.phys.components.Motor;
 import org._11253.lib.utils.math.Math;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryWheelPositions;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryWheels;
 import org.jetbrains.annotations.NotNull;
 
@@ -106,6 +107,10 @@ public class Odometry extends ThreeTrackingWheelLocalizer {
         motors = wheels.getMotorMap();
         dcMotors = wheels.getDcMotorMap();
         this.wheels = wheels;
+    }
+
+    public OdometryWheelPositions getOdometryWheelPositions() {
+        return new OdometryWheelPositions(getWheelPositions());
     }
 
     @NotNull
