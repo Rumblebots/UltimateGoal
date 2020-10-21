@@ -1,5 +1,7 @@
-package org._11253.lib.odometry.fieldMapping;
+package org._11253.lib.odometry.fieldMapping.components.countable;
 
+import org._11253.lib.odometry.fieldMapping.components.Component;
+import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 import org._11253.lib.utils.math.Math;
 
 /**
@@ -22,11 +24,12 @@ import org._11253.lib.utils.math.Math;
  * https://www.topcoder.com/community/competitive-programming/tutorials/geometry-concepts-line-intersection-and-its-applications/
  * </p>
  */
-public class Line {
-    public Coordinate<Double> a;
-    public Coordinate<Double> b;
-    public double length;
-    public double angle;
+public class Line implements Component {
+    public final Coordinate<Double> a;
+    public final Coordinate<Double> b;
+    public final Coordinate<Double> midpoint;
+    public final double length;
+    public final double angle = 0; // TODO implement this
 
     public Line(Coordinate<Double> a,
                 Coordinate<Double> b) {
@@ -35,13 +38,11 @@ public class Line {
         length = calculateDistance(a, b);
         double distanceX = b.getX() - a.getX();
         double distanceY = b.getY() - a.getY();
+        midpoint = new Coordinate<>(
+                Math.average(a.getX(), b.getX()),
+                Math.average(a.getY(), b.getY())
+        );
         // Implement a method of determining the angle from here.
-    }
-
-    public Line(Coordinate<Double> a,
-                double length,
-                double angle) {
-        // Implement a way to do cool things here.
     }
 
     /**

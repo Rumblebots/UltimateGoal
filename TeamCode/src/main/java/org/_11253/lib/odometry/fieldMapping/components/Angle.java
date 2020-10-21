@@ -1,4 +1,4 @@
-package org._11253.lib.odometry.fieldMapping.shapes;
+package org._11253.lib.odometry.fieldMapping.components;
 
 import org._11253.lib.utils.math.Math;
 
@@ -22,7 +22,7 @@ import org._11253.lib.utils.math.Math;
  * convientient to use.
  * </p>
  */
-public class Angle {
+public class Angle implements Component {
     /** Opposite side length. */
     private final double O;
     /** Adjacent side length. */

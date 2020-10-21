@@ -1,7 +1,8 @@
 package org._11253.lib.odometry.fieldMapping.shapes;
 
+import org._11253.lib.odometry.fieldMapping.components.Angle;
 import org._11253.lib.utils.math.Math;
-import org._11253.lib.odometry.fieldMapping.Coordinate;
+import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 
 public class RightTriangle {
     public Angle angleA;

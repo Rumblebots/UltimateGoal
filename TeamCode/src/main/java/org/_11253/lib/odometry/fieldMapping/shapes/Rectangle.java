@@ -1,8 +1,12 @@
 package org._11253.lib.odometry.fieldMapping.shapes;
 
-import org._11253.lib.odometry.fieldMapping.Coordinate;
-import org._11253.lib.odometry.fieldMapping.Line;
+import org._11253.lib.odometry.fieldMapping.components.Component;
+import org._11253.lib.odometry.fieldMapping.components.Coordinate;
+import org._11253.lib.odometry.fieldMapping.components.countable.Line;
+import org._11253.lib.utils.jrep.ListWrapper;
 import org._11253.lib.utils.math.Math;
+
+import java.util.ArrayList;
 
 /**
  * The most basic of the geometric shapes used in
@@ -39,6 +43,7 @@ public class Rectangle implements Shape {
     final Coordinate<Double> backRight;
     final Coordinate<Double> frontLeft;
     final Coordinate<Double> backLeft;
+    final Coordinate<Double> center;
 
     final Line top;
     final Line right;
@@ -161,6 +166,10 @@ public class Rectangle implements Shape {
                 new Coordinate<>(xbr, ybr),
                 new Coordinate<>(xbl, ybl)
         };
+        Coordinate<Double> midpoint = new Coordinate<>(
+                Math.average(positions[0].getX(), positions[3].getX()),
+                Math.average(positions[0].getY(), positions[3].getY())
+        );
         switch (rotateCorner) {
             case FRONT_RIGHT:
                 // Front right is still the first position.
@@ -193,10 +202,6 @@ public class Rectangle implements Shape {
                 positions = rotateArray(positions, 1);
                 break;
             case CENTER:
-                Coordinate<Double> midpoint = new Coordinate<>(
-                        Math.average(positions[0].getX(), positions[3].getX()),
-                        Math.average(positions[0].getY(), positions[3].getY())
-                );
                 positions[0] = rotatePoint(midpoint, positions[0], rotationalAngle);
                 positions[1] = rotatePoint(midpoint, positions[1], rotationalAngle);
                 positions[2] = rotatePoint(midpoint, positions[2], rotationalAngle);
@@ -213,6 +218,7 @@ public class Rectangle implements Shape {
         frontLeft = positions[1];
         backRight = positions[2];
         backLeft = positions[3];
+        center = midpoint;
         // We still have one very important thing to do here - you guessed it...
         // Coming up with lines! Luckily for us, all four of those lines can
         // be defined as so.
@@ -357,8 +363,52 @@ public class Rectangle implements Shape {
         // Return whether or not the point's X and Y values are both
         // valid and inside the rectangle. If either of them are not,
         // this will return false, indicating that the given point
-        // was not inside of the rectangle. 
+        // was not inside of the rectangle.
         return xValid && yValid;
+    }
+
+    /**
+     * Check whether or not a given line at any point enters our rectangle.
+     *
+     * @param line the line to check.
+     * @return whether that line enters the rectangle.
+     */
+    public boolean doesLineEnterShape(Line line) {
+        return
+                Line.doesIntersect(line, top) ||
+                        Line.doesIntersect(line, right) ||
+                        Line.doesIntersect(line, bottom) ||
+                        Line.doesIntersect(line, left);
+    }
+
+    /**
+     * Get a count of how many components (lines) are in the rectangle.
+     *
+     * <p>
+     * This will obviously always be four - rectangles can only have
+     * four lines.
+     * </p>
+     *
+     * @return how many lines there are.
+     */
+    public int getComponentCount() {
+        return 4;
+    }
+
+    /**
+     * Get a ListWrapper containing all of the components (lines) in the rectangle.
+     *
+     * @return a list of all the lines.
+     */
+    public ListWrapper<Component> getComponents() {
+        return new ListWrapper<>(
+                new ArrayList<Component>() {{
+                    add(top);
+                    add(right);
+                    add(bottom);
+                    add(left);
+                }}
+        );
     }
 
     /**

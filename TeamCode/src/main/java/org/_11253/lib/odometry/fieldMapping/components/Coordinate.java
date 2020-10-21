@@ -1,4 +1,4 @@
-package org._11253.lib.odometry.fieldMapping;
+package org._11253.lib.odometry.fieldMapping.components;
 
 /**
  * Coordinate, used to represent a position on a two-dimensional

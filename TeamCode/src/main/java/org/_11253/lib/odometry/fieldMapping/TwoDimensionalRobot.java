@@ -1,6 +1,7 @@
 package org._11253.lib.odometry.fieldMapping;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 import org._11253.lib.odometry.fieldMapping.shapes.Rectangle;
 
 /**

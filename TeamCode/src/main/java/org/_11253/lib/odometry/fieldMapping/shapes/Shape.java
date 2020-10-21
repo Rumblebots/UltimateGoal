@@ -1,6 +1,9 @@
 package org._11253.lib.odometry.fieldMapping.shapes;
 
-import org._11253.lib.odometry.fieldMapping.Coordinate;
+import org._11253.lib.odometry.fieldMapping.components.Component;
+import org._11253.lib.odometry.fieldMapping.components.Coordinate;
+import org._11253.lib.odometry.fieldMapping.components.countable.Line;
+import org._11253.lib.utils.jrep.ListWrapper;
 
 /**
  * Low-level interface which all shapes should implement.
@@ -66,4 +69,59 @@ public interface Shape {
      * @return whether or not the point is inside the shape
      */
     boolean isPointInShape(Coordinate<Double> point);
+
+    /**
+     * Does a specific line enter the shape at any point?
+     *
+     * @param line the line to check.
+     * @return whether or not the line enters the shape.
+     */
+    boolean doesLineEnterShape(Line line);
+
+    /**
+     * Gets a count (set up by the developer of the shape) that
+     * details how many components are contained in that shape.
+     *
+     * <p>
+     * A component is defined as anything that can be represented on
+     * a two-dimensional coordinate plane, using two dimensions - both
+     * X and Y. Examples of components include...
+     * <ul>
+     *     <li>A line.</li>
+     *     <li>A circle.</li>
+     *     <li>An arc.</li>
+     *     <li>An oval.</li>
+     * </ul>
+     * ... or anything not listed above that meets the criteria for
+     * defining a component.
+     * </p>
+     * <p>
+     *     It's up to the developer to decide how many components a
+     *     part has. These components aren't used for anything important -
+     *     mostly just debugging and telemetry purposes, so it doesn't matter
+     *     if said developer (most likely me) is 100% accurate, but I guess
+     *     it's just... nice to have, you know?
+     * </p>
+     *
+     * @return how many components are in that shape.
+     */
+    int getComponentCount();
+
+    /**
+     * Get all of the components used in the shape.
+     *
+     * <p>
+     * This is useful, and really only useful, in runtime optimizations on
+     * maps that have a lot of components on them. Say, for example, you have
+     * a grand total of 1,000 rectangles and squares combined. That is, at the
+     * very least, 4,000 components on the field. In order to save some processing
+     * power, and not have to manually iterate over each and every single one of
+     * those components, we can check to see if the component is close enough to
+     * the robot to warrant doing anything related to it - thus (hopefully) saving
+     * us a fair bit of processing power.
+     * </p>
+     *
+     * @return a list of the components used in the shape.
+     */
+    ListWrapper<Component> getComponents();
 }

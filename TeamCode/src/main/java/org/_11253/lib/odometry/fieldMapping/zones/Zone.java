@@ -1,5 +1,7 @@
 package org._11253.lib.odometry.fieldMapping.zones;
 
+import org._11253.lib.odometry.fieldMapping.components.Coordinate;
+import org._11253.lib.odometry.fieldMapping.components.countable.Line;
 import org._11253.lib.odometry.fieldMapping.shapes.Shape;
 
 /**
@@ -69,7 +71,7 @@ public interface Zone {
      */
     int getZonePriority();
 
-    boolean doesLineEnterZone();
-    boolean isPointInZone();
+    boolean doesLineEnterZone(Line line);
+    boolean isPointInZone(Coordinate<Double> point);
     double getDriveSpeedMultiplier();
 }
