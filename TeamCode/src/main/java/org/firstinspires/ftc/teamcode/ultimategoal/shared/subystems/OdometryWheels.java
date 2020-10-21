@@ -64,7 +64,7 @@ public class OdometryWheels {
      * </ul>
      * </p>
      */
-    public static final HashMap<wheels, Pose2d> wheelPoses = new HashMap<>() {{
+    public static final HashMap<wheels, Pose2d> wheelPoses = new HashMap<wheels, Pose2d>() {{
         put(wheels.LEFT, new Pose2d(0, 0, 0));
         put(wheels.RIGHT, new Pose2d(0, 0, 0));
         put(wheels.BACK, new Pose2d(0, 0, 0));
@@ -118,7 +118,7 @@ public class OdometryWheels {
      * Get, as a map, all of our custom DcMotor "wrappers".
      */
     public HashMap<wheels, Motor> getMotorMap() {
-        return new HashMap<>() {{
+        return new HashMap<wheels, Motor>() {{
             put(wheels.LEFT, left);
             put(wheels.RIGHT, right);
             put(wheels.BACK, back);
@@ -129,7 +129,7 @@ public class OdometryWheels {
      * Get, as a map, all of our original DcMotor components.
      */
     public HashMap<wheels, DcMotor> getDcMotorMap() {
-        return new HashMap<>() {{
+        return new HashMap<wheels, DcMotor>() {{
             put(wheels.LEFT, _left);
             put(wheels.RIGHT, _right);
             put(wheels.BACK, _back);

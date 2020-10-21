@@ -25,22 +25,28 @@ public class OdometryTest extends ShifterMeccanum {
                 // 3. Initiliaze the odometry. There are no physical components in the odometry class,
                 //    so we don't have to call any init function for this.
                 // 4. Do cool stuff with the odometry!
-                () -> {
-                    odometryWheels = new OdometryWheels();
-                    odometryWheels.init();
-                    odometry = new Odometry(odometryWheels);
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        odometryWheels = new OdometryWheels();
+                        odometryWheels.init();
+                        odometry = new Odometry(odometryWheels);
+                    }
                 }
         );
         onStart.add();
         onStartRun.add();
         run.add(
-                () -> {
-                    Telemetry.addData(
-                            "C_POSE",
-                            "Odometry Pose",
-                            ": ",
-                            odometry.currentPose.toString()
-                    );
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Telemetry.addData(
+                                "C_POSE",
+                                "Odometry Pose",
+                                ": ",
+                                odometry.currentPose.toString()
+                        );
+                    }
                 }
         );
         onFinishRun.add();

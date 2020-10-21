@@ -87,8 +87,8 @@ public class ListWrapper<E> {
      */
     public final void prepend(E e) {
         List<E> previous = list;
-        list.removeAll();
+        list.clear();
         add(e);
-        add(previous);
+        list.addAll(previous);
     }
 }
