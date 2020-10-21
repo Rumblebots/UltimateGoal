@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.ultimategoal.shared;
+package org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping;
 
 /**
  * Coordinate, used to represent a position on a two-dimensional
@@ -12,8 +12,8 @@ package org.firstinspires.ftc.teamcode.ultimategoal.shared;
  * @param <E>
  */
 public class Coordinate<E> {
-    public E x;
-    public E y;
+    private E x;
+    private E y;
 
     public Coordinate(E x, E y) {
         this.x = x;

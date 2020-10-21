@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.ultimategoal.shared;
+package org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.shapes;
 
 import org._11253.lib.utils.math.Math;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.Coordinate;
 
 public class RightTriangle {
     public Angle angleA;

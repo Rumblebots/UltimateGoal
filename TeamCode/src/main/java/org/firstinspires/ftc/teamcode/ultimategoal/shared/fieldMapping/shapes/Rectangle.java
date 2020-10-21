@@ -1,10 +1,18 @@
-package org.firstinspires.ftc.teamcode.ultimategoal.shared;
+package org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.shapes;
+
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.Coordinate;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.Line;
 
 public class Rectangle {
     final Coordinate<Double> frontRight;
     final Coordinate<Double> backRight;
     final Coordinate<Double> frontLeft;
     final Coordinate<Double> backLeft;
+
+    final Line top;
+    final Line right;
+    final Line bottom;
+    final Line left;
 
     final double lengthTop;
     final double lengthRight;
@@ -38,6 +46,10 @@ public class Rectangle {
         lengthLeft = lengthRight;
         width = lengthTop;
         height = lengthRight;
+        top = new Line(frontLeft, frontRight);
+        right = new Line(frontRight, backRight);
+        bottom = new Line(backRight, backLeft);
+        left = new Line(backLeft, frontLeft);
     }
 
     public Rectangle(Coordinate<Double> fl,
@@ -55,5 +67,9 @@ public class Rectangle {
         lengthLeft = lengthRight;
         width = lengthTop;
         height = lengthRight;
+        top = new Line(frontLeft, frontRight);
+        right = new Line(frontRight, backRight);
+        bottom = new Line(backRight, backLeft);
+        left = new Line(backLeft, frontLeft);
     }
 }
