@@ -25,7 +25,8 @@ public class Rectangle implements Shape{
     final Line bottom;
     final Line left;
 
-    public Rectangle(Corners corner,
+    public Rectangle(Corners drawCorner,
+                     Corners rotateCorner,
                      Coordinate<Double> startingPoint,
                      double xDraw,
                      double yDraw,
@@ -33,7 +34,7 @@ public class Rectangle implements Shape{
         double xfr, xfl, xbr, xbl, yfr, yfl, ybr, ybl;
         double x = startingPoint.getX();
         double y = startingPoint.getY();
-        switch (corner) {
+        switch (drawCorner) {
             case FRONT_RIGHT:
                 xfr = x; yfr = y;
                 xfl = x - xDraw; yfl = y;
@@ -91,7 +92,7 @@ public class Rectangle implements Shape{
                 new Coordinate<>(xbr, ybr),
                 new Coordinate<>(xbl, ybl)
         };
-        switch (corner) {
+        switch (rotateCorner) {
             case FRONT_RIGHT:
                 // Front right is still the first position.
                 // We don't need to rotate this back, as it stays in
@@ -121,6 +122,16 @@ public class Rectangle implements Shape{
                 positions = rotateArray(positions, 3);
                 rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
                 positions = rotateArray(positions, 1);
+                break;
+            case CENTER:
+                Coordinate<Double> midpoint = new Coordinate<>(
+                        Math.average(positions[0].getX(), positions[3].getX()),
+                        Math.average(positions[0].getY(), positions[3].getY())
+                );
+                positions[0] = rotatePoint(midpoint, positions[0], rotationalAngle);
+                positions[1] = rotatePoint(midpoint, positions[1], rotationalAngle);
+                positions[2] = rotatePoint(midpoint, positions[2], rotationalAngle);
+                positions[3] = rotatePoint(midpoint, positions[3], rotationalAngle);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid corner!");
@@ -239,10 +250,11 @@ public class Rectangle implements Shape{
         return xValid && yValid;
     }
 
-    enum Corners {
+    public enum Corners {
         FRONT_RIGHT,
         BACK_RIGHT,
         FRONT_LEFT,
-        BACK_LEFT
+        BACK_LEFT,
+        CENTER
     }
 }
