@@ -23,6 +23,18 @@ import java.util.Objects;
  * </p>
  */
 public class Odometry extends ThreeTrackingWheelLocalizer {
+
+    private static Odometry internalInstance;
+
+    public static Odometry getInstance() {
+        if (internalInstance == null) {
+            OdometryWheels wheels = new OdometryWheels();
+            wheels.init();
+            internalInstance = new Odometry(wheels);
+        }
+        return internalInstance;
+    }
+
     public Pose2d currentPose = new Pose2d();
 
     private OdometryWheels wheels;
