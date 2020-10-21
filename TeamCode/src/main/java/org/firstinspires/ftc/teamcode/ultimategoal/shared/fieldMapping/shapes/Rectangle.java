@@ -3,6 +3,21 @@ package org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.shapes;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.Coordinate;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.Line;
 
+/**
+ * The most basic of the geometric shapes used in
+ * the field mapping portion of this code.
+ *
+ * <p>
+ * The four lines; top, right, bottom, and left, are
+ * used for collision detection. Mostly everything else
+ * in this class is fairly useless.
+ * </p>
+ * 
+ * TODO: Add the ability to rotate the rectangle based on
+ *       the following points...
+ *       1. All four corners.
+ *       2. Origin/center.
+ */
 public class Rectangle {
     final Coordinate<Double> frontRight;
     final Coordinate<Double> backRight;
