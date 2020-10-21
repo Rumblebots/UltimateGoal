@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.testCode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org._11253.lib.drives.ShifterMeccanum;
 import org._11253.lib.utils.telem.Telemetry;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.Odometry;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryWheels;
 
+@TeleOp(name = "Odometry Test", group = "default")
 public class OdometryTest extends ShifterMeccanum {
     OdometryWheels odometryWheels;
     Odometry odometry;
