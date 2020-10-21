@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.shapes;
+package org._11253.lib.odometry.fieldMapping.shapes;
 
 import org._11253.lib.utils.math.Math;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.Coordinate;
+import org._11253.lib.odometry.fieldMapping.Coordinate;
 
 public class RightTriangle {
     public Angle angleA;

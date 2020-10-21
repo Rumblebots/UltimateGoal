@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping;
+package org._11253.lib.odometry.fieldMapping;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import org._11253.lib.utils.math.Math;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping.Coordinate;
 
 /**
  * A two-dimensional robot. It's very cool, I know.

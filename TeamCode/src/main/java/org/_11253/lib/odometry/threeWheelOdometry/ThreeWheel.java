@@ -1,11 +1,10 @@
-package org.firstinspires.ftc.teamcode.ultimategoal.shared;
+package org._11253.lib.odometry.threeWheelOdometry;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org._11253.lib.robot.phys.components.Motor;
 import org._11253.lib.utils.math.Math;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryWheelPositions;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryWheels;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,15 +21,15 @@ import java.util.Objects;
  *     Last timestamp: 51:18
  * </p>
  */
-public class Odometry extends ThreeTrackingWheelLocalizer {
+public class ThreeWheel extends ThreeTrackingWheelLocalizer {
 
-    private static Odometry internalInstance;
+    private static ThreeWheel internalInstance;
 
-    public static Odometry getInstance() {
+    public static ThreeWheel getInstance() {
         if (internalInstance == null) {
             OdometryWheels wheels = new OdometryWheels();
             wheels.init();
-            internalInstance = new Odometry(wheels);
+            internalInstance = new ThreeWheel(wheels);
         }
         return internalInstance;
     }
@@ -114,15 +113,15 @@ public class Odometry extends ThreeTrackingWheelLocalizer {
     /**
      * Constructor! Yay! These are the positions of each of the three wheels used here.
      */
-    public Odometry(OdometryWheels wheels) {
+    public ThreeWheel(OdometryWheels wheels) {
         super(wheels.getMotorArray());
         motors = wheels.getMotorMap();
         dcMotors = wheels.getDcMotorMap();
         this.wheels = wheels;
     }
 
-    public OdometryWheelPositions getOdometryWheelPositions() {
-        return new OdometryWheelPositions(getWheelPositions());
+    public ThreeWheelPositions getOdometryWheelPositions() {
+        return new ThreeWheelPositions(getWheelPositions());
     }
 
     @NotNull

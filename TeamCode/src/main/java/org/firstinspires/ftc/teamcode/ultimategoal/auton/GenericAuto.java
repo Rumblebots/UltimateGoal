@@ -6,8 +6,7 @@
 package org.firstinspires.ftc.teamcode.ultimategoal.auton;
 
 import org._11253.lib.op.Auton;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.Odometry;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryWheels;
+import org._11253.lib.odometry.threeWheelOdometry.ThreeWheel;
 
 public class GenericAuto extends Auton {
 
@@ -16,7 +15,7 @@ public class GenericAuto extends Auton {
         beforeStart.add(new Runnable() {
             @Override
             public void run() {
-                System.out.println(Odometry.getInstance().currentPose);
+                System.out.println(ThreeWheel.getInstance().currentPose);
             }
         });
     }

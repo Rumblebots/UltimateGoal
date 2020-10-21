@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.ultimategoal.shared.fieldMapping;
+package org._11253.lib.odometry.fieldMapping;
 
 /**
  * Coordinate, used to represent a position on a two-dimensional
@@ -34,5 +34,13 @@ public class Coordinate<E> {
 
     public E getY() {
         return y;
+    }
+
+    public static Coordinate<Double> addCoords(Coordinate<Double> a,
+                                               Coordinate<Double> b) {
+        return new Coordinate<>(
+                a.getX() + b.getX(),
+                a.getY() + b.getY()
+        );
     }
 }

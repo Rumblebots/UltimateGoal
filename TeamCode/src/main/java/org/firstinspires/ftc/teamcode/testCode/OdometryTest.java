@@ -4,13 +4,13 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org._11253.lib.drives.ShifterMeccanum;
 import org._11253.lib.utils.telem.Telemetry;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.Odometry;
+import org._11253.lib.odometry.threeWheelOdometry.ThreeWheel;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryWheels;
 
 @TeleOp(name = "Odometry Test", group = "default")
 public class OdometryTest extends ShifterMeccanum {
     OdometryWheels odometryWheels;
-    Odometry odometry;
+    ThreeWheel threeWheel;
 
     public OdometryTest() {
         beforeStart.add(
@@ -30,7 +30,7 @@ public class OdometryTest extends ShifterMeccanum {
                     public void run() {
                         odometryWheels = new OdometryWheels();
                         odometryWheels.init();
-                        odometry = new Odometry(odometryWheels);
+                        threeWheel = new ThreeWheel(odometryWheels);
                     }
                 }
         );
@@ -44,7 +44,7 @@ public class OdometryTest extends ShifterMeccanum {
                                 "C_POSE",
                                 "Odometry Pose",
                                 ": ",
-                                odometry.currentPose.toString()
+                                threeWheel.currentPose.toString()
                         );
                     }
                 }
@@ -54,10 +54,10 @@ public class OdometryTest extends ShifterMeccanum {
     }
 
     public void resetPosition() {
-        odometry.currentPose = new Pose2d(0, 0, 0);
+        threeWheel.currentPose = new Pose2d(0, 0, 0);
     }
 
     public Pose2d getPosition() {
-        return odometry.getPoseEstimate();
+        return threeWheel.getPoseEstimate();
     }
 }
