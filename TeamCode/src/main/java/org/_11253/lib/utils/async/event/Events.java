@@ -28,7 +28,6 @@
 
 package org._11253.lib.utils.async.event;
 
-import android.annotation.SuppressLint;
 import org._11253.lib.utils.Timed;
 
 import java.util.HashMap;
@@ -69,7 +68,6 @@ public class Events {
      * at absolutely everything, of course. 100%.
      * </p>
      */
-    @SuppressLint("UseSparseArrays")
     public HashMap<Long, Timed> events = new HashMap<>();
 
     public static Timed getNewTimed(final Timed oldTimed) {
@@ -117,7 +115,6 @@ public class Events {
      * relatively clean codebase.
      * </p>
      */
-    @SuppressLint("UseSparseArrays")
     public void tick() {
         long now = System.currentTimeMillis();
         HashMap<Long, Timed> toBeOpened1 = new HashMap<>();

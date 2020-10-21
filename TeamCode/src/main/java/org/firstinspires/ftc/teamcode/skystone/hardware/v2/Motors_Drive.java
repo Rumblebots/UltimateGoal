@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.skystone.hardware.v2;
 
-import android.util.Log;
+//import android.util.Log;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -288,8 +288,8 @@ public class Motors_Drive
         }
 
         public boolean needsMove(String direction, int target) {
-            Log.i("TARGET", String.valueOf(target));
-            Log.i("DIR", direction);
+//            Log.i("TARGET", String.valueOf(target));
+//            Log.i("DIR", direction);
             boolean needsToMove = false;
             switch (direction) {
                 case "FORWARD" :
@@ -303,9 +303,9 @@ public class Motors_Drive
                     needsToMove =  target > getFrontRightPos();
                     break;
             }
-            Log.i("TGT", String.valueOf(target < getFrontRightPos()));
-            Log.i("TGT", String.valueOf(target > getFrontRightPos()));
-            Log.i("needsMove", String.valueOf(needsToMove));
+//            Log.i("TGT", String.valueOf(target < getFrontRightPos()));
+//            Log.i("TGT", String.valueOf(target > getFrontRightPos()));
+//            Log.i("needsMove", String.valueOf(needsToMove));
             return needsToMove;
         }
 
@@ -316,10 +316,10 @@ public class Motors_Drive
             int newBackRightTarget = getBackRightPos() + (int) (-target_pos * COUNTS_PER_INCH);
             int newBackLeftTarget = getBackLeftPos() + (int) (-target_pos * COUNTS_PER_INCH);
 
-            Log.i("POS", String.valueOf(newLeftTarget));
-            Log.i("POS", String.valueOf(newRightTarget));
-            Log.i("POS", String.valueOf(newBackRightTarget));
-            Log.i("POS", String.valueOf(newBackLeftTarget));
+//            Log.i("POS", String.valueOf(newLeftTarget));
+//            Log.i("POS", String.valueOf(newRightTarget));
+//            Log.i("POS", String.valueOf(newBackRightTarget));
+//            Log.i("POS", String.valueOf(newBackLeftTarget));
             switch (Direction)
             {
                 case "FORWARD":

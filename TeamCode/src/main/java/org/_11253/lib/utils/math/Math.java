@@ -28,8 +28,6 @@
 
 package org._11253.lib.utils.math;
 
-import android.annotation.SuppressLint;
-
 import java.util.Random;
 
 /**
@@ -513,7 +511,6 @@ public class Math {
         return (float) ((double) a * (double) b + (double) c);
     }
 
-    @SuppressLint("Assert")
     public static double ulp(double d) {
         int exp = getExponent(d);
         switch (exp) {
@@ -529,7 +526,6 @@ public class Math {
         }
     }
 
-    @SuppressLint("Assert")
     public static float ulp(float f) {
         int exp = getExponent(f);
         switch (exp) {
@@ -627,7 +623,6 @@ public class Math {
         }
     }
 
-    @SuppressLint("Overflow")
     public static double nextUp(double d) {
         return java.lang.Math.nextUp(d);
     }
@@ -652,14 +647,12 @@ public class Math {
         }
     }
 
-    @SuppressLint("Assert")
     static double powerOfTwoD(int n) {
         assert n >= -1022 && n <= 1023;
 
         return Double.longBitsToDouble((long) n + 1023L << 52 & 9218868437227405312L);
     }
 
-    @SuppressLint("Assert")
     static float powerOfTwoF(int n) {
         assert n >= -126 && n <= 127;
 
