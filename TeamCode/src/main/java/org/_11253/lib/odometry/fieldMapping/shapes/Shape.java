@@ -10,6 +10,19 @@ import org._11253.lib.odometry.fieldMapping.Coordinate;
  * required features that make shapes function in the way
  * this implementation of field mapping requires them to.
  * </p>
+ * <p>
+ * Any shape used in the context of geometric field mapping
+ * should implement this interface, ensuring that they all
+ * contain some essential values, and a generic & abstract
+ * interface can be used in place of more specific variables.
+ * When making a map containing several pre-defined shapes,
+ * you might want to use a data structure such as an
+ * ArrayList. While you could have one array list for every
+ * single type of shape used on the map, or you could use
+ * Object, as all non-Object classes share that as a common
+ * extension, it's a little bit more convenient to just use
+ * our lovely interface fellow, Shape.
+ * </p>
  */
 public interface Shape {
     /**
@@ -28,7 +41,28 @@ public interface Shape {
     /**
      * Is a given point contained within the shape?
      *
-     * @param point the point to check
+     * <p>
+     * The implementation of this function will be different
+     * depending on a. the shape, and b. the coder. However,
+     * my suggested implementation for some of the most common
+     * shapes would be as follows.
+     * <ul>
+     * <li>Rectangle: get the minimum and maximum for both X
+     *     Y values of the rectangle's four bounds, and, from
+     *     there, determine whether or not the point is inside
+     *     of those four bounds.</li>
+     * <li>Square: do the same thing as with the rectangle.</li>
+     * <li>Circle: using the center of the circle, find the
+     *     radius of said circle. And using that radius, compare
+     *     that radius to the distance from the center of the
+     *     circle to determine whether or not that given point
+     *     could possibly be contained within that circle.</li>
+     * </ul>
+     * </p>
+     *
+     * @param point the point to check. This could be, for example, one of the end points
+     *              of a rectangle, a square, the mid-point of a circle, the mid-point
+     *              (or even quarter-point (or even eighth-point)) of a line.
      * @return whether or not the point is inside the shape
      */
     boolean isPointInShape(Coordinate<Double> point);
