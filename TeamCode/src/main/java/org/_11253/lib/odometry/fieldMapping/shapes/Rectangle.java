@@ -50,45 +50,64 @@ public class Rectangle implements Shape {
     final Line bottom;
     final Line left;
 
+    private boolean _ICE = false;
+    private boolean _ICI = false;
+
     /**
      * The one and only... rectangle constructor!
      *
-     * @param drawCorner      which corner the rectangle should be drawn from. This is NOT
-     *                        always the same corner which the rectangle will be rotated from,
-     *                        however - just the corner it'll be drawn from. X and Y are relative
-     *                        to this corner, meaning top right's Y draw would have a different
-     *                        impact than bottom left's Y draw - one (top right) would be negative,
-     *                        and the other (bottom left) would be positive.
-     * @param rotateCorner    the corner which the rectangle will be rotated from. You don't need
-     *                        to rotate the rectangle, by the way - it's an entirely optional step.
-     *                        If you don't want to rotate the rectangle, you can use any corner
-     *                        (CENTER or maybe your drawCorner) as the corner of rotation, and set
-     *                        the rotation angle to 0, representing a net change of zero rotation.
-     * @param startingPoint   the coordinate where the shape will be drawn from. This point is
-     *                        directly correlative to drawCorner - having a drawCorner of top right
-     *                        means that this code will interpret the starting point as the top right
-     *                        corner of the rectangle, and thus draw the rectangle as so. Make sure that
-     *                        this is the correct corner. Assuming you're familiar with something such as
-     *                        JavaScript's "canvas" functionality, you will (most often) want to use the
-     *                        top left corner as a starting point and figure out the coordinate of
-     *                        said corner.
-     * @param xDraw           how far, in the X dimension, the rectangle should be drawn. Note that this
-     *                        is relative to which corner the rectangle is being drawn from. Having a draw
-     *                        corner of top left means that both X and Y draws are negative.
-     * @param yDraw           how far, in the Y dimension, the rectangle should be drawn. Note that this
-     *                        is relative to which corner the rectangle is being drawn from. Having a draw
-     *                        corner of the top left means that both X and Y draws are negative.
-     * @param rotationalAngle the angle at which the entire rectangle should be rotate from. I believe that
-     *                        this angle is in radians, and any code you write using this angle should reflect
-     *                        that. If you have an angle which is in degrees, Java's native math class should
-     *                        include a function for converting degrees to radians.
+     * @param drawCorner           which corner the rectangle should be drawn from. This is NOT
+     *                             always the same corner which the rectangle will be rotated from,
+     *                             however - just the corner it'll be drawn from. X and Y are relative
+     *                             to this corner, meaning top right's Y draw would have a different
+     *                             impact than bottom left's Y draw - one (top right) would be negative,
+     *                             and the other (bottom left) would be positive.
+     * @param rotateCorner         the corner which the rectangle will be rotated from. You don't need
+     *                             to rotate the rectangle, by the way - it's an entirely optional step.
+     *                             If you don't want to rotate the rectangle, you can use any corner
+     *                             (CENTER or maybe your drawCorner) as the corner of rotation, and set
+     *                             the rotation angle to 0, representing a net change of zero rotation.
+     * @param startingPoint        the coordinate where the shape will be drawn from. This point is
+     *                             directly correlative to drawCorner - having a drawCorner of top right
+     *                             means that this code will interpret the starting point as the top right
+     *                             corner of the rectangle, and thus draw the rectangle as so. Make sure that
+     *                             this is the correct corner. Assuming you're familiar with something such as
+     *                             JavaScript's "canvas" functionality, you will (most often) want to use the
+     *                             top left corner as a starting point and figure out the coordinate of
+     *                             said corner.
+     * @param xDraw                how far, in the X dimension, the rectangle should be drawn. Note that this
+     *                             is relative to which corner the rectangle is being drawn from. Having a draw
+     *                             corner of top left means that both X and Y draws are negative.
+     * @param yDraw                how far, in the Y dimension, the rectangle should be drawn. Note that this
+     *                             is relative to which corner the rectangle is being drawn from. Having a draw
+     *                             corner of the top left means that both X and Y draws are negative.
+     * @param rotationalAngle      the angle at which the entire rectangle should be rotate from. I believe that
+     *                             this angle is in radians, and any code you write using this angle should reflect
+     *                             that. If you have an angle which is in degrees, Java's native math class should
+     *                             include a function for converting degrees to radians.
+     * @param isCollidableExterior whether or not the exterior of the rectangle is collidable. A collidable shape
+     *                             is recognized by the collision detection system, and the robot will intentionally
+     *                             not steer right into an exterior collidable object.
+     * @param isCollidableInterior whether or not the robot can still move while inside a shape. For example, the main
+     *                             field of the FTC challenge has a non-collidable interior, meaning the robot can
+     *                             still move while inside of the shape / zone.
      */
     public Rectangle(Corners drawCorner,
                      Corners rotateCorner,
                      Coordinate<Double> startingPoint,
                      double xDraw,
                      double yDraw,
-                     double rotationalAngle) {
+                     double rotationalAngle,
+                     boolean isCollidableExterior,
+                     boolean isCollidableInterior) {
+        // xfr = x, front right
+        // xfl = x, front left
+        // xbr = x, back right
+        // xbl = x, back left
+        // yfr = y, front right
+        // yfl = y, front left
+        // ybr = y, back right
+        // ybl = y, back left
         double xfr, xfl, xbr, xbl, yfr, yfl, ybr, ybl;
         double x = startingPoint.getX();
         double y = startingPoint.getY();
@@ -177,28 +196,28 @@ public class Rectangle implements Shape {
                 // our so-called "default" position the whole entire
                 // time.
                 positions = rotateArray(positions, 0);
-                rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
+                positions = rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
                 break;
             case BACK_LEFT:
                 // The array has been rotated once, making the
                 // first position back left.
                 // Needs 3 rotations to go back.
                 positions = rotateArray(positions, 1);
-                rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
+                positions = rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
                 positions = rotateArray(positions, 3);
                 break;
             case BACK_RIGHT:
                 // Two rotations - back right.
                 // Needs two more rotations to go back.
                 positions = rotateArray(positions, 2);
-                rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
+                positions = rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
                 positions = rotateArray(positions, 2);
                 break;
             case FRONT_LEFT:
                 // Finally, front left.
                 // Needs just a single rotation to get back to normal.
                 positions = rotateArray(positions, 3);
-                rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
+                positions = rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
                 positions = rotateArray(positions, 1);
                 break;
             case CENTER:
@@ -234,6 +253,17 @@ public class Rectangle implements Shape {
         right = new Line(frontRight, backRight);
         bottom = new Line(backRight, backLeft);
         left = new Line(backLeft, frontLeft);
+
+        _ICE = isCollidableExterior;
+        _ICI = isCollidableInterior;
+    }
+
+    public boolean isCollidableExterior() {
+        return _ICE;
+    }
+
+    public boolean isCollidableInterior() {
+        return _ICI;
     }
 
     /**
@@ -365,6 +395,31 @@ public class Rectangle implements Shape {
         // this will return false, indicating that the given point
         // was not inside of the rectangle.
         return xValid && yValid;
+    }
+
+    /**
+     * Check whether or not a given rectangle enters this rectangle.
+     *
+     * <p>
+     * This might need optimization in the future. I'm not really sure
+     * how powerful the control hub is or how many calculations per second
+     * it can do or whatever metric you'd like to use, but for now I'm just
+     * going to leave this as it is and hope it works.
+     * </p>
+     *
+     * @param rectangle the rectangle to check.
+     * @return whether the two rectangles intersect.
+     */
+    public boolean doesRectangleIntersect(Rectangle rectangle) {
+        Line top = rectangle.top;
+        Line right = rectangle.right;
+        Line bottom = rectangle.bottom;
+        Line left = rectangle.left;
+        return
+                doesLineEnterShape(top) ||
+                        doesLineEnterShape(right) ||
+                        doesLineEnterShape(bottom) ||
+                        doesLineEnterShape(left);
     }
 
     /**

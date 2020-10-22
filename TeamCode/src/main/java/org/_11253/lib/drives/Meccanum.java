@@ -31,7 +31,7 @@ package org._11253.lib.drives;
 import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.motors.MotorPower;
 import org._11253.lib.op.TeleOp;
-import org._11253.lib.robot.phys.assm.Drivetrain;
+import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 import org._11253.lib.utils.Command;
 import org._11253.lib.utils.math.Math;
 import org._11253.lib.utils.telem.Telemetry;
@@ -86,6 +86,7 @@ public class Meccanum extends TeleOp {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
+                                        if (!controller1.manager.isUserControlled()) return;
                                         double speed = controller1.getLeftY();
                                         double strafe = controller1.getLeftX();
                                         double turn = controller1.getRightX();
@@ -112,6 +113,7 @@ public class Meccanum extends TeleOp {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
+                                        if (!controller1.manager.isUserControlled()) return;
                                         drivetrain.setPower(new MotorPower());
                                         Telemetry.addData(
                                                 "_1125c_MOTORS",

@@ -20,6 +20,7 @@ public class ShifterMeccanum extends Meccanum {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
+                                        if (!controller1.manager.isUserControlled()) return;
                                         drivetrain.setMultiplier(FAST);
                                         Telemetry.addData(
                                                 "_1125c_MULTIPLIER",
@@ -37,6 +38,7 @@ public class ShifterMeccanum extends Meccanum {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
+                                        if (!controller1.manager.isUserControlled()) return;
                                         drivetrain.setMultiplier(SLOW);
                                         Telemetry.addData(
                                                 "_1125c_MULTIPLIER",
@@ -53,6 +55,7 @@ public class ShifterMeccanum extends Meccanum {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
+                                        if (!controller1.manager.isUserControlled()) return;
                                         if (controller1.getRightTrigger() == 0) {
                                             drivetrain.setMultiplier(NORMAL);
                                             Telemetry.addData(

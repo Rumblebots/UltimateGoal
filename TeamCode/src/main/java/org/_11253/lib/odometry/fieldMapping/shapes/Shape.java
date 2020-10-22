@@ -29,7 +29,7 @@ import org._11253.lib.utils.jrep.ListWrapper;
  */
 public interface Shape {
     /**
-     * Is this shape a collidable object?
+     * Is this shape a collidable object from the exterior?
      *
      * <p>
      * If this value is true, the robot will register that
@@ -39,7 +39,20 @@ public interface Shape {
      * not register that it's in contact with a shape.
      * </p>
      */
-    boolean isCollidable = true;
+    boolean isCollidableExterior();
+
+    /**
+     * Is this shape a collidable object from the interior?
+     *
+     * <p>
+     * If this value is true, the robot will register that
+     * it is in contact (or will be in contact) with a solid
+     * object. If this is false, even if the robot is right
+     * in the middle of a shape's boundaries, the robot will
+     * not register that it's in contact with a shape.
+     * </p>
+     */
+    boolean isCollidableInterior();
 
     /**
      * Is a given point contained within the shape?

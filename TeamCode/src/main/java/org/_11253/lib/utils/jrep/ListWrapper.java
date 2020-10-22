@@ -66,6 +66,9 @@ public class ListWrapper<E> {
         this.list = list;
     }
 
+    public E value;
+    public int index;
+
     /**
      * Add an element (or several elements) to list.
      */
@@ -90,5 +93,15 @@ public class ListWrapper<E> {
         list.clear();
         add(e);
         list.addAll(previous);
+    }
+
+    public final void forEach(Runnable runnable) {
+        index = 0;
+        int length = list.size() - 1;
+        while (index < length) {
+            value = list.get(index);
+            runnable.run();
+            index++;
+        }
     }
 }

@@ -42,6 +42,16 @@ public class DiameterCircle implements Shape {
     }
 
     @Override
+    public boolean isCollidableExterior() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollidableInterior() {
+        return false;
+    }
+
+    @Override
     public boolean isPointInShape(Coordinate<Double> point) {
         return hitbox.isPointInCircle(point);
     }

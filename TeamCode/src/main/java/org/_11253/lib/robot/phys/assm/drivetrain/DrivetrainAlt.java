@@ -26,34 +26,30 @@
  *
  */
 
-package org._11253.lib.robot.phys.assm;
+package org._11253.lib.robot.phys.assm.drivetrain;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org._11253.lib.robot.phys.components.Motor;
 
 /**
- * Alternative drivetrain if the six wheel drivetrain isn't yo thang.
+ * Alternative drivetrain if the robot is set up backwards.
  *
  * @author Colin Robertson
  */
-public class SixWheelDrivetrainAlt extends SixWheelDrivetrain {
+public class DrivetrainAlt extends Drivetrain implements DrivetrainInterface {
     @Override
     public void init() {
         frontRight = new Motor(frontRightName);
-        midRight = new Motor(midRightName);
-        backRight = new Motor(backRightName);
         frontLeft = new Motor(frontLeftName);
-        midLeft = new Motor(midLeftName);
+        backRight = new Motor(backRightName);
         backLeft = new Motor(backLeftName);
 
         frontRight.isRound = isRound;
-        midRight.isRound = isRound;
-        backRight.isRound = isRound;
         frontLeft.isRound = isRound;
+        backRight.isRound = isRound;
         backLeft.isRound = isRound;
 
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        midRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 }

@@ -26,7 +26,7 @@
  *
  */
 
-package org._11253.lib.robot.phys.assm;
+package org._11253.lib.robot.phys.assm.drivetrain;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org._11253.lib.Global;
@@ -53,7 +53,7 @@ import org._11253.lib.robot.phys.components.Motor;
  * @author Colin Robertson
  * @see Drivetrain
  */
-public class SixWheelDrivetrain {
+public class SixWheelDrivetrain implements DrivetrainInterface {
     public static Motor frontRight;
     public static Motor midRight;
     public static Motor backRight;

@@ -23,12 +23,15 @@ import org._11253.lib.odometry.fieldMapping.shapes.Shape;
  * </p>
  */
 public class Field implements Zone {
-    public Square field = new Square(
-            Rectangle.Corners.FRONT_LEFT,
+    public Rectangle field = new Rectangle(
+            Rectangle.Corners.BACK_LEFT,
             Rectangle.Corners.CENTER,
             Geometry.origin,
             144,
-            0
+            144,
+            0,
+            false,
+            false
     );
 
     @Override

@@ -34,11 +34,29 @@ public class RadiusCircle implements Shape {
     private final GigaArc circle;
     private final GigaArc hitbox;
 
+    private final boolean _ICE;
+    private final boolean _ICI;
+
     public RadiusCircle(Coordinate<Double> center,
                         double radius,
-                        double hitboxRadius) {
+                        double hitboxRadius,
+                        boolean isCollidableExterior,
+                        boolean isCollidableInterior) {
         circle = new GigaArc(center, radius);
         hitbox = new GigaArc(center, hitboxRadius);
+
+        _ICE = isCollidableExterior;
+        _ICI = isCollidableInterior;
+    }
+
+    @Override
+    public boolean isCollidableExterior() {
+        return _ICE;
+    }
+
+    @Override
+    public boolean isCollidableInterior() {
+        return _ICI;
     }
 
     /**

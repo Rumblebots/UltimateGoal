@@ -7,7 +7,7 @@ package org._11253.lib.drives;
 
 import org._11253.lib.motors.MotorPower;
 import org._11253.lib.op.Auton;
-import org._11253.lib.robot.phys.assm.Drivetrain;
+import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 import org._11253.lib.utils.telem.Telemetry;
 
 enum DriveDirection {

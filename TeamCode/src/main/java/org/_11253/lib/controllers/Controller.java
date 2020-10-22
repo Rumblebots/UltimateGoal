@@ -30,8 +30,6 @@ package org._11253.lib.controllers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import java.util.HashMap;
-
 /**
  * Wrapper class for FTC's default Gamepad
  * <p>
@@ -42,12 +40,70 @@ import java.util.HashMap;
  */
 public class Controller {
     /**
-     * The controller's map
+     * Inactive double state.
+     *
+     * <p>
+     * IA is short for INACTIVE. When the controller is in a
+     * state where user input is disregarded, this state takes
+     * the place of whatever readings come from the actual gamepad,
+     * in order to make user input not have any value.
+     * </p>
+     */
+    private final double IA_DOUBLE = 0.0;
+
+    /**
+     * Inactive boolean state.
+     *
+     * <p>
+     * IA is short for INACTIVE. When the controller is in a
+     * state where user input is disregarded, this state takes
+     * the place of whatever readings come from the actual gamepad,
+     * in order to make user input not have any value.
+     * </p>
+     */
+    private final boolean IA_BOOLEAN = false;
+
+    /**
+     * Use either inactive or current double.
+     *
+     * @param cmp active state
+     * @return either active or inactive state
+     */
+    private double CMP_DOUBLE(double cmp) {
+        if (manager.isUserControlled()) return cmp;
+        else return IA_DOUBLE;
+    }
+
+    /**
+     * Use either inactive or current boolean.
+     *
+     * @param cmp active state
+     * @return either active or inactive state
+     */
+    private boolean CMP_BOOLEAN(boolean cmp) {
+        if (manager.isUserControlled()) return cmp;
+        else return IA_BOOLEAN;
+    }
+
+    /**
+     * The controller's map.
      */
     public ControllerMap map;
 
     /**
-     * The controller's internal gamepad
+     * The controller's manager.
+     *
+     * <p>
+     * Managers are a new thing I'm attempting to try out, just to make
+     * combining autonomous and manually-operated functionality earlier.
+     * Managers basically allow for the robot to control whether or not
+     * user inputs have any value or meaning.
+     * </p>
+     */
+    public ControllerManager manager;
+
+    /**
+     * The controller's internal gamepad.
      */
     private Gamepad gamepad;
 
@@ -59,6 +115,7 @@ public class Controller {
     public Controller(Gamepad gamepad) {
         this.gamepad = gamepad;
         map = new ControllerMap(gamepad);
+        manager = new ControllerManager();
     }
 
     /**
@@ -67,7 +124,7 @@ public class Controller {
      * @return left stick's x value
      */
     public final double getLeftX() {
-        return gamepad.left_stick_x;
+        return CMP_DOUBLE(gamepad.left_stick_x);
     }
 
     /**
@@ -76,7 +133,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvLeftX() {
-        return -gamepad.left_stick_x;
+        return CMP_DOUBLE(-gamepad.left_stick_x);
     }
 
     /**
@@ -85,7 +142,7 @@ public class Controller {
      * @return left stick's y value
      */
     public final double getLeftY() {
-        return gamepad.left_stick_y;
+        return CMP_DOUBLE(gamepad.left_stick_y);
     }
 
     /**
@@ -94,7 +151,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvLeftY() {
-        return -gamepad.left_stick_y;
+        return CMP_DOUBLE(-gamepad.left_stick_y);
     }
 
     /**
@@ -103,7 +160,7 @@ public class Controller {
      * @return right stick's x value
      */
     public final double getRightX() {
-        return gamepad.right_stick_x;
+        return CMP_DOUBLE(gamepad.right_stick_x);
     }
 
     /**
@@ -112,7 +169,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvRightX() {
-        return -gamepad.right_stick_x;
+        return CMP_DOUBLE(-gamepad.right_stick_x);
     }
 
     /**
@@ -121,7 +178,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getRightY() {
-        return gamepad.right_stick_y;
+        return CMP_DOUBLE(gamepad.right_stick_y);
     }
 
     /**
@@ -130,7 +187,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvRightY() {
-        return -gamepad.right_stick_y;
+        return CMP_DOUBLE(-gamepad.right_stick_y);
     }
 
     /**
@@ -139,7 +196,7 @@ public class Controller {
      * @return the right trigger's value
      */
     public final double getRightTrigger() {
-        return gamepad.right_trigger;
+        return CMP_DOUBLE(gamepad.right_trigger);
     }
 
     /**
@@ -148,7 +205,7 @@ public class Controller {
      * @return the left trigger's value
      */
     public final double getLeftTrigger() {
-        return gamepad.left_trigger;
+        return CMP_DOUBLE(gamepad.left_trigger);
     }
 
     /**
@@ -157,7 +214,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getA() {
-        return gamepad.a;
+        return CMP_BOOLEAN(gamepad.a);
     }
 
     /**
@@ -166,7 +223,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getB() {
-        return gamepad.b;
+        return CMP_BOOLEAN(gamepad.b);
     }
 
     /**
@@ -175,7 +232,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getX() {
-        return gamepad.x;
+        return CMP_BOOLEAN(gamepad.x);
     }
 
     /**
@@ -184,7 +241,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getY() {
-        return gamepad.y;
+        return CMP_BOOLEAN(gamepad.y);
     }
 
     /**
@@ -193,7 +250,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadUp() {
-        return gamepad.dpad_up;
+        return CMP_BOOLEAN(gamepad.dpad_up);
     }
 
     /**
@@ -202,7 +259,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadRight() {
-        return gamepad.dpad_right;
+        return CMP_BOOLEAN(gamepad.dpad_right);
     }
 
     /**
@@ -211,7 +268,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadDown() {
-        return gamepad.dpad_down;
+        return CMP_BOOLEAN(gamepad.dpad_down);
     }
 
     /**
@@ -220,7 +277,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadLeft() {
-        return gamepad.dpad_left;
+        return CMP_BOOLEAN(gamepad.dpad_left);
     }
 
     /**
@@ -229,7 +286,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getRightBumper() {
-        return gamepad.right_bumper;
+        return CMP_BOOLEAN(gamepad.right_bumper);
     }
 
     /**
@@ -238,7 +295,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getLeftBumper() {
-        return gamepad.left_bumper;
+        return CMP_BOOLEAN(gamepad.left_bumper);
     }
 
     /**
@@ -247,7 +304,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getStart() {
-        return gamepad.start;
+        return CMP_BOOLEAN(gamepad.start);
     }
 
     /**
@@ -256,6 +313,6 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getSelect() {
-        return gamepad.guide;
+        return CMP_BOOLEAN(gamepad.guide);
     }
 }
