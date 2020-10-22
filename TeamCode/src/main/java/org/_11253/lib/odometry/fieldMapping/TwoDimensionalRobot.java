@@ -3,6 +3,8 @@ package org._11253.lib.odometry.fieldMapping;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 import org._11253.lib.odometry.fieldMapping.shapes.Rectangle;
+import org._11253.lib.odometry.fieldMapping.zones.Robot;
+import org._11253.lib.odometry.fieldMapping.zones.Zone;
 
 /**
  * A two-dimensional robot. It's very cool, I know.
@@ -38,6 +40,9 @@ public class TwoDimensionalRobot {
      * </p>
      */
     public Rectangle hitbox;
+    public Robot robot;
+
+    public Zone zone;
 
     public Pose2d pose;
     public Coordinate<Double> position;
@@ -117,7 +122,10 @@ public class TwoDimensionalRobot {
                 Coordinate.addCoords(position, frTrail),
                 widthX,
                 widthY,
-                heading
+                heading,
+                true,
+                true
         );
+        robot = new Robot(hitbox);
     }
 }
