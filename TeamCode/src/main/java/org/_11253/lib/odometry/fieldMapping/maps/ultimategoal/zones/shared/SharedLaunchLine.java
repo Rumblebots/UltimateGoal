@@ -19,7 +19,7 @@ public class SharedLaunchLine implements Zone {
 
     @Override
     public int getZonePriority() {
-        return 0;
+        return 3;
     }
 
     @Override

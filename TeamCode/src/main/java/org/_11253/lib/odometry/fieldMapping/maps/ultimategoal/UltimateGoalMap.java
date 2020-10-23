@@ -9,12 +9,16 @@ public class UltimateGoalMap extends Map {
     public UltimateGoalMap() {
         fieldZones.add(
                 new BlueStartingStack(),
+                new BlueStartLineLeft(),
+                new BlueStartLineRight(),
                 new BlueTargetA(),
                 new BlueTargetB(),
                 new BlueTargetC(),
                 new BlueWobbleGoalLeft(),
                 new BlueWobbleGoalRight(),
                 new RedStartingStack(),
+                new RedStartLineLeft(),
+                new RedStartLineRight(),
                 new RedTargetA(),
                 new RedTargetB(),
                 new RedTargetC(),

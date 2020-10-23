@@ -19,7 +19,7 @@ public class RedTargetA implements Zone {
 
     @Override
     public int getZonePriority() {
-        return 0;
+        return 2;
     }
 
     @Override

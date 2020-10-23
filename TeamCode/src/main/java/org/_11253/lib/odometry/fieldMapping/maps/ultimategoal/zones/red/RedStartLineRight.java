@@ -1,25 +1,24 @@
-package org._11253.lib.odometry.fieldMapping.maps.ultimategoal.zones.blue;
+package org._11253.lib.odometry.fieldMapping.maps.ultimategoal.zones.red;
 
 import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 import org._11253.lib.odometry.fieldMapping.components.countable.Line;
-import org._11253.lib.odometry.fieldMapping.maps.ultimategoal.shapes.BlueShapes;
 import org._11253.lib.odometry.fieldMapping.shapes.Shape;
 import org._11253.lib.odometry.fieldMapping.zones.Zone;
 
-public class BlueTargetB implements Zone {
+public class RedStartLineRight implements Zone {
     @Override
     public String getName() {
-        return "BlueTargetB";
+        return "RedStartLineRight";
     }
 
     @Override
     public Shape getParentShape() {
-        return BlueShapes.BlueTargetB;
+        return null;
     }
 
     @Override
     public int getZonePriority() {
-        return 2;
+        return 0;
     }
 
     @Override

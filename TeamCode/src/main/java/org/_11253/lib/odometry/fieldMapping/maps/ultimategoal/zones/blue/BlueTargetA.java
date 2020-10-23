@@ -19,7 +19,7 @@ public class BlueTargetA implements Zone {
 
     @Override
     public int getZonePriority() {
-        return 0;
+        return 2;
     }
 
     @Override

@@ -19,7 +19,7 @@ public class SharedCloseSide implements Zone {
 
     @Override
     public int getZonePriority() {
-        return 0;
+        return 1;
     }
 
     @Override
