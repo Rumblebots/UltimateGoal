@@ -33,8 +33,8 @@ public abstract class BLTManager implements Manager, Sbm {
         }
     };
 
-    private Timed asyncMode(boolean state) {
-        boolean previousState = isEnabled;
+    private Timed asyncMode(final boolean state) {
+        final boolean previousState = isEnabled;
         return new Timed() {
             @Override
             public Runnable open() {

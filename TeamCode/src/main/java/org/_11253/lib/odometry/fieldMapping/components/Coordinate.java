@@ -100,4 +100,11 @@ public class Coordinate<E> {
                 a.getY() + b.getY()
         );
     }
+
+    public static Coordinate<Double> negative(Coordinate<Double> a) {
+        return new Coordinate<>(
+                a.getX() * -1,
+                a.getY() * -1
+        );
+    }
 }
