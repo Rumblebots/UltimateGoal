@@ -71,7 +71,39 @@ public interface Zone {
      */
     int getZonePriority();
 
+    /**
+     * Check whether or not a line enters a given zone.
+     *
+     * <p>
+     * This will most likely be used exclusively for collision detection, but
+     * we'll have to see. Honestly, I'm not entirely sure yet.
+     * </p>
+     *
+     * @param line the line to check for
+     * @return whether or not the line enters
+     */
     boolean doesLineEnterZone(Line line);
+
+    /**
+     * Check whether or not a given point is in a zone.
+     *
+     * @param point the point to check
+     * @return whether ot the point is in the zone or not
+     */
     boolean isPointInZone(Coordinate<Double> point);
+
+    /**
+     * Just in case you wanted to have certain zones automatically
+     * change the speed at which the robot drives at.
+     *
+     * @return a drive speed multiplier
+     */
     double getDriveSpeedMultiplier();
+
+    /**
+     * Get the total count of components.
+     *
+     * @return how many components there are, in total
+     */
+    int getComponents();
 }
