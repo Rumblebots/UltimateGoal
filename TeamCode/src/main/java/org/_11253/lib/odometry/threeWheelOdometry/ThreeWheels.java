@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems;
+package org._11253.lib.odometry.threeWheelOdometry;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -27,7 +27,7 @@ import java.util.List;
  * code, and if you do, that would be pretty swaggy.
  * </p>
  */
-public class OdometryWheels {
+public class ThreeWheels {
     public Motor left;
     public Motor right;
     public Motor back;
@@ -79,7 +79,7 @@ public class OdometryWheels {
      * now.
      * </p>
      */
-    public OdometryWheels() {
+    public ThreeWheels() {
 
     }
 

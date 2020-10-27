@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode.testCode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org._11253.lib.drives.ShifterMeccanum;
-import org._11253.lib.utils.telem.Telemetry;
 import org._11253.lib.odometry.threeWheelOdometry.ThreeWheel;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryWheels;
+import org._11253.lib.odometry.threeWheelOdometry.ThreeWheels;
+import org._11253.lib.utils.telem.Telemetry;
 
 @TeleOp(name = "Odometry Test", group = "default")
 public class OdometryTest extends ShifterMeccanum {
-    OdometryWheels odometryWheels;
+    ThreeWheels odometryWheels;
     ThreeWheel threeWheel;
 
     public OdometryTest() {
@@ -18,17 +18,17 @@ public class OdometryTest extends ShifterMeccanum {
                 // the name of this op-mode is "Odometry Test." But oh well - what do I know?
                 // Steps...
                 // 1. Set "odometryWheels" to be an actual instance of odometryWheels. I didn't
-                //    initiliaze it earlier on in the program because it would look more ugly up
+                //    initialize it earlier on in the program because it would look more ugly up
                 //    there at the top.
                 // 2. Actually initialize the motors. As consistent with... well, every other op-mode
                 //    in this entire codebase, physical components are initialized right before start.
-                // 3. Initiliaze the odometry. There are no physical components in the odometry class,
+                // 3. Initialize the odometry. There are no physical components in the odometry class,
                 //    so we don't have to call any init function for this.
                 // 4. Do cool stuff with the odometry!
                 new Runnable() {
                     @Override
                     public void run() {
-                        odometryWheels = new OdometryWheels();
+                        odometryWheels = new ThreeWheels();
                         odometryWheels.init();
                         threeWheel = new ThreeWheel(odometryWheels);
                     }
