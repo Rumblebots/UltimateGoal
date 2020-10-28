@@ -56,5 +56,5 @@ public class BlueShapes {
             2.6,
             true,
             true
-    );;
+    );
 }

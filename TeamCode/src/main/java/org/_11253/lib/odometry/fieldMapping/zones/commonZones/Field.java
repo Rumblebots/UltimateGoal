@@ -1,4 +1,4 @@
-package org._11253.lib.odometry.fieldMapping.zones;
+package org._11253.lib.odometry.fieldMapping.zones.commonZones;
 
 import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 import org._11253.lib.odometry.fieldMapping.Geometry;
@@ -6,6 +6,8 @@ import org._11253.lib.odometry.fieldMapping.components.countable.Line;
 import org._11253.lib.odometry.fieldMapping.shapes.Rectangle;
 import org._11253.lib.odometry.fieldMapping.shapes.Square;
 import org._11253.lib.odometry.fieldMapping.shapes.Shape;
+import org._11253.lib.odometry.fieldMapping.zones.Zone;
+import org._11253.lib.odometry.fieldMapping.zones.specialized.RectangleZone;
 
 /**
  * The game field. This will (obviously) be in any and every field
@@ -22,7 +24,7 @@ import org._11253.lib.odometry.fieldMapping.shapes.Shape;
  * {@link Coordinate}
  * </p>
  */
-public class Field implements Zone {
+public class Field extends RectangleZone {
     public Rectangle field = new Rectangle(
             Rectangle.Corners.BACK_LEFT,
             Rectangle.Corners.CENTER,

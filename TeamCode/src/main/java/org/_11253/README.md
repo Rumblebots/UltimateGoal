@@ -33,9 +33,10 @@ find documentation for. To add to that, a lot of the stuff in this library
 is documented inside the examples folder.
 
 ## TODO Board
-- Implement additional controller states, and account for potential
-dead-zones on the controller's joysticks.
 - Make more autonomous debug features
 - Improve controller mapping
 - MAYBE try to implement JavaScript and / or Groovy? (This is a much longer-term project.)
-- Try to streamline the Command interface so everything isn't so painfully long.
+- Implement a system allowing three wheel odometry to use an inertial measurement unit
+  to figure out a more exact position. 
+- Create more demo field maps.
+- Add a custom two-wheel odometry implementation.

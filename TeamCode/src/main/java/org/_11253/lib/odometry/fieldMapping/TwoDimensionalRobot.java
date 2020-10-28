@@ -3,7 +3,7 @@ package org._11253.lib.odometry.fieldMapping;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 import org._11253.lib.odometry.fieldMapping.shapes.Rectangle;
-import org._11253.lib.odometry.fieldMapping.zones.Robot;
+import org._11253.lib.odometry.fieldMapping.zones.commonZones.Robot;
 import org._11253.lib.odometry.fieldMapping.zones.Zone;
 
 /**

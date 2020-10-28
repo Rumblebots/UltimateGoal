@@ -20,9 +20,11 @@ public class ThreeWheelPositions {
     public double getLeftWheelPos() {
         return leftWheelPos;
     }
+
     public double getRightWheelPos() {
         return rightWheelPos;
     }
+
     public double getBackWheelPos() {
         return backWheelPos;
     }

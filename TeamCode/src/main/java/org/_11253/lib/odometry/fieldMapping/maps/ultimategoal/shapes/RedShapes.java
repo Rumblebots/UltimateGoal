@@ -56,5 +56,5 @@ public class RedShapes {
             2.6,
             true,
             true
-    );;
+    );
 }
