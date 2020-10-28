@@ -63,12 +63,22 @@ public class ThreeWheels {
      *  <li>3. Is this optimal positioning?</li>
      * </ul>
      * </p>
+     *
+     * TODO THIS STILL NEEDS TO BE UPDATED BEFORE ANY TESTING GOES ON.
      */
-    public static final HashMap<wheels, Pose2d> wheelPoses = new HashMap<wheels, Pose2d>() {{
+    public static HashMap<wheels, Pose2d> wheelPoses = new HashMap<wheels, Pose2d>() {{
         put(wheels.LEFT, new Pose2d(0, 0, 0));
         put(wheels.RIGHT, new Pose2d(0, 0, 0));
         put(wheels.BACK, new Pose2d(0, 0, 0));
     }};
+
+    public static HashMap<wheels, Pose2d> getWheelPoses() {
+        return wheelPoses;
+    }
+
+    public static void setWheelPoses(HashMap<wheels, Pose2d> map) {
+        wheelPoses = map;
+    }
 
     /**
      * A (very cool) constructor.
@@ -81,6 +91,10 @@ public class ThreeWheels {
      */
     public ThreeWheels() {
 
+    }
+
+    public ThreeWheels(HashMap<wheels, Pose2d> map) {
+        setWheelPoses(map);
     }
 
     /**

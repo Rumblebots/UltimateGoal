@@ -3,6 +3,8 @@ package org._11253.lib.odometry.threeWheelOdometry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import org._11253.lib.odometry.Odometry;
+import org._11253.lib.odometry.fieldMapping.components.HeadingCoordinate;
 import org._11253.lib.robot.phys.components.Motor;
 import org._11253.lib.utils.math.Math;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +22,7 @@ import java.util.Objects;
  * Last timestamp: 51:18
  * </p>
  */
-public class ThreeWheel extends ThreeTrackingWheelLocalizer {
+public class ThreeWheel extends ThreeTrackingWheelLocalizer implements Odometry {
     private static ThreeWheel internalInstance;
 
     /**
@@ -133,5 +135,19 @@ public class ThreeWheel extends ThreeTrackingWheelLocalizer {
     public void updateOdometry() {
         this.update();
         currentPose = this.getPoseEstimate();
+    }
+
+    @Override
+    public Pose2d getPose() {
+        return getPoseEstimate();
+    }
+
+    @Override
+    public HeadingCoordinate<Double> getPosition() {
+        return new HeadingCoordinate<>(
+                getPose().getX(),
+                getPose().getY(),
+                getPose().getHeading()
+        );
     }
 }

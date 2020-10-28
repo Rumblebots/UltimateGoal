@@ -1,8 +1,11 @@
 package org._11253.lib.odometry.fieldMapping;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import org._11253.lib.odometry.Odometry;
 import org._11253.lib.odometry.fieldMapping.frames.Frame;
 import org._11253.lib.odometry.fieldMapping.zones.Zone;
+import org._11253.lib.utils.Timed;
+import org._11253.lib.utils.async.event.StringEvents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +27,31 @@ public class MapAPI {
     Map map = new Map();
     TwoDimensionalRobot robot = new TwoDimensionalRobot(0, 0, 0);
     HashMap<Integer, ArrayList<Zone>> positionWithPriorities = new HashMap<>();
+    Odometry odometry;
+
+    public void scheduleAsync(final Odometry odometry, int duration) {
+        StringEvents.schedule(
+                "_1125c_MAPPING_ODO_UPDATE",
+                duration,
+                0,
+                new Timed() {
+                    @Override
+                    public Runnable open() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                update(odometry.getPose());
+                            }
+                        };
+                    }
+                },
+                true
+        );
+    }
+
+    public void cancelAsync() {
+        StringEvents.clear("_1125c_MAPPING_ODO_UPDATE");
+    }
 
     public void importMap(Map map) {
         this.map = map;
