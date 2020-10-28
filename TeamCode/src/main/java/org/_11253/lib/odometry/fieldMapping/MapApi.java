@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * A public-facing interface for accessing the field mapping system.
  */
-public class MapAPI {
+public class MapApi {
     /**
      * The map which is used.
      *
@@ -57,7 +57,7 @@ public class MapAPI {
         this.map = map;
     }
 
-    public MapAPI(Map map) {
+    public MapApi(Map map) {
         importMap(map);
     }
 

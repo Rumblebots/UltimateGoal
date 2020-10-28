@@ -3,39 +3,23 @@ package org.firstinspires.ftc.teamcode.testCode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org._11253.lib.drives.ShifterMeccanum;
-import org._11253.lib.odometry.fieldMapping.Map;
-import org._11253.lib.odometry.fieldMapping.MapAPI;
-import org._11253.lib.odometry.fieldMapping.maps.ultimategoal.UltimateGoalMap;
-import org._11253.lib.odometry.threeWheelOdometry.ThreeWheel;
-import org._11253.lib.odometry.threeWheelOdometry.ThreeWheels;
 import org._11253.lib.utils.telem.Telemetry;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Odometry;
 
 @TeleOp(name = "Mapped Odometry Test", group = "default")
 public class MappedOdometryTest extends ShifterMeccanum {
-    ThreeWheels odometryWheels;
-    ThreeWheel threeWheel;
-    Map map = new UltimateGoalMap();
-    MapAPI mapAPI = new MapAPI(map);
+    Odometry odometry;
 
     public MappedOdometryTest() {
         beforeStart.add(
                 new Runnable() {
                     @Override
                     public void run() {
-                        odometryWheels = new ThreeWheels(TestOWP.positions);
-                        odometryWheels.init();
-                        threeWheel = new ThreeWheel(odometryWheels);
+                        odometry = new Odometry(MappedOdometryTest.this, true);
                     }
                 }
         );
-        onStart.add(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        mapAPI.scheduleAsync(threeWheel, 125);
-                    }
-                }
-        );
+        onStart.add();
         onStartRun.add();
         run.add(
                 new Runnable() {
@@ -45,7 +29,7 @@ public class MappedOdometryTest extends ShifterMeccanum {
                                 "C_POSE",
                                 "Odometry Pose",
                                 ": ",
-                                threeWheel.currentPose.toString()
+                                odometry.getPose().toString()
                         );
                     }
                 },
@@ -56,7 +40,7 @@ public class MappedOdometryTest extends ShifterMeccanum {
                                 "C_POSITIONS",
                                 "Positions",
                                 ": ",
-                                mapAPI.getPositionsString()
+                                odometry.getApi().getPositionsString()
                         );
                     }
                 }
@@ -66,10 +50,10 @@ public class MappedOdometryTest extends ShifterMeccanum {
     }
 
     public void resetPosition() {
-        threeWheel.currentPose = new Pose2d(0, 0, 0);
+        odometry.getOdometry().currentPose = new Pose2d(0, 0, 0);
     }
 
     public Pose2d getPosition() {
-        return threeWheel.getPoseEstimate();
+        return odometry.getOdometry().getPoseEstimate();
     }
 }

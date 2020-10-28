@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import org._11253.lib.odometry.fieldMapping.MapAPI;
+import org._11253.lib.odometry.fieldMapping.MapApi;
 import org._11253.lib.odometry.fieldMapping.components.HeadingCoordinate;
 import org._11253.lib.odometry.fieldMapping.maps.ultimategoal.UltimateGoalMap;
 import org._11253.lib.odometry.threeWheelOdometry.ThreeWheel;
@@ -14,16 +14,14 @@ import java.util.HashMap;
 public class Odometry {
     private final ThreeWheels wheels;
     private final ThreeWheel odometry;
-    private final MapAPI api;
-    private final Template template;
-    private final HashMap<ThreeWheels.wheels, Pose2d> wheelPositions = OdometryWheelPositions.positions;
+    private final MapApi api;
     private final boolean isMapped;
 
     public Odometry(Template template, boolean isMapped) {
+        HashMap<ThreeWheels.wheels, Pose2d> wheelPositions = OdometryWheelPositions.positions;
         wheels = new ThreeWheels(wheelPositions);
         odometry = new ThreeWheel(wheels);
-        api = new MapAPI(new UltimateGoalMap());
-        this.template = template;
+        api = new MapApi(new UltimateGoalMap());
         this.isMapped = isMapped;
         template.onStartRun.add(
                 new Runnable() {
@@ -49,4 +47,21 @@ public class Odometry {
     public HeadingCoordinate<Double> getPosition() {
         return odometry.getPosition();
     }
+
+    public ThreeWheels getWheels() {
+        return wheels;
+    }
+
+    public ThreeWheel getOdometry() {
+        return odometry;
+    }
+
+    public MapApi getApi() {
+        return api;
+    }
+
+    public boolean isMapped() {
+        return isMapped;
+    }
+
 }
