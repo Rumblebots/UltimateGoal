@@ -91,6 +91,8 @@ public interface Shape {
      */
     boolean doesLineEnterShape(Line line);
 
+    Coordinate<Double> getCenterPoint();
+
     /**
      * Gets a count (set up by the developer of the shape) that
      * details how many components are contained in that shape.

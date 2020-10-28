@@ -66,6 +66,11 @@ public class DiameterCircle implements Shape {
     }
 
     @Override
+    public Coordinate<Double> getCenterPoint() {
+        return circle.center;
+    }
+
+    @Override
     public int getComponentCount() {
         return 2;
     }

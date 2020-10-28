@@ -482,4 +482,18 @@ public class Rectangle implements Shape {
         BACK_LEFT,
         CENTER
     }
+
+    /**
+     * I'm writing this comment so the file is 500 lines long. That's all.
+     *
+     * @return the center point of the shape
+     */
+    @Override
+    public Coordinate<Double> getCenterPoint() {
+        Line midline = new Line(backLeft, frontRight);
+        return new Coordinate<>(
+                midline.midpoint.getX(),
+                midline.midpoint.getY()
+        );
+    }
 }

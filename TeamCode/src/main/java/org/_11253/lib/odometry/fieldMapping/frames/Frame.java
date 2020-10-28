@@ -43,6 +43,11 @@ public class Frame {
     public HashMap<String, Zone> zones;
 
     /**
+     * The robot's zone.
+     */
+    public Zone robotZone;
+
+    /**
      * A list which contains all of the detected collisions.
      *
      * <p>
@@ -74,6 +79,9 @@ public class Frame {
                     z.getName(),
                     z
             );
+            if (z.getName().equals("2dRobot")) {
+                robotZone = z;
+            }
         }
         checkCollisions();
     }
@@ -149,6 +157,29 @@ public class Frame {
                 }
             }
         }
+    }
+
+    public ArrayList<Zone> getRobotPositions() {
+        ArrayList<Zone> zonesRobotIsIn = new ArrayList<>();
+        for (HashMap.Entry<String, Zone> e : zones.entrySet()) {
+            Zone z = e.getValue();
+            Zone r = robotZone;
+            // Check if the center of the robot (the origin or whatever)
+            // is contained within a certain shape. If it is, the zone is
+            // added to our array list before it's returned.
+            if (z.isPointInZone(r.getParentShape().getCenterPoint())) {
+                zonesRobotIsIn.add(z);
+            }
+        }
+        return zonesRobotIsIn;
+    }
+
+    public ArrayList<Integer> getRobotPositionsPriorities() {
+        ArrayList<Integer> priorities = new ArrayList<>();
+        for (Zone z : getRobotPositions()) {
+            priorities.add(z.getZonePriority());
+        }
+        return priorities;
     }
 
     public void checkEveryCollision() {

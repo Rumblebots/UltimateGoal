@@ -172,6 +172,11 @@ public class RadiusCircle implements Shape {
         return false;
     }
 
+    @Override
+    public Coordinate<Double> getCenterPoint() {
+        return circle.center;
+    }
+
     /**
      * Gets how many components (circles) there are.
      *
