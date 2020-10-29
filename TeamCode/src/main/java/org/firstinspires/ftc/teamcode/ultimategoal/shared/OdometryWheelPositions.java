@@ -10,23 +10,23 @@ public class OdometryWheelPositions {
         put(
                 ThreeWheels.wheels.LEFT,
                 new Pose2d(
-                        0,
-                        0,
+                        -7.83,
+                        -1.25,
                         0
                 )
         );
         put(
                 ThreeWheels.wheels.RIGHT,
                 new Pose2d(
-                        0,
-                        0,
+                        7.83,
+                        -1.25,
                         0
                 )
         );
         put(
                 ThreeWheels.wheels.BACK,
                 new Pose2d(
-                        0,
+                        -0.875,
                         0,
                         0
                 )
