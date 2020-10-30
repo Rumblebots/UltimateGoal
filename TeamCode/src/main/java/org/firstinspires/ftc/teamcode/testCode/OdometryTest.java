@@ -2,15 +2,20 @@ package org.firstinspires.ftc.teamcode.testCode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org._11253.lib.drives.ShifterMeccanum;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import org._11253.lib.odometry.threeWheelOdometry.ThreeWheel;
 import org._11253.lib.odometry.threeWheelOdometry.ThreeWheels;
+import org._11253.lib.op.Template;
 import org._11253.lib.utils.telem.Telemetry;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.OdometryWheelPositions;
 
 @TeleOp(name = "Odometry Test", group = "default")
-public class OdometryTest extends ShifterMeccanum {
+public class OdometryTest extends Template {
     ThreeWheels odometryWheels;
     ThreeWheel threeWheel;
+//    DcMotor motor;
+//    DcMotor motor2;
+//    DcMotor motor3;
 
     public OdometryTest() {
         beforeStart.add(
@@ -28,8 +33,15 @@ public class OdometryTest extends ShifterMeccanum {
                 new Runnable() {
                     @Override
                     public void run() {
-                        odometryWheels = new ThreeWheels();
+//                        motor = hardwareMap.get(DcMotor.class, "encoder_right");
+//                        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                        motor2 = hardwareMap.get(DcMotor.class, "encoder_left");
+//                        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                        motor3 = hardwareMap.get(DcMotor.class, "encoder_back");
+//                        motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                        odometryWheels = new ThreeWheels(OdometryWheelPositions.positions);
                         odometryWheels.init();
+                        System.out.println("EEEEEEEEE" + odometryWheels.getMotorArray());
                         threeWheel = new ThreeWheel(odometryWheels);
                     }
                 }
@@ -40,6 +52,11 @@ public class OdometryTest extends ShifterMeccanum {
                 new Runnable() {
                     @Override
                     public void run() {
+//                        System.out.println(motor.getCurrentPosition());
+//                        System.out.println(motor2.getCurrentPosition());
+//                        System.out.println(motor3.getCurrentPosition());
+
+                        threeWheel.updateOdometry();
                         Telemetry.addData(
                                 "C_POSE",
                                 "Odometry Pose",

@@ -115,6 +115,10 @@ public class ThreeWheels {
       _left = left.getDcMotorComponent();
       _right = right.getDcMotorComponent();
       _back = back.getDcMotorComponent();
+        left.getDcMotorComponent().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right.getDcMotorComponent().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        back.getDcMotorComponent().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     /**
