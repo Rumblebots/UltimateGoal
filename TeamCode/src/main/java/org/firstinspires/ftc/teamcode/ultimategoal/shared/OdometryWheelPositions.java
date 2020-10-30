@@ -20,7 +20,7 @@ public class OdometryWheelPositions {
                 new Pose2d(
                         -1.25,
                         -7.83,
-                        0
+                        Math.PI
                 )
         );
         put(
@@ -28,7 +28,7 @@ public class OdometryWheelPositions {
                 new Pose2d(
                         -5.414,
                         0.875,
-                        90
+                        Math.PI/2
                 )
         );
     }};
