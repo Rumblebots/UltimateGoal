@@ -103,7 +103,31 @@ public interface Zone {
     /**
      * Get the total count of components.
      *
+     * <p>
+     * Countable components include things like lines and arcs. Note
+     * that component counts have all but no utility, save debugging
+     * (or flexing) purposes. You know how showing off how hard you can
+     * push the engine of your shitty little car you got from your
+     * grandparents for $3,000 is some kind of flex? In the same way,
+     * showing off how many virtually-rendered components your FTC
+     * code can have is a flex as well.
+     * </p>
+     *
      * @return how many components there are, in total
      */
     int getComponents();
+
+    /**
+     * Determine whether or not this zone is part of the pre-mapped field.
+     *
+     * @return if the zone is a field zone or not
+     */
+    boolean isField();
+
+    /**
+     * Determine whether or not this zone is collidable with parts of the field.
+     *
+     * @return if the zone is capable of collision with other pre-mapped zones
+     */
+    boolean isCollidableWithField();
 }

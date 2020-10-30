@@ -65,4 +65,14 @@ public class Field extends RectangleZone {
     public double getDriveSpeedMultiplier() {
         return 0.5;
     }
+
+    @Override
+    public boolean isField() {
+        return true;
+    }
+
+    @Override
+    public boolean isCollidableWithField() {
+        return false;
+    }
 }

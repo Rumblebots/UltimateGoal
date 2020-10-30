@@ -20,6 +20,15 @@ import java.util.HashMap;
  * predict what collisions may occur where and how to prevent them changes
  * the path to be a path which is actually successful.
  * </p>
+ * <p>
+ * Frames are designed to be very lightweight, so as not to waste any processor
+ * time which would be available otherwise. It's also worth noting that once a
+ * frame is created (it must be created with all of the needed information) the
+ * values shouldn't be changed. As it's name ("Frame") would suggest, frames are
+ * split-second snapshots. If you want a constantly updating picture, create
+ * multiple frames. It's my suggestion that frames are calculated asynchronously
+ * to generate a moving picture and when absolutely necessary (think pathfinding).
+ * </p>
  */
 public class Frame {
     /**
@@ -44,6 +53,13 @@ public class Frame {
 
     /**
      * The robot's zone.
+     *
+     * <p>
+     * The zone itself is immobile and needs to be re-created
+     * every time you'd like to move. Remember, frames must also
+     * be re-constructed every time you'd like to change the position
+     * of something.
+     * </p>
      */
     public Zone robotZone;
 
@@ -60,18 +76,39 @@ public class Frame {
 
     /**
      * A list of potential zone collisions that should be checked.
+     *
+     * <p>
+     * This is designed to be used internally. I'm not entirely sure
+     * what uses you could possibly find for a list of potential
+     * collisions that will be checked in the future, but you do you.
+     * </p>
      */
     public ArrayList<ZoneCollision> collisionsToBeChecked;
 
     /**
      * A list of any collisions which have to do with the robot.
+     *
+     * <p>
+     * These are ONLY the collisions that involve any zone named
+     * "2dRobot". If you name your robot anything other than that,
+     * collisions won't be detected here. Sucks to suck, I guess.
+     * </p>
      */
     public ArrayList<ZoneCollision> robotCollisions;
 
     /**
      * Constructor - sets up the entire frame.
      *
-     * @param zones all of the zones on the frame
+     * <p>
+     * Frames, as their name would suggest, are single split-second
+     * snapshots of what's going on on the field, or at least whatever
+     * the robot perceives to be going on on the field. This means that
+     * frames can not and should not be updated - this is quite literally
+     * analogous to pausing a YouTube video on a specific frame and only
+     * looking at that frame.
+     * </p>
+     *
+     * @param zones all of the zones on the frame (including the robot)
      */
     public Frame(ArrayList<Zone> zones) {
         for (Zone z : zones) {
@@ -104,6 +141,14 @@ public class Frame {
         }
     }
 
+    /**
+     * A method to call other methods to check collisions.
+     *
+     * <p>
+     * I'm assuming this will be used near entirely nowhere but
+     * other portions of this library, but you never know.
+     * </p>
+     */
     public void checkCollisions() {
         determineCollisionsToCheck();
         checkEveryCollision();
@@ -113,6 +158,14 @@ public class Frame {
     /**
      * Determine, based on the HashMap of all of the zones, which zones
      * could possibly be intercepted.
+     *
+     * <p>
+     * This is likely in need of some serious optimization. It currently
+     * just checks every potential combination, which is quite time-consuming.
+     * Thankfully for us, Java is a rather fast programming language and FTC
+     * fields are relatively minimalistic in the sense they don't have many
+     * objects which we need to render onto our virtual field.
+     * </p>
      */
     public void determineCollisionsToCheck() {
         ArrayList<Zone> collidable = new ArrayList<>();
@@ -159,6 +212,18 @@ public class Frame {
         }
     }
 
+    /**
+     * Get a list of every single zone which the robot is in.
+     *
+     * <p>
+     * This only gets the zones which the center of the robot is in.
+     * There will be another method which allows you to check all the
+     * zones which any portion of the robot is in, but that's for another
+     * day.
+     * </p>
+     *
+     * @return an ArrayList of the zones the robot is in
+     */
     public ArrayList<Zone> getRobotPositions() {
         ArrayList<Zone> zonesRobotIsIn = new ArrayList<>();
         for (HashMap.Entry<String, Zone> e : zones.entrySet()) {
@@ -174,6 +239,11 @@ public class Frame {
         return zonesRobotIsIn;
     }
 
+    /**
+     * Get the priorities of each position.
+     *
+     * @return the priorities of every zone the robot is in
+     */
     public ArrayList<Integer> getRobotPositionsPriorities() {
         ArrayList<Integer> priorities = new ArrayList<>();
         for (Zone z : getRobotPositions()) {
@@ -188,6 +258,18 @@ public class Frame {
         }
     }
 
+    /**
+     * Check for a collision between two zones.
+     *
+     * <p>
+     * This works by determining if two shapes are intersecting. If those
+     * two shapes are, in fact, intersecting, then they'll be added to a
+     * running list of all of the zones where there is any intersection.
+     * </p>
+     *
+     * @param zoneA the first zone
+     * @param zoneB the second zone
+     */
     public void checkZoneCollision(Zone zoneA, Zone zoneB) {
         // Check if they're both rectangles. Two rectangles makes collision
         // checking quite easy.

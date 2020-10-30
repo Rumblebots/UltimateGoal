@@ -38,10 +38,18 @@ import org._11253.lib.utils.telem.Telemetry;
 
 /**
  * A super simple meccanum drivetrain.
+ *
  * <p>
  * This uses addition and subtraction rather
  * than trig to calculate the power the motors
  * should be set to. Yeah, that's all.
+ * </p>
+ *
+ * <p>
+ * Do note that this is NOT a class which is modifiable. What I mean by this is that
+ * you can't change some of the values in this if you don't like it. You can feel more
+ * than free to copy this class and change the values, but if you extend this class,
+ * you can't possibly change them.
  * </p>
  *
  * @author Colin Robertson

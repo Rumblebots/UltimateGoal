@@ -36,9 +36,10 @@ import java.util.Objects;
 
 /**
  * Controller mapping interface to make mapping buttons a little bit smoother.
+ *
  * <p>
  * Enum "States" contains all of the possible boolean states a controller can have.
- * The HashMap (states mapped to runnables) contains mapping between a specific boolean state and
+ * The HashMap (states mapped to Runnables) contains mapping between a specific boolean state and
  * a function for it to execute if it comes out true. If the button is not pressed, or if there is
  * nothing mapped to it, don't do anything.
  * </p>
@@ -50,6 +51,9 @@ import java.util.Objects;
  * @author Colin Robertson
  */
 public class ControllerMap {
+    /**
+     * A reference to the physical gamepad itself.
+     */
     Gamepad gamepad;
 
     /**
@@ -58,7 +62,7 @@ public class ControllerMap {
      * This is interfaced through the functions bind and unbind.
      * </p>
      */
-    private HashMap<States, CommandCore> commandMap = new HashMap<>();
+    public HashMap<States, CommandCore> commandMap = new HashMap<>();
 
     /**
      * Constructor function which sets the controller map's gamepad.
@@ -81,6 +85,7 @@ public class ControllerMap {
 
     /**
      * Used to map a certain state to a function.
+     *
      * <p>
      * If the state is already included, and the user is
      * attempting to overwrite it, the original
@@ -88,14 +93,25 @@ public class ControllerMap {
      * first. If the state isn't there, nothing happens.
      * </p>
      *
-     * @param state   a state of the gamepad
-     * @param command a function to execute
+     * @param state   a state of the gamepad. These states are all
+     *                enumerated in the States enum. Obviously, it's
+     *                unlikely that I'll ever be able to include every
+     *                single conceivable controller state. In this case,
+     *                you can just map something another way, not using
+     *                this library.
+     * @param command a {@link CommandCore} to execute
      */
     public final void bind(States state, CommandCore command) {
         commandMap.remove(state);
         commandMap.put(state, command);
     }
 
+    /**
+     * Un-map or un-bind a certain CommandCore from another certain
+     * controller state.
+     *
+     * @param state the state to unmap.
+     */
     public final void unmap(States state) {
         unbind(state);
     }
@@ -197,6 +213,7 @@ public class ControllerMap {
 
     /**
      * Enums for every possible "state" the controller can be in.
+     *
      * <p>
      * Note that states for stick movements only accept the following conditions:
      *     <ul>

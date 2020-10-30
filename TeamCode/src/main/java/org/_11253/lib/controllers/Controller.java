@@ -31,9 +31,56 @@ package org._11253.lib.controllers;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 /**
- * Wrapper class for FTC's default Gamepad
+ * Wrapper class for FTC's default Gamepad.
+ *
  * <p>
- * This provides some additional functionality over the default gamepad.
+ * This provides some additional functionality over the default gamepad. Right below this
+ * you'll find some pretty cool information I may or may not have copy-pasted right from
+ * the Gamepad class included in the FTC library.
+ * </p>
+ *
+ * <p>
+ * Also, this is a bit irrelevant, but I do have to say. The Vim keystrokes required to
+ * copy-paste some text are as follows:
+ * <code>
+ * ESC,
+ * SHIFT-V,
+ * Y,
+ * ESC,
+ * P,
+ * </code>
+ * It looks a lot less interesting when formatted that way, but hey - it's pretty swaggy.
+ * </p>
+ *
+ * <p>
+ * The buttons, analog sticks, and triggers are represented a public
+ * member variables that can be read from or written to directly.
+ * </p>
+ *
+ * <p>
+ * Analog sticks are represented as floats that range from -1.0 to +1.0. They will be 0.0 while at
+ * rest. The horizontal axis is labeled x, and the vertical axis is labeled y.
+ * </p>
+ *
+ * <p>
+ * Triggers are represented as floats that range from 0.0 to 1.0. They will be at 0.0 while at
+ * rest.
+ * </p>
+ *
+ * <p>
+ * Buttons are boolean values. They will be true if the button is pressed, otherwise they will be
+ * false.
+ * </p>
+ *
+ * <p>
+ * The codes KEYCODE_BUTTON_SELECT and KEYCODE_BACK are both be handled as a "back" button event.
+ * Older Android devices (Kit Kat) map a Logitech F310 "back" button press to a KEYCODE_BUTTON_SELECT event.
+ * Newer Android devices (Marshmallow or greater) map this "back" button press to a KEYCODE_BACK event.
+ * Also, the REV Robotics Gamepad (REV-31-1159) has a "select" button instead of a "back" button on the gamepad.
+ * </p>
+ *
+ * <p>
+ * The dpad is represented as 4 buttons, dpad_up, dpad_down, dpad_left, and dpad_right
  * </p>
  *
  * @author Colin Robertson
@@ -86,12 +133,12 @@ public class Controller {
     }
 
     /**
-     * The controller's map.
+     * The controller's map. {@link ControllerMap}
      */
     public ControllerMap map;
 
     /**
-     * The controller's manager.
+     * The controller's manager. {@link ControllerManager}
      *
      * <p>
      * Managers are a new thing I'm attempting to try out, just to make
@@ -104,6 +151,13 @@ public class Controller {
 
     /**
      * The controller's internal gamepad.
+     *
+     * <p>
+     * The Controller class is designed to be a wrapper, abstracting and making
+     * it easier to use the default gamepad. There will likely and inevitably be
+     * some random and scarcely-used functionality that my Controller wrapper
+     * is missing compared to the (not as cool) gamepad.
+     * </p>
      */
     private Gamepad gamepad;
 
@@ -314,5 +368,87 @@ public class Controller {
      */
     public final boolean getSelect() {
         return CMP_BOOLEAN(gamepad.guide);
+    }
+
+    /**
+     * Get the internally-used gamepad.
+     *
+     * <p>
+     * I truly don't have a clue what purpose you could possibly have where
+     * you'd need to get the comparatively very uncool and un-swaggy FTC gamepad
+     * compared to this one, but the option is there regardless.
+     * </p>
+     *
+     * @return this instance of Controller's gamepad.
+     */
+    public final Gamepad getGamepad() {
+        return gamepad;
+    }
+
+    /**
+     * Set the internally-assigned identification code.
+     *
+     * <p>
+     * This is, by default, set by Android OS. This isn't some FTC thing or
+     * whatever, so I truthfully don't have a clue why you might possibly want
+     * to even think about changing it. Regardless, the option is there.
+     * </p>
+     *
+     * @param id the new id.
+     */
+    public void setId(int id) {
+        gamepad.setGamepadId(id);
+    }
+
+    /**
+     * Get the internally-assigned identification code.
+     *
+     * <p>
+     * This is, by default, set by Android OS. This isn't some FTC thing or
+     * whatever, so I truthfully don't have a clue why you might possibly want
+     * to even think about changing it. Regardless, the option is there.
+     * </p>
+     *
+     * @return the current id.
+     */
+    public int getId() {
+        return gamepad.getGamepadId();
+    }
+
+    /**
+     * A timestamp, relative to the last time an event was detected.
+     *
+     * <p>
+     * As consistent with a couple other methods towards the bottom of this file,
+     * this timestamp isn't something I've ever found a use for. Regardless, it's here,
+     * just in case you want it. Hey, you never know, right?
+     * </p>
+     *
+     * @return how long it's been since an event was last detected.
+     */
+    public long getTimestamp() {
+        return gamepad.timestamp;
+    }
+
+    /**
+     * Set the dead zone of the controller/gamepad joysticks.
+     * Read more to learn more.
+     *
+     * <p>
+     * Dead zones, in case you weren't aware, are the zones of the controller where,
+     * regardless of whatever reading the controller is getting, 0 is still returned.
+     * This is because most controllers will return a value so incredibly small that
+     * it might as well be zero. Constantly setting the power of motors to be something
+     * non-zero will make them whine, and it'll sound really god damn obnoxious.
+     * </p>
+     *
+     * <p>
+     * The default dead zone is most likely good and you probably won't need to change it.
+     * </p>
+     *
+     * @param deadZone the dead zone.
+     */
+    public void setJoystickDeadZone(float deadZone) {
+        gamepad.setJoystickDeadzone(deadZone);
     }
 }

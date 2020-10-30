@@ -37,10 +37,26 @@ import java.util.Objects;
 
 /**
  * Provides a method of interacting with events using a string key.
+ *
  * <p>
- * Basically, use this or I'll shoot your entire extended family.
- * I'm a little tired right now, so these docs might not be entirely
- * coherent, but... good luck. That's all I'm saying.
+ * This is "the place" to go to schedule asynchronous events. There's a few things you
+ * should definitely make note of here.
+ * <ul>
+ *     <li>These won't run if the robot freezes.</li>
+ *     <li>If the robot lags, these will too.</li>
+ *     <li>Scheduling a ton of async events (more than 400 per string) will crash.</li>
+ *     <li>This doesn't run on a separate thread.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Rather than using Java's built-in async functionality, I'm using a bit of a custom
+ * extension of that. My reasoning behind it isn't exactly all that important. You can
+ * still go right ahead and use the async functionality Java provides for you - actually,
+ * org._11253.lib.utils.async.tasks includes two classes which allow you to easily schedule
+ * both repeating and non-repeating classes. However, that's not the point here. The point
+ * is that you're this far into this class, and you're probably reading this because you
+ * want to use it. Go on, do it.
  * </p>
  *
  * @author Colin Robertson
@@ -48,6 +64,7 @@ import java.util.Objects;
 public class StringEvents {
     /**
      * The actual map of string to events.
+     *
      * <p>
      * String represents a STRING key for the event scheduler,
      * and Events represents an instance of the event scheduler.
@@ -58,15 +75,34 @@ public class StringEvents {
      * can easily schedule and then cancel events, even if
      * they're repeating.
      * </p>
+     * <p>
+     * If you follow this practice of only assigning a single event to
+     * each key, you'll never have to worry about any overlaps caused by
+     * key deletion. A reason you might NOT want to follow this guideline
+     * is if you have several events which should run non-stop and are
+     * all part of the same functionality. If you have a set of 4 repeating
+     * events which are supposed to run at the same time, putting them all
+     * under a single key makes it easy to stop them all at once.
+     * </p>
      */
     public static HashMap<String, Events> events = new HashMap<>();
 
     /**
      * Tick function which ticks all the event schedulers.
+     *
      * <p>
      * Every time this is run, all of the event handler's contained
      * within the 'events' HashMap are 'ticked.' It also adds telemetry
      * saying how many handles whatever thing has.
+     * </p>
+     * <p>
+     * This can be a processing-power consuming operation. Ticking every
+     * single HashMap means iterating over a HashMap composed of other
+     * HashMaps. Ideally, this should be done every run cycle in order to
+     * ensure that events are executed at the right time. However, this could
+     * hypothetically be run every two, or three, or even four, or whatever
+     * number you could possibly imagine number of times instead if you'd
+     * find that to be more helpful.
      * </p>
      */
     public static void tick() {
@@ -80,6 +116,7 @@ public class StringEvents {
 
     /**
      * Schedules an event.
+     *
      * <p>
      * This essentially just interfaces with one of the event
      * schedulers, based on whichever string key you choose to use.
@@ -87,11 +124,66 @@ public class StringEvents {
      * as "scheduler" or something simple.
      * </p>
      *
-     * @param name         the string name of the event scheduler you'd like to access
-     * @param duration     how long the event should last
-     * @param delay        the delay before the event takes place
-     * @param timed        the actual timed element which should be executed
-     * @param shouldRepeat whether or not the event should repeat itself
+     * <p>
+     * An exert from {@link Events}'s schedule functionality JavaDoc
+     * follows.
+     * </p>
+     *
+     * <p>
+     * If the delay is anything other than zero, create a new
+     * scheduled event, with a duration of however long the
+     * delay is. Once that event expires and the close method
+     * is run, schedule another event, with the actual duration
+     * and the actual event included.
+     * </p>
+     *
+     * <p>
+     * If the delay IS zero, however, calculate the expiration
+     * date of the event and schedule an event for that long.
+     * </p>
+     *
+     * <p>
+     * Don't worry if this doesn't make any sense - this
+     * method will handle any confusion you have and just so perfectly
+     * schedule everything nicely for you.
+     * </p>
+     *
+     * <p>
+     * In general, when scheduling an event, you're going to use
+     * the open and close methods contained within Timed.
+     * *** MAKE SURE NOT TO FORGET TO STOP ANYTHING ***
+     * ***   YOU NEED TO STOP IN THE CLOSE METHOD!  ***
+     * </p>
+     *
+     * <p>
+     * Although it might be a little bit annoying, the code
+     * to schedule a timed event is a lot longer. This is mostly
+     * because every timed event actually has to spawn two events
+     * with slightly different expiration dates. And not only that,
+     * but because 'ran' is a boolean stored in the Timed element,
+     * it has to be manually set to false every single time, which
+     * is why I clone the original timed and set the value to false.
+     * If you're reading this and you have a better method of doing
+     * this, please let me know, I'd much rather not have this poorly
+     * written code just lying here.
+     * </p>
+     *
+     * @param name         the string name of the event scheduler you'd like to access.
+     *                     It's often a wise idea to store this sting in a variable so you
+     *                     can easily access said string and thus easily access
+     *                     said event.
+     * @param duration     how long the event should last, in milliseconds. Repeating events
+     *                     will re-schedule themselves during the "close" portion of this
+     *                     duration (at the very end) and regular events will execute normally.
+     * @param delay        the delay before the event takes place. The delay will only ever
+     *                     have an effect on non-repeating events. If you'd like to modify the
+     *                     duration between executions of a repeating event, change the "duration."
+     * @param timed        the actual timed element which should be executed. Timed elements are
+     *                     fairly complex, so I'd suggest you go check out {@link Timed}.
+     * @param shouldRepeat whether or not the event should repeat itself. Repeating events are not
+     *                     affected by delay. Additionally, repeating events schedule two separate
+     *                     events - one to schedule another execution, and one to actually handle
+     *                     the execution of the Timed you've provided.
      */
     public static void schedule(final String name,
                                 final long duration,
