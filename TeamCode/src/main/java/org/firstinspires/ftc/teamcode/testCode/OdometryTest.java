@@ -13,9 +13,6 @@ import org.firstinspires.ftc.teamcode.ultimategoal.shared.OdometryWheelPositions
 public class OdometryTest extends Template {
     ThreeWheels odometryWheels;
     ThreeWheel threeWheel;
-//    DcMotor motor;
-//    DcMotor motor2;
-//    DcMotor motor3;
 
     public OdometryTest() {
         beforeStart.add(
@@ -52,10 +49,6 @@ public class OdometryTest extends Template {
                 new Runnable() {
                     @Override
                     public void run() {
-//                        System.out.println(motor.getCurrentPosition());
-//                        System.out.println(motor2.getCurrentPosition());
-//                        System.out.println(motor3.getCurrentPosition());
-
                         threeWheel.updateOdometry();
                         Telemetry.addData(
                                 "C_POSE",

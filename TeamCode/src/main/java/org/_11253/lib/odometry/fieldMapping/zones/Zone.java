@@ -120,12 +120,24 @@ public interface Zone {
     /**
      * Determine whether or not this zone is part of the pre-mapped field.
      *
+     * <p>
+     * This is used in combination with {@link Zone#isCollidableWithField()} to do
+     * cool stuff.
+     * </p>
+     *
      * @return if the zone is a field zone or not
      */
     boolean isField();
 
     /**
      * Determine whether or not this zone is collidable with parts of the field.
+     *
+     * <p>
+     * Anything marked as field is immediately excluded from collision-checking, meaning
+     * it'll decide to save the CPU power and not process the potential collision. Be
+     * careful turning this on - you wouldn't want to accidentally not check collisions.
+     * That would be so miserably terrible.
+     * </p>
      *
      * @return if the zone is capable of collision with other pre-mapped zones
      */

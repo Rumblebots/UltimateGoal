@@ -28,10 +28,18 @@ public class MapApi {
     TwoDimensionalRobot robot = new TwoDimensionalRobot(0, 0, 0);
     HashMap<Integer, ArrayList<Zone>> positionWithPriorities = new HashMap<>();
     Odometry odometry;
+    private final String mappingName = "_1125c_MAPPING_ODO_UPDATE";
 
+    /**
+     * Schedule an asynchronous updater to automagically update the
+     * position of the robot's odometry subsystem for us.
+     *
+     * @param odometry the instance of odometry to use.
+     * @param duration how long in between updates.
+     */
     public void scheduleAsync(final Odometry odometry, int duration) {
         StringEvents.schedule(
-                "_1125c_MAPPING_ODO_UPDATE",
+                mappingName,
                 duration,
                 0,
                 new Timed() {
@@ -49,18 +57,49 @@ public class MapApi {
         );
     }
 
+    /**
+     * Cancel an already-scheduled asynchronous event.
+     */
     public void cancelAsync() {
-        StringEvents.clear("_1125c_MAPPING_ODO_UPDATE");
+        StringEvents.clear(mappingName);
     }
 
+    /**
+     * Import a map to use.
+     *
+     * <p>
+     * This should probably be used exclusively in the constructor
+     * of this class, as you can't do much with map importation
+     * after everything has already been set up.
+     * </p>
+     *
+     * @param map the map to import.
+     */
     public void importMap(Map map) {
         this.map = map;
     }
 
+    /**
+     * Create a new MapApi instance using a map.
+     *
+     * @param map the field map to use. If in doubt, you can use UltimateGoal,
+     *            SkyStone, or any of the testing maps. Honestly, it doesn't
+     *            matter in the slightest - it just has to be a map.
+     */
     public MapApi(Map map) {
         importMap(map);
     }
 
+    /**
+     * Update the whole map system.
+     *
+     * <p>
+     * This will probably end up being done automatically, so you likely don't have
+     * to worry about manually updating it.
+     * </p>
+     *
+     * @param pose2d the position of the robot
+     */
     public void update(Pose2d pose2d) {
         Frame frame = new Frame(
                 new ArrayList<Zone>(
@@ -78,6 +117,16 @@ public class MapApi {
         }
     }
 
+    /**
+     * Get the list of zones the robot is in as a string.
+     *
+     * <p>
+     * The string is ordered by zone priority. Keep in mind higher priorities
+     * override lower ones.
+     * </p>
+     *
+     * @return the list of zones the robot is in.
+     */
     public String getPositionsString() {
         String working = "";
         for (HashMap.Entry<Integer, ArrayList<Zone>> e : positionWithPriorities.entrySet()) {

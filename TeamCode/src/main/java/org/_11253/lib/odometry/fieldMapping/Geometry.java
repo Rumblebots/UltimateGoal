@@ -3,6 +3,14 @@ package org._11253.lib.odometry.fieldMapping;
 import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 import org._11253.lib.odometry.fieldMapping.components.countable.Line;
 
+/**
+ * Geometry-related utilities.
+ *
+ * <p>
+ * Of course it's all static. It's all the same. It's just a bunch of
+ * random geometry-related utilities. Yay.
+ * </p>
+ */
 public class Geometry {
     public final static Coordinate<Double> origin = new Coordinate<>(0.0, 0.0);
     public final static Coordinate<Double> topRight = new Coordinate<>(144.0, 144.0);

@@ -39,18 +39,68 @@ import java.util.ArrayList;
  * @author Colin Robertson
  */
 public class Rectangle implements Shape {
+    /**
+     * The front-right corner of the rectangle.
+     * This is relative to the origin + rotation.
+     */
     final Coordinate<Double> frontRight;
+
+    /**
+     * The back-right corner of the rectangle.
+     * This is relative to the origin + rotation.
+     */
     final Coordinate<Double> backRight;
+
+    /**
+     * The front-left corner of the rectangle.
+     * This is relative to the origin + rotation.
+     */
     final Coordinate<Double> frontLeft;
+
+    /**
+     * The back-left corner of the rectangle.
+     * This is relative to the origin + rotation.
+     */
     final Coordinate<Double> backLeft;
+
+    /**
+     * The center of the rectangle.
+     * This is relative to the origin + rotation.
+     */
     final Coordinate<Double> center;
 
+    /**
+     * The top of the rectangle.
+     * This is relative to the origin + rotation.
+     */
     final Line top;
+
+    /**
+     * The right of the rectangle.
+     * This is relative to the origin + rotation.
+     */
     final Line right;
+
+    /**
+     * The bottom of the rectangle.
+     * This is relative to the origin + rotation.
+     */
     final Line bottom;
+
+    /**
+     * The left of the triangle.
+     * This is relative to the origin + rotation.
+     */
     final Line left;
 
+    /**
+     * "Is collidable exterior."
+     */
     private boolean _ICE = false;
+
+    /**
+     * "Is collidable interior."
+     */
     private boolean _ICI = false;
 
     /**

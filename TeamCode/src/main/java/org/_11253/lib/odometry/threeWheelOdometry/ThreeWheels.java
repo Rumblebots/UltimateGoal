@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * A subystem containing all of the information we need
+ * A subsystem containing all of the information we need
  * about the physical encoder components on the robot.
  *
  * <p>
- * This is used (primarily) in the ~/shared/Odometry.java file 
+ * This is used (primarily) in the ~/shared/Odometry.java file
  * and contains all of the stuff we need for it. This is my first time
  * doing anything related to odometry, as well as my first time doing it
  * on a robot, so I can't promise much.
@@ -51,7 +51,7 @@ public class ThreeWheels {
      * <p>
      * The position of each of these wheels is relative to the very
      * center of the robot. This needs to be adjusted after we get the
-     * positioning of the wheels. I'm not entirely sure if these are 
+     * positioning of the wheels. I'm not entirely sure if these are
      * supposed to be able to move, but let's really hope not. Anyways...
      * </p>
      * <p>
@@ -99,7 +99,7 @@ public class ThreeWheels {
 
     /**
      * Initialize the three custom motors and the three DcMotors.
-     * 
+     *
      * <p>
      * Much like the initialize process for every other physical
      * subsystem on the entire robot, you need to initialize it
@@ -158,10 +158,10 @@ public class ThreeWheels {
      * Our three different types/positions of wheels.
      *
      * <p>
-     * These positions are all relative to the BACK of the robot. To 
+     * These positions are all relative to the BACK of the robot. To
      * figure out which wheel is which, stand behind the robot and look
      * at the RIGHT side, the LEFT side, and the BACK side. There will
-     * undoubtedly be some confusion about this in the future, so this 
+     * undoubtedly be some confusion about this in the future, so this
      * is here for reference, and quite possibly my own sanity.
      * </p>
      */

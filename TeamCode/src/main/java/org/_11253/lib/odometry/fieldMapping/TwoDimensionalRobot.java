@@ -10,15 +10,9 @@ import org._11253.lib.odometry.fieldMapping.zones.Zone;
  * A two-dimensional robot. It's very cool, I know.
  *
  * <p>
- * For further reading, see below.
- * https://en.wikipedia.org/wiki/Rotation_matrix
- * Basically, let's see.
- * <pre>
- * Rv = [ cos(theta), -sin(theta) ] * [ x ] = [ x cos(theta) - y sin(theta) ]
- *      [ sin(theta),  cos(theta) ]   [ y ]   [ x sin(theta) + y cos(theta) ]
- * x prime = x cos(theta) - y sin(theta)
- * y prime = x sin(theta) + y cos(theta)
- * </pre>
+ * For lack of better words to describe it, this is a glorified rectangle with
+ * a special name. Every instance of TwoDimensionalRobot has a zone named
+ * "2dRobot."
  * </p>
  */
 public class TwoDimensionalRobot {
@@ -40,12 +34,35 @@ public class TwoDimensionalRobot {
      * </p>
      */
     public Rectangle hitbox;
+
+    /**
+     * Robot/specialized robot zone.
+     *
+     * <p>
+     * This is yet another layer of abstraction of everything that's going on.
+     * Robot is just a special zone named the robot.
+     * </p>
+     */
     public Robot robot;
 
+    /**
+     * The rectangular zone itself.
+     */
     public Zone zone;
 
+    /**
+     * The robot's pose.
+     */
     public Pose2d pose;
+
+    /**
+     * The robot's current position, without heading.
+     */
     public Coordinate<Double> position;
+
+    /**
+     * The robot's current heading.
+     */
     public double heading;
 
     /** How wide, in terms of X, the robot is. */
@@ -68,6 +85,20 @@ public class TwoDimensionalRobot {
     /** How far (absolute) the BL corner is from the center. */
     private final Coordinate<Double> blTrail;
 
+    /**
+     * Create a new instance of the mobile 2d robot.
+     *
+     * <p>
+     * This can still be moved after it's created! It moves by creating a new
+     * zone every time, but that's not the point. The point is, this is probably
+     * the only implementation of a zone you can move that's included in this
+     * library. That's pretty fucking cool, right? I know it is.
+     * </p>
+     *
+     * @param widthX how wide the robot is, in terms of x
+     * @param widthY how wide the robot is, in terms of y
+     * @param initialHeading the heading the robot starts facing at
+     */
     public TwoDimensionalRobot(double widthX,
                                double widthY,
                                double initialHeading) {

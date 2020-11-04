@@ -2,15 +2,45 @@ package org._11253.lib.odometry.fieldMapping.types;
 
 import org._11253.lib.odometry.fieldMapping.zones.Zone;
 
+/**
+ * A collision between two zones.
+ *
+ * <p>
+ * These aren't ordered pairs or whatever. A collision with A and
+ * B is the same collision as any other collision with A and B. If
+ * you throw a C in there, things get messy or something, but I
+ * don't know, or care.
+ * </p>
+ */
 public class ZoneCollision {
+    /**
+     * The "first" of the two zones.
+     */
     private Zone a;
+
+    /**
+     * The "second" of the two zones.
+     */
     private Zone b;
 
+    /**
+     * Create a new zone collision.
+     *
+     * @param a the first of the two zones
+     * @param b the second of the two zones
+     */
     public ZoneCollision(Zone a, Zone b) {
         this.a = a;
         this.b = b;
     }
 
+    /**
+     * Check if two collisions are between the same two zones.
+     *
+     * @param ca the first collision
+     * @param cb the second collision
+     * @return if both of the collisions are between the same zones
+     */
     public static boolean isSameCollision(ZoneCollision ca,
                                           ZoneCollision cb) {
         Zone caa = ca.getA(); String caan = caa.getName();
@@ -40,10 +70,20 @@ public class ZoneCollision {
         else return false;
     }
 
+    /**
+     * Get the first zone.
+     *
+     * @return the first zone.
+     */
     public Zone getA() {
         return a;
     }
 
+    /**
+     * Get the second zone.
+     *
+     * @return the second zone.
+     */
     public Zone getB() {
         return b;
     }
