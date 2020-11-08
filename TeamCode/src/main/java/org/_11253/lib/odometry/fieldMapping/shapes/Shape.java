@@ -26,6 +26,14 @@ import org._11253.lib.utils.jrep.ListWrapper;
  * extension, it's a little bit more convenient to just use
  * our lovely interface fellow, Shape.
  * </p>
+ * <p>
+ * A shape is very simply defined as any geometric shape.
+ * Rectangles, circles, etc, count as shapes. Most shapes will
+ * be rectangles, as they are, by far, the most commonly-used
+ * shape in FTC field mapping. Circles do exist as well. I haven't
+ * gotten around to implementing ovals or whatever else, so, for
+ * the most part, just stick to the fucking rectangles.
+ * </p>
  */
 public interface Shape {
     /**
