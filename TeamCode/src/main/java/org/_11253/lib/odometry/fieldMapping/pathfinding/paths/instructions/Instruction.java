@@ -15,8 +15,11 @@ public interface Instruction {
      */
     int maxTime();
 
-    int time();
-
+    /**
+     * The minimum amount of time the instruction will execute for.
+     *
+     * @return the minimum amount of time the instruction will execute for. (ms)
+     */
     int minTime();
 
     /**

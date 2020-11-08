@@ -25,9 +25,34 @@ public class MapApi {
      * </p>
      */
     Map map = new Map();
+
+    /**
+     * The geometric representation of the robot.
+     *
+     * <p>
+     * TwoDimensionalRobot is updatable, meaning the position of it can
+     * (and likely does) constantly change.
+     * </p>
+     */
     TwoDimensionalRobot robot = new TwoDimensionalRobot(0, 0, 0);
+
+    /**
+     * A map of positions with the priorities they have.
+     */
     HashMap<Integer, ArrayList<Zone>> positionWithPriorities = new HashMap<>();
+
+    /**
+     * Reference to the odometry.
+     */
     Odometry odometry;
+
+    /**
+     * The name for the asynchronous event.
+     *
+     * <p>
+     * Strings are immutable, so we store this here.
+     * </p>
+     */
     private final String mappingName = "_1125c_MAPPING_ODO_UPDATE";
 
     /**

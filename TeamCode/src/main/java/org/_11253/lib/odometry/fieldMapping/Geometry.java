@@ -46,4 +46,19 @@ public class Geometry {
                                      Coordinate<Double> b) {
         return new Line(a, b).length;
     }
+
+    /**
+     * Determine whether or not a point is within a given proximity to
+     * another point.
+     *
+     * @param test the point to test.
+     * @param base the point which is used as a base.
+     * @param tolerance how far the two points can be.
+     * @return whether or not the two points are within a given proximity.
+     */
+    public static boolean isNearPoint(Coordinate<Double> test,
+                                      Coordinate<Double> base,
+                                      double tolerance) {
+        return tolerance <= new Line(test, base).length;
+    }
 }

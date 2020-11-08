@@ -1,5 +1,7 @@
 package org._11253.lib.odometry.fieldMapping.pathfinding.paths;
 
+import org._11253.lib.odometry.fieldMapping.components.HeadingCoordinate;
+
 /**
  * The most primitive of the planned paths.
  *
@@ -12,5 +14,7 @@ package org._11253.lib.odometry.fieldMapping.pathfinding.paths;
  * movement-based objective.
  * </p>
  */
-public class PlannedPath {
+public interface PlannedPath {
+    HeadingCoordinate<Double> start();
+    HeadingCoordinate<Double> end();
 }
