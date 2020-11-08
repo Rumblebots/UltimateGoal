@@ -1,7 +1,10 @@
 package org._11253.lib.odometry.fieldMapping;
 
 import org._11253.lib.odometry.fieldMapping.components.Coordinate;
+import org._11253.lib.odometry.fieldMapping.components.HeadingCoordinate;
 import org._11253.lib.odometry.fieldMapping.components.countable.Line;
+import org._11253.lib.utils.math.Comparator;
+import org._11253.lib.utils.math.Math;
 
 /**
  * Geometry-related utilities.
@@ -60,5 +63,14 @@ public class Geometry {
                                       Coordinate<Double> base,
                                       double tolerance) {
         return tolerance <= new Line(test, base).length;
+    }
+
+    public static boolean areHeadingsClose(HeadingCoordinate<Double> test,
+                                           HeadingCoordinate<Double> base,
+                                           double tolerance) {
+        return new Comparator(tolerance).compare(
+                test.getHeading(),
+                base.getHeading()
+        );
     }
 }

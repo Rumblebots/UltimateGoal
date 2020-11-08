@@ -49,4 +49,6 @@ public interface Instruction {
      * @return true/false for that condition.
      */
     boolean conditionStop();
+
+    void execute();
 }
