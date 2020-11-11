@@ -2,15 +2,23 @@ package org._11253.lib.odometry.fieldMapping.pathfinding;
 
 import org._11253.lib.controllers.Controller;
 import org._11253.lib.odometry.Odometry;
+import org._11253.lib.odometry.fieldMapping.Map;
+import org._11253.lib.odometry.fieldMapping.TwoDimensionalRobot;
 import org._11253.lib.odometry.fieldMapping.components.HeadingCoordinate;
 import org._11253.lib.odometry.fieldMapping.pathfinding.managers.InstructionManager;
 import org._11253.lib.odometry.fieldMapping.pathfinding.managers.MapManager;
 import org._11253.lib.odometry.fieldMapping.pathfinding.managers.PathManager;
 import org._11253.lib.odometry.fieldMapping.pathfinding.managers.RobotManager;
+import org._11253.lib.odometry.fieldMapping.pathfinding.paths.DoubleLinearPath;
+import org._11253.lib.odometry.fieldMapping.pathfinding.paths.PlannedLinearPath;
+import org._11253.lib.odometry.fieldMapping.pathfinding.paths.instructions.Instruction;
+import org._11253.lib.odometry.fieldMapping.pathfinding.paths.instructions.MoveInstruction;
 import org._11253.lib.odometry.fieldMapping.pathfinding.robotRegulation.DrivetrainRegulationSystem;
 import org._11253.lib.odometry.fieldMapping.pathfinding.robotRegulation.OdometryRegulationSystem;
 import org._11253.lib.odometry.fieldMapping.pathfinding.robotRegulation.UserInputRegulationSystem;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
+
+import java.util.ArrayList;
 
 /**
  * The highest-level abstraction of the pathfinding system.
@@ -60,14 +68,22 @@ import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
  * </p>
  */
 public class Pathfinder {
+    public TwoDimensionalRobot twoDimensionalRobot;
+    public Map map;
+
     public DrivetrainRegulationSystem drivetrain = new DrivetrainRegulationSystem();
     public OdometryRegulationSystem odometry = new OdometryRegulationSystem();
     public UserInputRegulationSystem user = new UserInputRegulationSystem();
 
     public InstructionManager instructionManager = new InstructionManager();
-    public MapManager mapManager = new MapManager();
+    public MapManager mapManager;
     public PathManager pathManager = new PathManager();
-    public RobotManager robotManager = new RobotManager(drivetrain, odometry, user);
+    public RobotManager robotManager = new RobotManager(
+            drivetrain,
+            odometry,
+            user,
+            twoDimensionalRobot
+    );
 
     /**
      * Create a new instance of a pathfinder.
@@ -86,9 +102,11 @@ public class Pathfinder {
      */
     public Pathfinder(Drivetrain drivetrain,
                       Odometry odometry,
+                      Map map,
                       Controller controller1,
                       Controller controller2) {
-
+        this.map = map;
+        mapManager = new MapManager(map);
     }
 
     /**
@@ -113,8 +131,54 @@ public class Pathfinder {
      *               too long, so if the movement takes more than 10,000 ms (10 seconds),
      *               it'll be cancelled and the robot will just chill there.
      */
-    public void goToPosition(HeadingCoordinate<Double> target) {
-
+    public void goToPosition(final HeadingCoordinate<Double> target) {
+        boolean hasPathBeenFound = false;
+        ArrayList<PlannedLinearPath> paths = new ArrayList<>();
+        ArrayList<Instruction> instructions = new ArrayList<>();
+        ArrayList<HeadingCoordinate<Double>> targets = new ArrayList<HeadingCoordinate<Double>>() {{
+            add(target);
+        }};
+        while (hasPathBeenFound) {
+            DoubleLinearPath doublePath = new DoubleLinearPath(
+                    new HeadingCoordinate<>(
+                            robotManager.twoDimensionalRobot.position.getX(),
+                            robotManager.twoDimensionalRobot.position.getY(),
+                            robotManager.twoDimensionalRobot.heading
+                    ),
+                    target
+            );
+            PlannedLinearPath a = doublePath.a;
+            PlannedLinearPath b = doublePath.b;
+            paths.add(a);
+            paths.add(b);
+            hasPathBeenFound = true;
+            // Line aLine = a.direct;
+            // Line bLine = b.direct;
+            // if (map.doesLineCollide(aLine)) {
+            //     targets.add(new HeadingCoordinate<>(
+            //             aLine.midpoint.getX(),
+            //             aLine.midpoint.getY(),
+            //             target.getHeading()
+            //     ));
+            // } else if (map.doesLineCollide(bLine)) {
+            //     targets.add(new HeadingCoordinate<>(
+            //             bLine.midpoint.getX(),
+            //             bLine.midpoint.getY(),
+            //             target.getHeading()
+            //     ));
+            // }
+        }
+        for (PlannedLinearPath path : paths) {
+            instructions.add(new MoveInstruction(
+                    path.start,
+                    path.end,
+                    twoDimensionalRobot,
+                    robotManager
+            ));
+        }
+        for (Instruction instruction : instructions) {
+            instructionManager.addInstruction(instruction);
+        }
     }
 
     /**
@@ -153,6 +217,6 @@ public class Pathfinder {
      * </p>
      */
     public void tickPathfinder() {
-
+        instructionManager.runInstructions();
     }
 }

@@ -1,5 +1,6 @@
 package org._11253.lib.odometry.fieldMapping.pathfinding.managers;
 
+import org._11253.lib.odometry.fieldMapping.TwoDimensionalRobot;
 import org._11253.lib.odometry.fieldMapping.pathfinding.robotRegulation.DrivetrainRegulationSystem;
 import org._11253.lib.odometry.fieldMapping.pathfinding.robotRegulation.OdometryRegulationSystem;
 import org._11253.lib.odometry.fieldMapping.pathfinding.robotRegulation.UserInputRegulationSystem;
@@ -11,13 +12,16 @@ public class RobotManager {
     public DrivetrainRegulationSystem drivetrain;
     public OdometryRegulationSystem odometry;
     public UserInputRegulationSystem user;
+    public TwoDimensionalRobot twoDimensionalRobot;
 
     public RobotManager(DrivetrainRegulationSystem drivetrain,
                         OdometryRegulationSystem odometry,
-                        UserInputRegulationSystem user) {
+                        UserInputRegulationSystem user,
+                        TwoDimensionalRobot twoDimensionalRobot) {
         this.drivetrain = drivetrain;
         this.odometry = odometry;
         this.user = user;
+        this.twoDimensionalRobot = twoDimensionalRobot;
     }
 
     /**

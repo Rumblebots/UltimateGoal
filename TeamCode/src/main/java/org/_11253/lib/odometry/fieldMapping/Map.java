@@ -3,6 +3,7 @@ package org._11253.lib.odometry.fieldMapping;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import org._11253.lib.odometry.fieldMapping.components.Coordinate;
 import org._11253.lib.odometry.fieldMapping.components.HeadingCoordinate;
+import org._11253.lib.odometry.fieldMapping.components.countable.Line;
 import org._11253.lib.odometry.fieldMapping.zones.Zone;
 import org._11253.lib.utils.jrep.ListWrapper;
 
@@ -93,5 +94,20 @@ public class Map {
         robotZone = robot.zone;
         zones.add(robot.zone);
         return zones;
+    }
+
+    public boolean doesLineCollide(Line line) {
+        return doesLineIntersectWithCollidableZones(line);
+    }
+
+    public boolean doesLineIntersectWithCollidableZones(Line line) {
+        for (Zone zone : fieldZones.list) {
+            if (zone.isField()) {
+                if (zone.doesLineEnterZone(line)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
