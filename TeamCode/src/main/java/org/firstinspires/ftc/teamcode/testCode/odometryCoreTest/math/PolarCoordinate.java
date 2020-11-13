@@ -2,8 +2,10 @@
  * Made by Tejas Mehta
  * Made on Wednesday, November 04, 2020
  * File Name: PolarCoordinate
- * Package: com.tejasmehta.OdometryCore.com.tejasmehta.OdometryCore.math*/
+ * Package: com.tejasmehta.OdometryCore.math
+ */
 package org.firstinspires.ftc.teamcode.testCode.odometryCoreTest.math;
+
 
 public class PolarCoordinate {
     private final double r;
@@ -13,7 +15,7 @@ public class PolarCoordinate {
         double x = cartesian.getX();
         double y = cartesian.getY();
         double r = Math.sqrt(x * x + y * y);
-        double theta = Math.atan(y/x);
+        double theta = x != 0 ? Math.atan(y/x) : 0;
         return new PolarCoordinate(r, theta);
     }
 
@@ -28,5 +30,13 @@ public class PolarCoordinate {
 
     public double getTheta() {
         return theta;
+    }
+
+    @Override
+    public String toString() {
+        return "PolarCoordinate{" +
+                "r=" + r +
+                ", theta=" + theta +
+                '}';
     }
 }
