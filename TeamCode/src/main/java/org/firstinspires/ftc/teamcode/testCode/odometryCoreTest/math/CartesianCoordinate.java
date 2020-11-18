@@ -2,8 +2,11 @@
  * Made by Tejas Mehta
  * Made on Wednesday, November 04, 2020
  * File Name: LocalCoordinate
- * Package: com.tejasmehta.OdometryCore.com.tejasmehta.OdometryCore.math*/
+ * Package: com.tejasmehta.OdometryCore.math
+ */
 package org.firstinspires.ftc.teamcode.testCode.odometryCoreTest.math;
+
+import org.firstinspires.ftc.teamcode.testCode.odometryCoreTest.math.PolarCoordinate;
 
 public class CartesianCoordinate {
     private final double x;
@@ -28,5 +31,13 @@ public class CartesianCoordinate {
 
     public double getY() {
         return y;
+    }
+
+    @Override
+    public String toString() {
+        return "CartesianCoordinate{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }
