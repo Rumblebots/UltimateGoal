@@ -7,12 +7,12 @@ package org.firstinspires.ftc.teamcode.testCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.testCode.odometryCoreTest.OdometryCore;
+import com.tejasmehta.OdometryCore.OdometryCore;
 import org._11253.lib.op.Template;
 import org._11253.lib.utils.math.Math;
 import org._11253.lib.utils.telem.Telemetry;
-import org.firstinspires.ftc.teamcode.testCode.odometryCoreTest.localization.EncoderPositions;
-import org.firstinspires.ftc.teamcode.testCode.odometryCoreTest.localization.OdometryPosition;
+import com.tejasmehta.OdometryCore.localization.EncoderPositions;
+import com.tejasmehta.OdometryCore.localization.OdometryPosition;
 
 @TeleOp(name = "Odometry Custom Test", group = "Test")
 public class CustomOdometryTest extends Template {
