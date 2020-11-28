@@ -27,7 +27,7 @@ public class Map {
     /**
      * The ROBOT! Yay!
      */
-    public TwoDimensionalRobot twoDimensionalRobot;
+    public TwoDimensionalRobot twoDimensionalRobot = new TwoDimensionalRobot(0.0, 0.0, 0.0);
 
     /**
      * The zone of the robot.

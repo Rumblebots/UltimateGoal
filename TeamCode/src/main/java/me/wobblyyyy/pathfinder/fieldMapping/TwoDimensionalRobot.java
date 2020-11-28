@@ -112,6 +112,7 @@ public class TwoDimensionalRobot {
         flTrail = new Coordinate<>(-halfX, halfY);
         brTrail = new Coordinate<>(halfX, -halfY);
         blTrail = new Coordinate<>(-halfX, -halfY);
+        update(new HeadingCoordinate<Double>(0.0, 0.0, 0.0));
     }
 
     /**
@@ -158,5 +159,6 @@ public class TwoDimensionalRobot {
                 true
         );
         robot = new Robot(hitbox);
+        zone = robot;
     }
 }

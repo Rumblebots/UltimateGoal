@@ -134,8 +134,8 @@ public class Frame {
      */
     public void checkRobotCollisions() {
         for (ZoneCollision zc : collisions) {
-            if (zc.getA().getName() == "2dRobot" ||
-                    zc.getB().getName() == "2dRobot") {
+            if (zc.getA().getName().equals("2dRobot") ||
+                    zc.getB().getName().equals("2dRobot")) {
                 robotCollisions.add(zc);
             }
         }

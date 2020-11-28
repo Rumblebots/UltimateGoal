@@ -1,5 +1,7 @@
 package me.wobblyyyy.pathfinder.fieldMapping.components;
 
+import org.jetbrains.annotations.NotNull;
+
 public class HeadingCoordinate<E> {
     private final E x;
     private final E y;
@@ -27,15 +29,15 @@ public class HeadingCoordinate<E> {
         return new Coordinate<E>(x, y);
     }
 
-    public String asString() {
-        return new String(
-                "{" +
-                        "X: " +
-                        x.toString() + " " +
-                        "Y: " +
-                        y.toString() + " " +
-                        "H: " +
-                        heading.toString() + "}"
-        );
+    @NotNull
+    @Override
+    public String toString() {
+        return "{" +
+                "X: " +
+                x.toString() + " " +
+                "Y: " +
+                y.toString() + " " +
+                "H: " +
+                heading.toString() + "}";
     }
 }

@@ -83,8 +83,13 @@ public class FmTest extends ShifterMeccanum {
                 new Runnable() {
                     @Override
                     public void run() {
-                        Telemetry.addLine(
-                                mapApi.getPositionsString()
+                        Telemetry.addData(
+                                "asdfasdfsfsdf", "asd", ": ", odometry.getPosition().toString()
+//                                mapApi.getPositionsString()
+                        );
+                        Telemetry.addData(
+                                "asdfasdfsfsgfhdf", "avghsd", ": ", mapApi.getPositionsString()
+//                                mapApi.getPositionsString()
                         );
                     }
                 }
