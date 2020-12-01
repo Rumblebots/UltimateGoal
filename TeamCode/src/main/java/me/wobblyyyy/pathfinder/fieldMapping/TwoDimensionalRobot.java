@@ -14,6 +14,8 @@ import me.wobblyyyy.pathfinder.fieldMapping.zones.commonZones.Robot;
  * a special name. Every instance of TwoDimensionalRobot has a zone named
  * "2dRobot."
  * </p>
+ *
+ * @author Colin Robertson
  */
 public class TwoDimensionalRobot {
     /**
@@ -65,24 +67,42 @@ public class TwoDimensionalRobot {
      */
     public double heading;
 
-    /** How wide, in terms of X, the robot is. */
+    /**
+     * How wide, in terms of X, the robot is.
+     */
     private final double widthX;
-    /** How wide, in terms of Y, the robot is. */
+    /**
+     * How wide, in terms of Y, the robot is.
+     */
     private final double widthY;
-    /** The heading at which the robot begins. */
+    /**
+     * The heading at which the robot begins.
+     */
     private final double initialHeading;
-    /** HALF of how wide, in terms of X, the robot is. */
+    /**
+     * HALF of how wide, in terms of X, the robot is.
+     */
     private final double halfX;
-    /** HALF of how wide, in terms of Y, the robot is. */
+    /**
+     * HALF of how wide, in terms of Y, the robot is.
+     */
     private final double halfY;
 
-    /** How far (absolute) the FR corner is from the center. */
+    /**
+     * How far (absolute) the FR corner is from the center.
+     */
     private final Coordinate<Double> frTrail;
-    /** How far (absolute) the FL corner is from the center. */
+    /**
+     * How far (absolute) the FL corner is from the center.
+     */
     private final Coordinate<Double> flTrail;
-    /** How far (absolute) the BR corner is from the center. */
+    /**
+     * How far (absolute) the BR corner is from the center.
+     */
     private final Coordinate<Double> brTrail;
-    /** How far (absolute) the BL corner is from the center. */
+    /**
+     * How far (absolute) the BL corner is from the center.
+     */
     private final Coordinate<Double> blTrail;
 
     /**
@@ -95,9 +115,13 @@ public class TwoDimensionalRobot {
      * library. That's pretty fucking cool, right? I know it is.
      * </p>
      *
-     * @param widthX how wide the robot is, in terms of x
-     * @param widthY how wide the robot is, in terms of y
-     * @param initialHeading the heading the robot starts facing at
+     * @param widthX         how wide the robot is, in terms of x. This is measured in INCHES.
+     * @param widthY         how wide the robot is, in terms of y. This is measured in INCHES.
+     * @param initialHeading the heading the robot starts facing at. Headings are, as with most
+     *                       of this library, notated in RADIANS, not degrees. If you don't know
+     *                       how radians work, and you don't really want to learn, you can use
+     *                       the {@link Geometry#toRadians(double)} method to convert degrees
+     *                       into radians, thus making it a bit easier to work with.
      */
     public TwoDimensionalRobot(double widthX,
                                double widthY,
@@ -139,9 +163,12 @@ public class TwoDimensionalRobot {
      * each of the points on the robot around a single point.
      * </p>
      *
-     * @param pose the RoadRunner pose which the robot is currently in.
-     *             RoadRunner poses basically consist of X, Y, and
-     *             HEADING - not much more.
+     * @param pose the HeadingCoordinate which the robot is at. Remember, all of
+     *             the geometry-related math in this project uses RADIANS, not
+     *             degrees. HeadingCoordinate(s) should report values in radians, and
+     *             not values in degrees. If you use degrees instead of radians, a
+     *             lot of math will be wrong, and you'll likely be very confused
+     *             as to what you did wrong.
      */
     public void update(HeadingCoordinate<Double> pose) {
         double x = pose.getX();

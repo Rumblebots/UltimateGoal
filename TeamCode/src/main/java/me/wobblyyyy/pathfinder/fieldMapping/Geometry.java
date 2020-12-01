@@ -1,6 +1,7 @@
 package me.wobblyyyy.pathfinder.fieldMapping;
 
 import me.wobblyyyy.intra.ftc2.utils.math.Comparator;
+import me.wobblyyyy.intra.ftc2.utils.math.Math;
 import me.wobblyyyy.pathfinder.fieldMapping.components.Coordinate;
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
 import me.wobblyyyy.pathfinder.fieldMapping.components.countable.Line;
@@ -12,6 +13,8 @@ import me.wobblyyyy.pathfinder.fieldMapping.components.countable.Line;
  * Of course it's all static. It's all the same. It's just a bunch of
  * random geometry-related utilities. Yay.
  * </p>
+ *
+ * @author Colin Robertson
  */
 public class Geometry {
     /**
@@ -201,5 +204,25 @@ public class Geometry {
                 test.getHeading(),
                 base.getHeading()
         );
+    }
+
+    /**
+     * Convert degrees to radians.
+     *
+     * @param degrees the degrees input to use.
+     * @return the radians output.
+     */
+    public static double toRadians(double degrees) {
+        return Math.toRadians(degrees);
+    }
+
+    /**
+     * Convert radians to degrees.
+     *
+     * @param radians the radians input to use.
+     * @return the degrees output.
+     */
+    public static double toDegrees(double radians) {
+        return Math.toDegrees(radians);
     }
 }
