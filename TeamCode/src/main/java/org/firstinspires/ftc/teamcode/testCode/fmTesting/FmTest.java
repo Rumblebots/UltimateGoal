@@ -11,7 +11,7 @@ import org._11253.lib.utils.telem.Telemetry;
 
 @TeleOp(name = "FmTest", group = "default")
 public class FmTest extends ShifterMeccanum {
-    private final double cpr = 360.000;
+    private final double cpr = 1440.000;
     private final double wheelDiameter = 2.500;
     private final double leftOffset = 7.830;
     private final double rightOffset = 7.830;
