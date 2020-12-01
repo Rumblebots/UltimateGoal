@@ -4,7 +4,6 @@ import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
 import me.wobblyyyy.pathfinder.localizer.Odometry;
 import me.wobblyyyy.pathfinder.localizer.ThreeWheelCore;
 import me.wobblyyyy.pathfinder_ftc.AbstractOdometry;
-import me.wobblyyyy.pathfinder_ftc.Manager;
 import org._11253.lib.robot.phys.components.Motor;
 import org._11253.lib.utils.Timed;
 import org._11253.lib.utils.async.event.StringEvents;
