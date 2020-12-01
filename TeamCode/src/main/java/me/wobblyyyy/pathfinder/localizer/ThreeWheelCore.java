@@ -99,10 +99,10 @@ public class ThreeWheelCore implements Odometry {
     /**
      * A lovely constructor to get started with a three-wheel odometry system.
      *
-     * @param cpr counts per rotation.
-     * @param wheelDiameter wheel diameter (inches).
-     * @param leftOffset offset of left wheel (inches).
-     * @param rightOffset offset of right wheel (inches).
+     * @param cpr             counts per rotation.
+     * @param wheelDiameter   wheel diameter (inches).
+     * @param leftOffset      offset of left wheel (inches).
+     * @param rightOffset     offset of right wheel (inches).
      * @param frontBackOffset offset of front/back wheel (inches).
      */
     public ThreeWheelCore(final double cpr,
@@ -141,8 +141,8 @@ public class ThreeWheelCore implements Odometry {
     /**
      * Update the position of the robot based on encoder counts.
      *
-     * @param leftPos the left encoder's count.
-     * @param rightPos the right encoder's count.
+     * @param leftPos      the left encoder's count.
+     * @param rightPos     the right encoder's count.
      * @param frontBackPos the front/back encoder's count.
      */
     public void update(int leftPos,
