@@ -13,10 +13,13 @@ import me.wobblyyyy.pathfinder.fieldMapping.zones.Zone;
  * that you add zones to the fieldZone list wrapper by using a constructor,
  * but honestly, I could give less of a shit.
  * </p>
+ *
  * <p>
  * I don't even know why you're looking at this, actually. You can (and
  * should) just use an already existing map, as this should be update-to-date.
  * </p>
+ *
+ * @author Colin Robertson
  */
 public class Map {
     /**

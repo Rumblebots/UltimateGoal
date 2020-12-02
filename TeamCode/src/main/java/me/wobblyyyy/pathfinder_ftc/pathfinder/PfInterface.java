@@ -5,7 +5,6 @@ import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
 import me.wobblyyyy.pathfinder.fieldMapping.pathfinding.Pathfinder;
 import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 import me.wobblyyyy.pathfinder_ftc.AbstractOdometry;
-import org._11253.lib.motors.MotorPower;
 import org._11253.lib.motors.SourceType;
 import org._11253.lib.motors.SourcedMotorPower;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
@@ -28,7 +27,7 @@ public class PfInterface {
      */
     private static boolean hasEventBeenScheduled = false;
 
-    private static SourceType type = SourceType.NON_USER;
+    private static final SourceType type = SourceType.NON_USER;
 
     /**
      * A reference to the {@link Pathfinder} that's used here.
@@ -118,8 +117,17 @@ public class PfInterface {
     /**
      * Set power to the drivetrain based on the suggested motor power put
      * out by the pathfinding system.
+     *
+     * <p>
+     * This actually sets power to the motors. While the pathfinding system, when ticked,
+     * will find the optimal motor power to get to a given destination, it doesn't actually
+     * set power to any of the motors. This is largely because the pathfinding library is
+     * designed to be very general - it's not only applicable for FTC scenarios. This
+     * library, aptly named Pathfinder-ftc, actually is designed for FTC, which is why
+     * we have to set motor power here and not somewhere else.
+     * </p>
      */
-    private void setMotorPower() {
+    public void setMotorPower() {
         PfMotorPower mp = pathfinder.getPfMotorPower();
         PfManager.drivetrain.setPower(
                 new SourcedMotorPower(
@@ -132,6 +140,11 @@ public class PfInterface {
         );
     }
 
+    /**
+     * Tells the pathfinder to go to a given position.
+     *
+     * @param position the position the robot should go to.
+     */
     public void goToPosition(HeadingCoordinate<Double> position) {
         pathfinder.goToPosition(position);
     }

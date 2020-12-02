@@ -1,6 +1,7 @@
 package me.wobblyyyy.pathfinder_ftc.threeWheel;
 
 import me.wobblyyyy.pathfinder.fieldMapping.Map;
+import me.wobblyyyy.pathfinder_ftc.Position;
 import me.wobblyyyy.pathfinder_ftc.pathfinder.PfInterface;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 
@@ -37,6 +38,17 @@ public class ThreeWheelComplete {
      * </p>
      */
     public PfInterface pfInterface;
+
+    /**
+     * The robot's positional data, in one giant class.
+     *
+     * <p>
+     * The position class doesn't actually provide any useful functionality - rather, it's simply
+     * a way for this library's code to stay organized. All of the code that's relevant to finding
+     * any of the positional metrics of the robot is contained here.
+     * </p>
+     */
+    public Position position;
 
     /**
      * Create a brand-spanking-new ThreeWheelComplete instance. Continue

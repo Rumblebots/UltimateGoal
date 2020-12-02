@@ -14,6 +14,8 @@ import java.util.Objects;
 
 /**
  * A public-facing interface for accessing the field mapping system.
+ *
+ * @author Colin Robertson
  */
 public class MapApi {
     /**
@@ -25,7 +27,7 @@ public class MapApi {
      * your own anyways - who knows.
      * </p>
      */
-    Map map = new UltimateGoalMap();
+    public Map map = new UltimateGoalMap();
 
     /**
      * The geometric representation of the robot.
