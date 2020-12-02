@@ -218,6 +218,24 @@ public class Drivetrain implements DrivetrainInterface {
         backLeft.multiplier = multiplier;
     }
 
+    public void meccanumDrive(MotionType type, double power) {
+        switch (type) {
+            case FORWARD:
+                setPower(power, -power, power, -power);
+                break;
+            case BACKWARD:
+                setPower(-power, power, -power, power);
+            case LEFT:
+                setPower(-power, power, power, -power);
+            case RIGHT:
+                setPower(power, -power, -power, power);
+            case TURN_CW:
+                setPower(power, power, power, power);
+            case TURN_CCW:
+                setPower(-power, -power, -power, -power);
+        }
+    }
+
     /**
      * Get the motor power multiplier.
      *
