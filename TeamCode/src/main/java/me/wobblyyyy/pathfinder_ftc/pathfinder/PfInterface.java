@@ -1,8 +1,13 @@
 package me.wobblyyyy.pathfinder_ftc.pathfinder;
 
 import me.wobblyyyy.pathfinder.fieldMapping.Map;
+import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
 import me.wobblyyyy.pathfinder.fieldMapping.pathfinding.Pathfinder;
+import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 import me.wobblyyyy.pathfinder_ftc.AbstractOdometry;
+import org._11253.lib.motors.MotorPower;
+import org._11253.lib.motors.SourceType;
+import org._11253.lib.motors.SourcedMotorPower;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 import org._11253.lib.utils.Timed;
 import org._11253.lib.utils.async.event.StringEvents;
@@ -22,6 +27,8 @@ public class PfInterface {
      * Used to keep track of whether or not an event has been scheduled yet.
      */
     private static boolean hasEventBeenScheduled = false;
+
+    private static SourceType type = SourceType.NON_USER;
 
     /**
      * A reference to the {@link Pathfinder} that's used here.
@@ -106,5 +113,26 @@ public class PfInterface {
     public void disableAutomaticTicking() {
         StringEvents.clear(automaticTickingName);
         hasEventBeenScheduled = false;
+    }
+
+    /**
+     * Set power to the drivetrain based on the suggested motor power put
+     * out by the pathfinding system.
+     */
+    private void setMotorPower() {
+        PfMotorPower mp = pathfinder.getPfMotorPower();
+        PfManager.drivetrain.setPower(
+                new SourcedMotorPower(
+                        mp.getFr(),
+                        mp.getFl(),
+                        mp.getBr(),
+                        mp.getBl(),
+                        type
+                )
+        );
+    }
+
+    public void goToPosition(HeadingCoordinate<Double> position) {
+        pathfinder.goToPosition(position);
     }
 }

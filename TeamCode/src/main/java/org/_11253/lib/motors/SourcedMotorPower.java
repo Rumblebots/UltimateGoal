@@ -30,12 +30,15 @@ public class SourcedMotorPower extends MotorPower {
      * @param fl front-left power.
      * @param br back-right power.
      * @param bl back-left power.
+     * @param type the input type (user/non-user).
      */
     public SourcedMotorPower(double fr,
                              double fl,
                              double br,
-                             double bl) {
+                             double bl,
+                             SourceType type) {
         super(fr, fl, br, bl);
+        this.type = type;
     }
 
     /**
