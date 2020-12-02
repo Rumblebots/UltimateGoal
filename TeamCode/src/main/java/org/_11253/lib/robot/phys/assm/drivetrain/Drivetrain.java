@@ -34,6 +34,8 @@ import org._11253.lib.motors.MotorPower;
 import org._11253.lib.motors.SourceType;
 import org._11253.lib.motors.SourcedMotorPower;
 import org._11253.lib.robot.phys.components.Motor;
+import org._11253.lib.utils.Timed;
+import org._11253.lib.utils.async.event.StringEvents;
 
 /**
  * Template for a drive train.
@@ -51,6 +53,22 @@ import org._11253.lib.robot.phys.components.Motor;
  * @author Colin Robertson
  */
 public class Drivetrain implements DrivetrainInterface {
+    /**
+     * The string name for the async safety functionality, designed to
+     * make sure nothing can go miserably wrong.
+     */
+    private static String safety = "_1125c drivetrain safety system";
+
+    /**
+     * The duration of the safety event.
+     */
+    private static long duration = 8000;
+
+    /**
+     * The delay before the safety event starts.
+     */
+    private static long delay = 0;
+
     /**
      * Whether or not the drivetrain is currently capable of being
      * controlled via user input.
@@ -246,6 +264,41 @@ public class Drivetrain implements DrivetrainInterface {
     }
 
     /**
+     * Enable the safety system, designed to protect the robot from losing
+     * control entirely.
+     */
+    private void enableSafety(final SourceType type) {
+        // Clear the even first - "resetting the timer."
+        StringEvents.clear(safety);
+
+        // Schedule the safety event.
+        StringEvents.schedule(
+                safety,
+                duration,
+                delay,
+                new Timed() {
+                    @Override
+                    public Runnable open() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                switch (type) {
+                                    case USER:
+                                        enableUserControl();
+                                        break;
+                                    case NON_USER:
+                                        enableNonUserControl();
+                                        break;
+                                }
+                            }
+                        };
+                    }
+                },
+                false
+        );
+    }
+
+    /**
      * Enable user control.
      */
     public void enableUserControl() {
@@ -257,6 +310,7 @@ public class Drivetrain implements DrivetrainInterface {
      */
     public void disableUserControl() {
         isUserControlled = false;
+        enableSafety(SourceType.USER);
     }
 
     /**
@@ -280,6 +334,7 @@ public class Drivetrain implements DrivetrainInterface {
      */
     public void disableNonUserControl() {
         isNonUserControlled = false;
+        enableSafety(SourceType.NON_USER);
     }
 
     /**

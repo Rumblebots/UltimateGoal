@@ -31,14 +31,14 @@ public class PfDrivetrainManager {
     }
 
     public void enableUserControl() {
-
+        drivetrain.enableUserControl();
     }
 
     public void disableUserControl() {
-
+        drivetrain.disableUserControl();
     }
 
     public boolean isUserControlled() {
-        return true;
+        return drivetrain.isUserControlled();
     }
 }
