@@ -31,6 +31,8 @@ package org._11253.lib.robot.phys.assm.drivetrain;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org._11253.lib.Global;
 import org._11253.lib.motors.MotorPower;
+import org._11253.lib.motors.SourceType;
+import org._11253.lib.motors.SourcedMotorPower;
 import org._11253.lib.robot.phys.components.Motor;
 
 /**
@@ -49,27 +51,145 @@ import org._11253.lib.robot.phys.components.Motor;
  * @author Colin Robertson
  */
 public class Drivetrain implements DrivetrainInterface {
+    /**
+     * Whether or not the drivetrain is currently capable of being
+     * controlled via user input.
+     */
+    private boolean isUserControlled = true;
+
+    /**
+     * Whether or not the drivetrain is currently capable of being
+     * controlled via non-user input.
+     */
+    private boolean isNonUserControlled = true;
+
+    /**
+     * The front-right motor.
+     */
     public static Motor frontRight;
+
+    /**
+     * The front-left motor.
+     */
     public static Motor frontLeft;
+
+    /**
+     * The back-right motor.
+     */
     public static Motor backRight;
+
+    /**
+     * The back-left motor.
+     */
     public static Motor backLeft;
 
+    /**
+     * The name of the front-right motor.
+     */
     public String frontRightName = "frontRight";
+
+    /**
+     * The name of the front-left motor.
+     */
     public String frontLeftName = "frontLeft";
+
+    /**
+     * The name of the back-right motor.
+     */
     public String backRightName = "backRight";
+
+    /**
+     * The name of the back-left motor.
+     */
     public String backLeftName = "backLeft";
 
+    /**
+     * Whether or not smoothing should be applied to inputs.
+     *
+     * <p>
+     * Motor power rounding allows for smoother transitions in speeds - a round
+     * motor would move from 1.0 speed to 0.33 speed to 0.11 speed and so on, until
+     * it eventually gets close to 0.
+     * </p>
+     */
     public boolean isRound = false;
 
+    /**
+     * Get the current power of the drivetrain.
+     *
+     * @return the current power of the drivetrain.
+     */
     public MotorPower getPower() {
         return new MotorPower(frontRight.getPower(), frontLeft.getPower(), backRight.getPower(), backLeft.getPower());
     }
 
+    /**
+     * Set power to the drivetrain based on a {@link MotorPower} object.
+     *
+     * <p>
+     * {@link org._11253.lib.motors.SourcedMotorPower} is a useful and viable
+     * option here - it allows the robot to differentiate between user input
+     * and non-user input.
+     * </p>
+     *
+     * @param motorPower the power to set to the robot.
+     */
     public void setPower(MotorPower motorPower) {
-        frontRight.setPower(motorPower.frontRightPower);
-        frontLeft.setPower(motorPower.frontLeftPower);
-        backRight.setPower(motorPower.backRightPower);
-        backLeft.setPower(motorPower.backLeftPower);
+        // Determine the type of input we're dealing with.
+        SourceType type;
+
+        // If we have a SourcedMotorPower, not just a regular MotorPower,
+        // we can determine the type, and we'll do so.
+        // Otherwise, we assume the type of input is user-controlled.
+        if (motorPower instanceof SourcedMotorPower) {
+            SourcedMotorPower sourced = (SourcedMotorPower) motorPower;
+            type = sourced.getType();
+        } else {
+            type = SourceType.USER;
+        }
+
+        // Set motor power if the motor power can be set.
+        // Who cares what that meant - if the code works, just let it be. Yay!
+        switch (type) {
+            case USER:
+                if (isUserControlled) {
+                    setPower(
+                            motorPower.frontRightPower,
+                            motorPower.frontLeftPower,
+                            motorPower.backRightPower,
+                            motorPower.backLeftPower
+                    );
+                }
+                break;
+            case NON_USER:
+                if (isNonUserControlled) {
+                    setPower(
+                            motorPower.frontRightPower,
+                            motorPower.frontLeftPower,
+                            motorPower.backRightPower,
+                            motorPower.backLeftPower
+                    );
+                }
+                break;
+        }
+    }
+
+    /**
+     * Internally-used function to set power to the drivetrain.
+     *
+     * @param fr front-right power.
+     * @param fl front-left power.
+     * @param br back-right power.
+     * @param bl back-left power.
+     */
+    private void setPower(double fr,
+                          double fl,
+                          double br,
+                          double bl) {
+        frontRight.setPower(fr);
+        frontLeft.setPower(fl);
+        backRight.setPower(br);
+        backLeft.setPower(bl);
     }
 
     public void init() {
@@ -98,7 +218,58 @@ public class Drivetrain implements DrivetrainInterface {
         backLeft.multiplier = multiplier;
     }
 
+    /**
+     * Get the motor power multiplier.
+     *
+     * @return the motor power multiplier.
+     */
     public double getMultiplier() {
         return frontRight.multiplier;
+    }
+
+    /**
+     * Enable user control.
+     */
+    public void enableUserControl() {
+        isUserControlled = true;
+    }
+
+    /**
+     * Disable user control.
+     */
+    public void disableUserControl() {
+        isUserControlled = false;
+    }
+
+    /**
+     * Is the drivetrain user-controlled?
+     *
+     * @return if the drivetrain is user-controlled.
+     */
+    public boolean isUserControlled() {
+        return isUserControlled;
+    }
+
+    /**
+     * Enable non-user control.
+     */
+    public void enableNonUserControl() {
+        isNonUserControlled = true;
+    }
+
+    /**
+     * Disable non-user control.
+     */
+    public void disableNonUserControl() {
+        isNonUserControlled = false;
+    }
+
+    /**
+     * Is the drivetrain non-user-controlled?
+     *
+     * @return if the drivetrain is non-user-controlled.
+     */
+    public boolean isNonUserControlled() {
+        return isNonUserControlled;
     }
 }
