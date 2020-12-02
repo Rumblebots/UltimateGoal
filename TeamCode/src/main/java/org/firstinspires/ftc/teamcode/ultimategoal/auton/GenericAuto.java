@@ -30,6 +30,20 @@ public class GenericAuto extends Auton {
                 OdometryThread.initialize(offsetPos);
             }
         });
+        onStart.add(new Runnable() {
+            @Override
+            public void run() {
+                // TODO move up
+                // TODO turn to goal 1
+                shoot();
+                // TODO turn to goal 2
+                shoot();
+                // TODO turn to goal 3
+                shoot();
+                // TODO turn straight
+                // TODO park
+            }
+        });
     }
 
     public void initializeOdometry() {
@@ -81,6 +95,12 @@ public class GenericAuto extends Auton {
         double targetDegrees = getCurrentPos().getHeadingRadians() + headingDegrees;
         while (getCurrentPos().getHeadingDegrees() != targetDegrees) {
             drivetrain.meccanumDrive(MotionType.TURN_CCW, 0.3);
+        }
+    }
+
+    public void shoot() {
+        while (true /* TODO contiton for limit switch */) {
+            // TODO move CR Servo
         }
     }
 
