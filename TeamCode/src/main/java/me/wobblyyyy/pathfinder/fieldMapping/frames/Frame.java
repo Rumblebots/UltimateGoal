@@ -29,6 +29,8 @@ import java.util.HashMap;
  * multiple frames. It's my suggestion that frames are calculated asynchronously
  * to generate a moving picture and when absolutely necessary (think pathfinding).
  * </p>
+ *
+ * @author Colin Robertson
  */
 public class Frame {
     /**
