@@ -3,7 +3,7 @@ package me.wobblyyyy.pathfinder.fieldMapping;
 import me.wobblyyyy.intra.ftc2.utils.Timed;
 import me.wobblyyyy.intra.ftc2.utils.async.event.StringEvents;
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
-import me.wobblyyyy.pathfinder.fieldMapping.frames.Frame;
+import me.wobblyyyy.pathfinder.frames.Frame;
 import me.wobblyyyy.pathfinder.fieldMapping.maps.ultimategoal.UltimateGoalMap;
 import me.wobblyyyy.pathfinder.fieldMapping.zones.Zone;
 import me.wobblyyyy.pathfinder.localizer.Odometry;

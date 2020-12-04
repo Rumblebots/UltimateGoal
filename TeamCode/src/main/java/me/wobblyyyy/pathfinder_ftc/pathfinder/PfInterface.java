@@ -2,7 +2,7 @@ package me.wobblyyyy.pathfinder_ftc.pathfinder;
 
 import me.wobblyyyy.pathfinder.fieldMapping.Map;
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
-import me.wobblyyyy.pathfinder.fieldMapping.pathfinding.Pathfinder;
+import me.wobblyyyy.pathfinder.pathfinding.Pathfinder;
 import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 import me.wobblyyyy.pathfinder_ftc.AbstractOdometry;
 import org._11253.lib.motors.SourceType;
@@ -18,15 +18,29 @@ import org._11253.lib.utils.async.event.StringEvents;
  */
 public class PfInterface {
     /**
+     * A general name, used for multiple things.
+     */
+    private final static String name = "PFI";
+
+    /**
      * The name of the set of events used for automatic ticking.
      */
-    private final static String automaticTickingName = "PfInterface automatic ticking";
+    private final static String automaticTickingName = name;
+
+    /**
+     * The name of the set of events used for controlling the motors
+     * without any form of user input.
+     */
+    private final static String pathfindingControl = name;
 
     /**
      * Used to keep track of whether or not an event has been scheduled yet.
      */
     private static boolean hasEventBeenScheduled = false;
 
+    /**
+     * The type of input PfInterface uses - NON_USER, of course.
+     */
     private static final SourceType type = SourceType.NON_USER;
 
     /**
@@ -143,9 +157,79 @@ public class PfInterface {
     /**
      * Tells the pathfinder to go to a given position.
      *
-     * @param position the position the robot should go to.
+     * @param position        the position the robot should go to.
+     * @param delay           time (ms) before the pathfinding motor control is initiated.
+     *                        This value should (generally) be zero, but that's entirely
+     *                        up to you. Always remember - you're the master of your own
+     *                        world! Or reality! Or something like that!
+     * @param timeout         the maximum amount of time (ms) the pathfinding system is
+     *                        allowed to take up. Some time around 7 seconds (7,000ms)
+     *                        is generally the suggested value, but you can pick whatever
+     *                        you'd like. Your choice!
+     * @param tickingDelay    the length of time (in ms) before the pathfinder starts ticking.
+     *                        This should almost always be zero - I really don't know why it
+     *                        would need to be anything other than zero. If you need to schedule
+     *                        a delay for the automatic ticking of the pathfinder, you should
+     *                        probably look at how your code is structured and move any of the
+     *                        code related to pathfinding to a different location where no
+     *                        delay is required.
+     * @param tickingDuration the length of time (in ms) between pathfinder ticks. As with most
+     *                        other things, the more times per second this is updated, the more
+     *                        accurate pathfinding will be. Make sure not to ramp this up too
+     *                        much, however - running this too many times per second will cause
+     *                        huge performance penalties. Because of the way {@link StringEvents}
+     *                        functions, every single event that you schedule will execute at some
+     *                        point. It's less than ideal to run several hundred repetitions of the
+     *                        same piece of code, all executed within the same few ms. My point is -
+     *                        a value somewhere around 50-100 should be satisfactory for this. If
+     *                        you notice any performance hits, you can increase this value, but you
+     *                        likely shouldn't increase this beyond anything near 200.
      */
-    public void goToPosition(HeadingCoordinate<Double> position) {
-        pathfinder.goToPosition(position);
+    public void goToPosition(final HeadingCoordinate<Double> position,
+                             final long delay,
+                             final long timeout,
+                             final long tickingDelay,
+                             final long tickingDuration) {
+        StringEvents.schedule(
+                pathfindingControl,
+                timeout,
+                delay,
+                new Timed() {
+                    @Override
+                    public Runnable open() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                pathfinder.goToPosition(position);
+                                enableAutomaticTicking(
+                                        tickingDuration,
+                                        tickingDelay
+                                );
+                            }
+                        };
+                    }
+
+                    @Override
+                    public Runnable during() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                setMotorPower();
+                            }
+                        };
+                    }
+
+                    @Override
+                    public Runnable close() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                disableAutomaticTicking();
+                            }
+                        };
+                    }
+                },
+                false
+        );
     }
 }

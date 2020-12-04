@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Intake;
 import org._11253.lib.utils.Command;
 import org._11253.lib.utils.Timed;
 import org._11253.lib.utils.async.event.StringEvents;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Lengths;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Shooter;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 
@@ -15,11 +16,21 @@ import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
  * make it seem like some of the "work" I did over the summer had any impact on this season), I'm using the collection of
  * code I already wrote so I don't have to write more code. Intelligent!
  */
-@TeleOp(name = "Meccanum Drive", group = "TeleOp")
+@TeleOp(name = "UG Meccanum Drive", group = "TeleOp")
 public class MeccanumDrive extends ShifterMeccanum {
-    Intake intake = new Intake();
-    Storage storage = new Storage();
-    Shooter shooter = new Shooter(storage);
+    public Intake intake = new Intake();
+    public Storage storage = new Storage();
+    public Shooter shooter = new Shooter(
+            storage,
+            Lengths.shootLength,
+            Lengths.shootDelay,
+            Lengths.loadLength,
+            Lengths.loadDelay,
+            Lengths.pushLength,
+            Lengths.pushDelay
+    );
+
+    private boolean canBeChanged;
 
     public MeccanumDrive() {
         beforeStart.add(new Runnable() {
@@ -29,54 +40,101 @@ public class MeccanumDrive extends ShifterMeccanum {
             }
         });
 
-        onStart.add(new Runnable() {
-            @Override
-            public void run() {
-                controller2.map.bind(ControllerMap.States.LEFT_STICK_X, new Command() {
+        onStart.add(
+                // Bind controls for intake
+                new Runnable() {
                     @Override
-                    public Runnable active() {
-                        return new Runnable() {
+                    public void run() {
+                        controller2.map.bind(ControllerMap.States.RIGHT_BUMPER, new Command() {
                             @Override
-                            public void run() {
-                                double speed = controller2.getLeftX();
-                                intake.setPower(speed);
-                            }
-                        };
-                    }
-
-                    @Override
-                    public Runnable inactive() {
-                        return new Runnable() {
-                            @Override
-                            public void run() {
-                                intake.setPower(0);
-                            }
-                        };
-                    }
-                });
-            }
-        }, new Runnable() {
-            @Override
-            public void run() {
-                StringEvents.schedule(
-                        "_1125c_AUTOTELEMETRY",
-                        250,
-                        0,
-                        new Timed() {
-                            @Override
-                            public Runnable open() {
+                            public Runnable active() {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-                                        storage.showCount();
-                                        shooter.showActive();
+                                        intake.setPower(1.0);
                                     }
                                 };
                             }
-                        },
-                        true
-                );
-            }
-        });
+                        });
+                        controller2.map.bind(ControllerMap.States.LEFT_BUMPER, new Command() {
+                            @Override
+                            public Runnable active() {
+                                return new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        intake.setPower(-1.0);
+                                    }
+                                };
+                            }
+
+                            @Override
+                            public Runnable inactive() {
+                                return new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!controller2.getRightBumper()) {
+                                            intake.setPower(0.0);
+                                        }
+                                    }
+                                };
+                            }
+                        });
+                        controller2.map.bind(ControllerMap.States.A, new Command() {
+                            @Override
+                            public Runnable active() {
+                                return new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        storage.increment();
+                                        shooter.shootRing();
+                                        canBeChanged = false;
+                                    }
+                                };
+                            }
+
+                            @Override
+                            public Runnable inactive() {
+                                return new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        canBeChanged = true;
+                                    }
+                                };
+                            }
+                        });
+                    }
+                },
+                // Bind automatic telemetry updating
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        StringEvents.schedule(
+                                "_1125c_AUTOTELEMETRY",
+                                250,
+                                0,
+                                new Timed() {
+                                    @Override
+                                    public Runnable open() {
+                                        return new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                storage.showCount();
+                                                shooter.showActive();
+                                            }
+                                        };
+                                    }
+                                },
+                                true
+                        );
+                    }
+                },
+                // Bind controls for shooter
+                new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                }
+        );
     }
 }

@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 public class GenericAuto extends Auton {
 
     public Drivetrain drivetrain = new Drivetrain();
-    public Shooter shooter = new Shooter(new Storage());
+    public Shooter shooter = new Shooter(new Storage(), 0, 0, 0, 0, 0, 0);
 
     public GenericAuto(final double offsetPos) {
         initializeOdometry();

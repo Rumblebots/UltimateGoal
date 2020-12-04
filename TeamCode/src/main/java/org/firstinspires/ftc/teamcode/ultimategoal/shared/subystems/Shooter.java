@@ -52,18 +52,18 @@ public class Shooter {
     // These are constants, so they can't be changed. These values need to be determined experimentally (or through
     // really complex math that I don't have the time, energy, nor ability to do.
     /** How long the shooter shoots. */  //
-    final int        shootLength = 1000; // How long the shooting flywheel is active. Note that there are two motors which
+    final int        shootLength;        // How long the shooting flywheel is active. Note that there are two motors which
                                          // are controlled by the single shooter function.
     /**                                  //
      * How long the shooter takes        //
      * before it starts spinning up.     //
      */                                  //
-    final int        shootDelay = 1000;  // How long, after the function starts, it should be before the shooter itself
+    final int        shootDelay;         // How long, after the function starts, it should be before the shooter itself
                                          // ends up shooting out the ring. The projectile.
     /** How long the loader loads. */    //
-    final int        loadLength = 1000;  // The length for which the loader servo will be active.
+    final int        loadLength;         // The length for which the loader servo will be active.
     /** Loader delay! */                 //
-    final int        loadDelay = 1000;   // How long before the loader servo actually moves.
+    final int        loadDelay;          // How long before the loader servo actually moves.
                                          // Since everything is done using my (very amazing and very cool) system for
                                          // scheduling and running events "asynchronously," these delays are independent
                                          // of each other - meaning you can have two sub-sub-systems active at the same
@@ -72,17 +72,30 @@ public class Shooter {
      * How long the pusher...            //
      * well, pushes for.                 //
      */                                  //
-    final int        pushLength = 1000;  // The length for which the pusher servo will be active.
+    final int        pushLength;         // The length for which the pusher servo will be active.
     /** Delay! For the pusher! */        //
-    final int        pushDelay = 1000;   // Read the above comments - swag.
+    final int        pushDelay;          // Read the above comments - swag.
                                          //
     private int      timeRemaining = 0;  //
     private int      timeElapsed = 0;    //
                                          //
     private Storage storage;             // Storage, used for tracking magazine.
 
-    public Shooter(Storage storage) {
+    public Shooter(Storage storage,
+                   final int shootLength,
+                   final int shootDelay,
+                   final int loadLength,
+                   final int loadDelay,
+                   final int pushLength,
+                   final int pushDelay) {
         this.storage = storage;
+
+        this.shootLength = shootLength;
+        this.shootDelay = shootDelay;
+        this.loadLength = loadLength;
+        this.loadDelay = loadDelay;
+        this.pushLength = pushLength;
+        this.pushDelay = pushDelay;
     }
 
     /** Used in {@link #shoot()} */
