@@ -148,7 +148,7 @@ public class Shooter {
     /** Used in {@link #load()} */
     private void startLoader() {
         isLoaderActive = true;
-        loader.setPosition(1.0);
+        loader.setPosition(29.0 / 180.0);
     }
 
     /** Used in {@link #load()} */
@@ -199,7 +199,7 @@ public class Shooter {
     /** Used in {@link #push()} */
     private void stopPusher() {
         isPusherActive = false;
-        pusher.setPosition(0.0);
+        pusher.setPosition(0.5);
     }
 
     /** Push a ring from the loading system into the flywheels. */
