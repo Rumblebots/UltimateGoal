@@ -14,34 +14,22 @@ import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 import org._11253.lib.robot.phys.assm.drivetrain.MotionType;
 import org._11253.lib.robot.phys.components.Motor;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryThread;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Shooter;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 
 public class GenericAuto extends Auton {
 
-    private double offsetPos;
     public Drivetrain drivetrain = new Drivetrain();
+    public Shooter shooter = new Shooter(new Storage());
 
     public GenericAuto(final double offsetPos) {
-        this.offsetPos = offsetPos;
         initializeOdometry();
         beforeStart.add(new Runnable() {
             @Override
             public void run() {
                 drivetrain.init();
+                shooter.init();
                 OdometryThread.initialize(offsetPos);
-            }
-        });
-        onStart.add(new Runnable() {
-            @Override
-            public void run() {
-                // TODO move up
-                // TODO turn to goal 1
-                shoot();
-                // TODO turn to goal 2
-                shoot();
-                // TODO turn to goal 3
-                shoot();
-                // TODO turn straight
-                // TODO park
             }
         });
     }
@@ -61,6 +49,8 @@ public class GenericAuto extends Auton {
     }
 
     public void odometryMove(double x, double y) {
+
+        odometryTurn(0);
 
         if (x > getCurrentPos().getX()) {
             while (x > getCurrentPos().getX()) {
@@ -91,6 +81,11 @@ public class GenericAuto extends Auton {
         }
     }
 
+    public void odometryTurn(double x, double y) {
+        double radHeading = Math.atan2(y-getCurrentPos().getY(), x-getCurrentPos().getX());
+        odometryTurn(Math.toDegrees(radHeading));
+    }
+
     public void odometryTurn(double headingDegrees) {
         double targetDegrees = getCurrentPos().getHeadingRadians() + headingDegrees;
         while (getCurrentPos().getHeadingDegrees() != targetDegrees) {
@@ -99,9 +94,7 @@ public class GenericAuto extends Auton {
     }
 
     public void shoot() {
-        while (true /* TODO contiton for limit switch */) {
-            // TODO move CR Servo
-        }
+        shooter.shootRing();
     }
 
 }

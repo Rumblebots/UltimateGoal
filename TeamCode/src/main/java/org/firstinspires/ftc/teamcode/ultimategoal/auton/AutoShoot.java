@@ -7,8 +7,26 @@ package org.firstinspires.ftc.teamcode.ultimategoal.auton;
 
 public class AutoShoot extends GenericAuto {
     public AutoShoot() {
-        super(72);
+        super(42);
+        onStart.add(new Runnable() {
+            @Override
+            public void run() {
+                // TODO move up
+                odometryMove(0, 6);
+                // TODO turn to goal 1
+                odometryTurn(5.5, 126);
+                shoot();
+                // TODO turn to goal 2
+                odometryTurn(13, 126);
+                shoot();
+                // TODO turn to goal 3
+                odometryTurn(20.5, 126);
+                shoot();
+                // TODO turn straight
+                odometryTurnMove(getCurrentPos().getX(), 60);
+                // TODO park
+            }
+        });
     }
-
 
 }
