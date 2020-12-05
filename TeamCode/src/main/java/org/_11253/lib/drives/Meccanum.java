@@ -94,18 +94,20 @@ public class Meccanum extends TeleOp {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (!controller1.manager.isUserControlled()) return;
+//                                        if (!controller1.manager.isUserControlled()) return;
                                         double speed = controller1.getLeftY();
                                         double strafe = controller1.getLeftX();
                                         double turn = controller1.getRightX();
+
                                         drivetrain.setPower(
                                                 new MotorPower(
-                                                        Math.clip(speed) - Math.clip(turn) + Math.clip(strafe),
-                                                        Math.clip(speed) + Math.clip(turn) - Math.clip(strafe),
-                                                        Math.clip(speed) - Math.clip(turn) - Math.clip(strafe),
-                                                        Math.clip(speed) + Math.clip(turn) + Math.clip(strafe)
+                                                        -speed + 0 + 0,
+                                                        speed + 0 + 0,
+                                                        -speed + 0 + 0,
+                                                        speed + 0 + 0
                                                 )
                                         );
+                                        Telemetry.addData("MSPEEd", "Motor Speed", ": ", String.valueOf(speed));
                                         Telemetry.addData(
                                                 "_1125c_MOTORS",
                                                 "Motors engaged",

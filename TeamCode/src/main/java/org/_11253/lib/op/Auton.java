@@ -7,7 +7,7 @@ package org._11253.lib.op;
 
 import org._11253.lib.utils.telem.Telemetry;
 
-public class Auton extends Template{
+public class Auton extends Template {
     public Auton() {
         addToBeforeStart();
         addToStart();

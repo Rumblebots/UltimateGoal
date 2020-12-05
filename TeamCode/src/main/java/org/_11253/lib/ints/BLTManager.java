@@ -7,7 +7,7 @@ import org._11253.lib.utils.async.event.StringEvents;
  * Bacon, lettuce, tomato manager.
  */
 public abstract class BLTManager implements Manager, Sbm {
-    public boolean isActive = false;
+    public boolean isActive = true;
 
     private Timed asyncOverride = new Timed() {
         @Override

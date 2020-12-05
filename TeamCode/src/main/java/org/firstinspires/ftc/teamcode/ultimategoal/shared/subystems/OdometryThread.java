@@ -11,6 +11,7 @@ import com.tejasmehta.OdometryCore.localization.EncoderPositions;
 import com.tejasmehta.OdometryCore.localization.HeadingUnit;
 import com.tejasmehta.OdometryCore.localization.OdometryPosition;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
+import org._11253.lib.utils.telem.Telemetry;
 
 public class OdometryThread extends Thread{
 
@@ -23,7 +24,9 @@ public class OdometryThread extends Thread{
     private static OdometryThread currentInstance;
 
     public static void initialize(double offset) {
+        System.out.println("INITING");
         currentInstance = new OdometryThread(offset);
+        currentInstance.startThread();
     }
 
     public static OdometryThread getInstance() {
@@ -40,6 +43,7 @@ public class OdometryThread extends Thread{
     public void startThread() {
         running = true;
         currentInstance.start();
+        System.out.println("STARTED");
     }
 
     private OdometryThread(double offset) {
@@ -54,9 +58,11 @@ public class OdometryThread extends Thread{
 
     @Override
     public void run() {
+        System.out.println("STARTING");
         while (running) {
             OdometryPosition rawPos = OdometryCore.getInstance().getCurrentPosition(new EncoderPositions(encoderLeft.getCurrentPosition(), encoderRight.getCurrentPosition(), encoderBack.getCurrentPosition()));
             currentPosition = new OdometryPosition(rawPos.getX() + offset, rawPos.getY(), rawPos.getHeadingRadians(), HeadingUnit.RADIANS);
+            Telemetry.addData("ODOM_POS", "Odometry Pos", ":", "x: " + currentPosition.getX() + ", y: " + currentPosition.getY() + ", heading: " + currentPosition.getHeadingDegrees());
         }
     }
 }

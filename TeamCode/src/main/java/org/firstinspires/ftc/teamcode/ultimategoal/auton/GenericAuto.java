@@ -13,6 +13,7 @@ import org._11253.lib.op.Auton;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 import org._11253.lib.robot.phys.assm.drivetrain.MotionType;
 import org._11253.lib.robot.phys.components.Motor;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryThread;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Shooter;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
@@ -23,13 +24,26 @@ public class GenericAuto extends Auton {
     public Shooter shooter = new Shooter(new Storage(), 0, 0, 0, 0, 0, 0);
 
     public GenericAuto(final double offsetPos) {
-        initializeOdometry();
         beforeStart.add(new Runnable() {
             @Override
             public void run() {
                 drivetrain.init();
                 shooter.init();
                 OdometryThread.initialize(offsetPos);
+                System.out.println("HERE");
+                getCurrentPos();
+            }
+        });
+        onStart.add(new Runnable() {
+            @Override
+            public void run() {
+                initializeOdometry();
+            }
+        });
+        onFinish.add(new Runnable() {
+            @Override
+            public void run() {
+                OdometryThread.getInstance().stopThread();
             }
         });
     }
@@ -45,13 +59,16 @@ public class GenericAuto extends Auton {
     }
 
     public OdometryPosition getCurrentPos() {
+        OdometryPosition currentPosition = OdometryThread.getInstance().getCurrentPosition();
+        System.out.println(currentPosition);
+        telemetry.addData("Odometry Pos: ", "x: " + currentPosition.getX() + ", y: " + currentPosition.getY() + ", heading: " + currentPosition.getHeadingDegrees());
+        telemetry.update();
         return OdometryThread.getInstance().getCurrentPosition();
     }
 
     public void odometryMove(double x, double y) {
-
-        odometryTurn(0);
-
+        System.out.println("here");
+//        odometryTurn(0);
         if (x > getCurrentPos().getX()) {
             while (x > getCurrentPos().getX()) {
                 drivetrain.meccanumDrive(MotionType.RIGHT, 0.5);

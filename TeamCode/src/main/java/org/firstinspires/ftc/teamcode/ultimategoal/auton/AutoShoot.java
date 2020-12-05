@@ -5,6 +5,9 @@
  * Package: org.firstinspires.ftc.teamcode.ultimategoal.auton*/
 package org.firstinspires.ftc.teamcode.ultimategoal.auton;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+@Autonomous(name = "Main Auo", group = "Auton")
 public class AutoShoot extends GenericAuto {
     public AutoShoot() {
         super(42);

@@ -117,8 +117,9 @@ public class Controller {
      * @return either active or inactive state
      */
     private double CMP_DOUBLE(double cmp) {
-        if (manager.isUserControlled()) return cmp;
-        else return IA_DOUBLE;
+        return cmp;
+//        if (manager.isUserControlled()) return cmp;
+//        else return IA_DOUBLE;
     }
 
     /**

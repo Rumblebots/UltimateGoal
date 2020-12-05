@@ -28,6 +28,7 @@
 
 package org._11253.lib.robot.phys.assm.drivetrain;
 
+import android.util.Log;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org._11253.lib.Global;
 import org._11253.lib.motors.MotorPower;
@@ -246,8 +247,8 @@ public class Drivetrain implements DrivetrainInterface {
         backRight.isRound = isRound;
         backLeft.isRound = isRound;
 
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void setMultiplier(double multiplier) {
