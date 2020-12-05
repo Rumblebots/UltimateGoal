@@ -14,6 +14,8 @@ import org._11253.lib.utils.telem.Telemetry;
  * just about everything in this whole library, I don't know what I'm saying because
  * I lost my train of thought and I'm tired.
  * </p>
+ *
+ * @author Colin Robertson
  */
 public class ShifterMeccanum extends Meccanum {
     final double FAST = 1.0;
@@ -31,7 +33,7 @@ public class ShifterMeccanum extends Meccanum {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (!controller1.manager.isUserControlled()) return;
+//                                        if (!controller1.manager.isUserControlled()) return;
                                         drivetrain.setMultiplier(FAST);
                                         Telemetry.addData(
                                                 "_1125c_MULTIPLIER",
@@ -49,7 +51,7 @@ public class ShifterMeccanum extends Meccanum {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (!controller1.manager.isUserControlled()) return;
+//                                        if (!controller1.manager.isUserControlled()) return;
                                         drivetrain.setMultiplier(SLOW);
                                         Telemetry.addData(
                                                 "_1125c_MULTIPLIER",
@@ -66,7 +68,7 @@ public class ShifterMeccanum extends Meccanum {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (!controller1.manager.isUserControlled()) return;
+//                                        if (!controller1.manager.isUserControlled()) return;
                                         if (controller1.getRightTrigger() == 0) {
                                             drivetrain.setMultiplier(NORMAL);
                                             Telemetry.addData(

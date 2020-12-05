@@ -54,27 +54,33 @@ public class Template extends LinearOpMode {
     public double avgExecTime = 1;
     public Telemetry telem;
     public StringEvents events = new StringEvents();
+
     /**
      * List of Runnables to be run before the start of the
      * operation mode. This is before waitForStart() finishes;
      */
     public ListWrapper<Runnable> beforeStart = new ListWrapper<>(new ArrayList<Runnable>());
+
     /**
      * List of Runnables to be run after waitForStart() finishes.
      */
     public ListWrapper<Runnable> onStart = new ListWrapper<>(new ArrayList<Runnable>());
+
     /**
      * List of Runnables to run at the start of the loop.
      */
     public ListWrapper<Runnable> onStartRun = new ListWrapper<>(new ArrayList<Runnable>());
+
     /**
      * List of Runnables to run as the main portion of the loop.
      */
     public ListWrapper<Runnable> run = new ListWrapper<>(new ArrayList<Runnable>());
+
     /**
      * List of Runnables to run after the loop finishes.
      */
     public ListWrapper<Runnable> onFinishRun = new ListWrapper<>(new ArrayList<Runnable>());
+
     /**
      * List of Runnables to be run after the loop finishes being, well,
      * looped.
@@ -83,47 +89,55 @@ public class Template extends LinearOpMode {
 
     /**
      * Should we send telemetry to the driver station's
-     * phone detailing how long each repitition of the
+     * phone detailing how long each repetition of the
      * default operation loop takes?
      * {@link #applySettings(HashMap)}
      */
     private boolean showExecutionTime = true;
+
     /**
      * Should buttons be mapped automatically? IE.
      * telemetry mapping the start button?
      * {@link #applySettings(HashMap)}
      */
     private boolean automaticButtonMapping = true;
+
     /**
      * Should beforeStart list be run?
      * {@link #applySettings(HashMap)}
      */
     private boolean runBeforeStart = true;
+
     /**
      * Should onStart list be run?
      * {@link #applySettings(HashMap)}
      */
     private boolean runOnStart = true;
+
     /**
      * Should onStartRun list be run?
      * {@link #applySettings(HashMap)}
      */
     private boolean runOnStartRun = true;
+
     /**
      * Should run list be run?
      * {@link #applySettings(HashMap)}
      */
     private boolean runRun = true;
+
     /**
      * Should onFinishRun list be run?
      * {@link #applySettings(HashMap)}
      */
     private boolean runOnFinishRun = true;
+
     /**
      * Should onFinish list be run?
      * {@link #applySettings(HashMap)}
      */
     private boolean runOnFinish = true;
+
     /**
      * Should ticks be executed at some certain time,
      * or once every single loop? This should (generally)
@@ -131,6 +145,7 @@ public class Template extends LinearOpMode {
      * {@link #applySettings(HashMap)}
      */
     private boolean tickAsynchronously = false;
+
     /**
      * Should ticks be executed every loop of the
      * operation loop? This should (generally)
@@ -138,6 +153,7 @@ public class Template extends LinearOpMode {
      * {@link #applySettings(HashMap)}
      */
     private boolean tickOnRun = true;
+
     /**
      * Should telemetry be updated every certain
      * amount of time? This should (generally)
@@ -145,6 +161,7 @@ public class Template extends LinearOpMode {
      * {@link #applySettings(HashMap)}
      */
     private boolean updateTelemetryAsynchronously = true;
+
     /**
      * Should telemetry be updated every loop of
      * the operation loop? This should (generally)

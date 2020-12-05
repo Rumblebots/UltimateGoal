@@ -123,7 +123,7 @@ public class Meccanum extends TeleOp {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (!controller1.manager.isUserControlled()) return;
+//                                        if (!controller1.manager.isUserControlled()) return;
                                         drivetrain.setPower(new MotorPower());
                                         Telemetry.addData(
                                                 "_1125c_MOTORS",

@@ -64,7 +64,6 @@ public class TeleOp extends Template {
         addToOnFinishRun();
     }
 
-
     /**
      * Update telem after run loop finishes
      * <p>
