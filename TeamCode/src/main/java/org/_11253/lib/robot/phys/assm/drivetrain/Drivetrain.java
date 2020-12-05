@@ -150,21 +150,35 @@ public class Drivetrain implements DrivetrainInterface {
      * and non-user input.
      * </p>
      *
-     * @param motorPower the power to set to the robot.
+     * @param power the power to set to the robot.
      */
-    public void setPower(MotorPower motorPower) {
-        // Determine the type of input we're dealing with.
-        SourceType type;
+    public void setPower(MotorPower power) {
+        setPower(new SourcedMotorPower(
+                power.frontRightPower,
+                power.frontLeftPower,
+                power.backRightPower,
+                power.backLeftPower,
+                SourceType.USER
+        ));
+    }
 
-        // If we have a SourcedMotorPower, not just a regular MotorPower,
-        // we can determine the type, and we'll do so.
-        // Otherwise, we assume the type of input is user-controlled.
-        if (motorPower instanceof SourcedMotorPower) {
-            SourcedMotorPower sourced = (SourcedMotorPower) motorPower;
-            type = sourced.getType();
-        } else {
-            type = SourceType.USER;
-        }
+    /**
+     * Set power to the drivetrain based on a {@link MotorPower} object.
+     *
+     * <p>
+     * {@link org._11253.lib.motors.SourcedMotorPower} is a useful and viable
+     * option here - it allows the robot to differentiate between user input
+     * and non-user input.
+     * </p>
+     *
+     * @param power the power to set to the robot.
+     */
+    public void setPower(SourcedMotorPower power) {
+        // Determine the type of input we're dealing with.
+        SourceType type =
+                power.getType() == null ?
+                        SourceType.USER :
+                        power.getType();
 
         // Set motor power if the motor power can be set.
         // Who cares what that meant - if the code works, just let it be. Yay!
@@ -172,23 +186,30 @@ public class Drivetrain implements DrivetrainInterface {
             case USER:
                 if (isUserControlled) {
                     setPower(
-                            motorPower.frontRightPower,
-                            motorPower.frontLeftPower,
-                            motorPower.backRightPower,
-                            motorPower.backLeftPower
+                            power.frontRightPower,
+                            power.frontLeftPower,
+                            power.backRightPower,
+                            power.backLeftPower
                     );
                 }
                 break;
             case NON_USER:
                 if (isNonUserControlled) {
                     setPower(
-                            motorPower.frontRightPower,
-                            motorPower.frontLeftPower,
-                            motorPower.backRightPower,
-                            motorPower.backLeftPower
+                            power.frontRightPower,
+                            power.frontLeftPower,
+                            power.backRightPower,
+                            power.backLeftPower
                     );
                 }
                 break;
+            default:
+                setPower(
+                        0,
+                        0,
+                        0,
+                        0
+                );
         }
     }
 
