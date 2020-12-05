@@ -2,11 +2,11 @@ package me.wobblyyyy.pathfinder.pathfinding.routes.generic;
 
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
 import me.wobblyyyy.pathfinder.fieldMapping.components.countable.Line;
+import me.wobblyyyy.pathfinder.localizer.Odometry;
 import me.wobblyyyy.pathfinder.pathfinding.routes.HighRoute;
 import me.wobblyyyy.pathfinder.pathfinding.routes.components.ComponentCore;
 import me.wobblyyyy.pathfinder.pathfinding.routes.components.MoveComponent;
 import me.wobblyyyy.pathfinder.pathfinding.routes.components.TurnComponent;
-import me.wobblyyyy.pathfinder.localizer.Odometry;
 
 import java.util.ArrayList;
 

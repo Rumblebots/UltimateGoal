@@ -6,8 +6,8 @@ import me.wobblyyyy.pathfinder.fieldMapping.TwoDimensionalRobot;
 import me.wobblyyyy.pathfinder.fieldMapping.components.Coordinate;
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
 import me.wobblyyyy.pathfinder.fieldMapping.components.countable.Line;
-import me.wobblyyyy.pathfinder.pathfinding.managers.RobotManager;
 import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
+import me.wobblyyyy.pathfinder.pathfinding.managers.RobotManager;
 
 /**
  * A movement-based instruction.

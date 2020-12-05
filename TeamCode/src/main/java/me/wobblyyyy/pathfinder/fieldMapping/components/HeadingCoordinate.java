@@ -1,7 +1,5 @@
 package me.wobblyyyy.pathfinder.fieldMapping.components;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * A two-dimensional coordinate with a Heading.
  *
@@ -83,7 +81,6 @@ public class HeadingCoordinate<E> {
      *
      * @return the coordinate (with heading) as a string.
      */
-    @NotNull
     @Override
     public String toString() {
         // Format:

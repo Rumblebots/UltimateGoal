@@ -1,7 +1,7 @@
 package me.wobblyyyy.pathfinder.pathfinding.paths.instructions;
 
-import me.wobblyyyy.pathfinder.pathfinding.managers.RobotManager;
 import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
+import me.wobblyyyy.pathfinder.pathfinding.managers.RobotManager;
 
 public class HaltInstruction implements Instruction {
     private RobotManager robotManager;

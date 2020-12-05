@@ -29,6 +29,8 @@ import java.util.ArrayList;
  * circles are a tad bit finicky and I have a feeling the hitbox might
  * come in handy for future collision detection (and hopefully avoidance).
  * </p>
+ *
+ * @author Colin Robertson
  */
 public class RadiusCircle implements Shape {
     private final GigaArc circle;
@@ -36,6 +38,10 @@ public class RadiusCircle implements Shape {
 
     private final boolean _ICE;
     private final boolean _ICI;
+
+    public final Coordinate<Double> center;
+    public final double radius;
+    public final double hitboxRadius;
 
     public RadiusCircle(Coordinate<Double> center,
                         double radius,
@@ -47,6 +53,10 @@ public class RadiusCircle implements Shape {
 
         _ICE = isCollidableExterior;
         _ICI = isCollidableInterior;
+
+        this.center = center;
+        this.radius = radius;
+        this.hitboxRadius = hitboxRadius;
     }
 
     @Override

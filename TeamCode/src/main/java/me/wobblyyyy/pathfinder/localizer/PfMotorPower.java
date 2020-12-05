@@ -44,7 +44,7 @@ public class PfMotorPower {
     }
 
     /**
-     * Get {@link fr}
+     * Get front-right.
      * @return motor power
      */
     public double getFr() {
@@ -52,7 +52,7 @@ public class PfMotorPower {
     }
 
     /**
-     * Get {@link fl}
+     * Get front-left.
      * @return motor power
      */
     public double getFl() {
@@ -60,7 +60,7 @@ public class PfMotorPower {
     }
 
     /**
-     * Get {@link br}
+     * Get back-right.
      * @return motor power
      */
     public double getBr() {
@@ -68,7 +68,7 @@ public class PfMotorPower {
     }
 
     /**
-     * Get {@link bl}
+     * Get back-left.
      * @return motor power
      */
     public double getBl() {

@@ -1,11 +1,11 @@
 package me.wobblyyyy.pathfinder.pathfinding.managers;
 
 import me.wobblyyyy.pathfinder.fieldMapping.TwoDimensionalRobot;
+import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 import me.wobblyyyy.pathfinder.pathfinding.Pathfinder;
 import me.wobblyyyy.pathfinder.pathfinding.robotRegulation.DrivetrainRegulationSystem;
 import me.wobblyyyy.pathfinder.pathfinding.robotRegulation.OdometryRegulationSystem;
 import me.wobblyyyy.pathfinder.pathfinding.robotRegulation.UserInputRegulationSystem;
-import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 
 /**
  * Used to manage all of the physical aspects of the robot.

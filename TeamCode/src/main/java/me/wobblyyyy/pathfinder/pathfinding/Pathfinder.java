@@ -3,6 +3,7 @@ package me.wobblyyyy.pathfinder.pathfinding;
 import me.wobblyyyy.pathfinder.fieldMapping.Map;
 import me.wobblyyyy.pathfinder.fieldMapping.TwoDimensionalRobot;
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
+import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 import me.wobblyyyy.pathfinder.pathfinding.managers.InstructionManager;
 import me.wobblyyyy.pathfinder.pathfinding.managers.MapManager;
 import me.wobblyyyy.pathfinder.pathfinding.managers.PathManager;
@@ -14,7 +15,6 @@ import me.wobblyyyy.pathfinder.pathfinding.paths.instructions.MoveInstruction;
 import me.wobblyyyy.pathfinder.pathfinding.robotRegulation.DrivetrainRegulationSystem;
 import me.wobblyyyy.pathfinder.pathfinding.robotRegulation.OdometryRegulationSystem;
 import me.wobblyyyy.pathfinder.pathfinding.robotRegulation.UserInputRegulationSystem;
-import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 
 import java.util.ArrayList;
 

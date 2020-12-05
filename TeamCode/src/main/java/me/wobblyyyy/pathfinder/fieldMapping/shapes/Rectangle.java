@@ -43,55 +43,108 @@ public class Rectangle implements Shape {
      * The front-right corner of the rectangle.
      * This is relative to the origin + rotation.
      */
-    final Coordinate<Double> frontRight;
+    public final Coordinate<Double> frontRight;
 
     /**
      * The back-right corner of the rectangle.
      * This is relative to the origin + rotation.
      */
-    final Coordinate<Double> backRight;
+    public final Coordinate<Double> backRight;
 
     /**
      * The front-left corner of the rectangle.
      * This is relative to the origin + rotation.
      */
-    final Coordinate<Double> frontLeft;
+    public final Coordinate<Double> frontLeft;
 
     /**
      * The back-left corner of the rectangle.
      * This is relative to the origin + rotation.
      */
-    final Coordinate<Double> backLeft;
+    public final Coordinate<Double> backLeft;
 
     /**
      * The center of the rectangle.
      * This is relative to the origin + rotation.
      */
-    final Coordinate<Double> center;
+    public final Coordinate<Double> center;
 
     /**
      * The top of the rectangle.
      * This is relative to the origin + rotation.
      */
-    final Line top;
+    public final Line top;
 
     /**
      * The right of the rectangle.
      * This is relative to the origin + rotation.
      */
-    final Line right;
+    public final Line right;
 
     /**
      * The bottom of the rectangle.
      * This is relative to the origin + rotation.
      */
-    final Line bottom;
+    public final Line bottom;
 
     /**
      * The left of the triangle.
      * This is relative to the origin + rotation.
      */
-    final Line left;
+    public final Line left;
+
+    /**
+     * Which corner the rectangle should be drawn from. This is NOT
+     * always the same corner which the rectangle will be rotated from,
+     * however - just the corner it'll be drawn from. X and Y are relative
+     * to this corner, meaning top right's Y draw would have a different
+     * impact than bottom left's Y draw - one (top right) would be negative,
+     * and the other (bottom left) would be positive.
+     */
+    public final Corners drawCorner;
+
+    /**
+     * The corner which the rectangle will be rotated from. You don't need
+     * to rotate the rectangle, by the way - it's an entirely optional step.
+     * If you don't want to rotate the rectangle, you can use any corner
+     * (CENTER or maybe your drawCorner) as the corner of rotation, and set
+     * the rotation angle to 0, representing a net change of zero rotation.
+     */
+    public final Corners rotateCorner;
+
+    /**
+     * The coordinate where the shape will be drawn from. This point is
+     * directly correlative to drawCorner - having a drawCorner of top right
+     * means that this code will interpret the starting point as the top right
+     * corner of the rectangle, and thus draw the rectangle as so. Make sure that
+     * this is the correct corner. Assuming you're familiar with something such as
+     * JavaScript's "canvas" functionality, you will (most often) want to use the
+     * top left corner as a starting point and figure out the coordinate of
+     * said corner.
+     */
+    public final Coordinate<Double> startingPoint;
+
+    /**
+     * How far, in the X dimension, the rectangle should be drawn. Note that this
+     * is relative to which corner the rectangle is being drawn from. Having a draw
+     * corner of top left means that both X and Y draws are negative.
+     */
+    public final double xDraw;
+
+    /**
+     * How far, in the Y dimension, the rectangle should be drawn. Note that this
+     * is relative to which corner the rectangle is being drawn from. Having a draw
+     * corner of the top left means that both X and Y draws are negative.
+     */
+    public final double yDraw;
+
+    /**
+     * The angle at which the entire rectangle should be rotate from. I believe that
+     * this angle is in radians, and any code you write using this angle should reflect
+     * that. If you have an angle which is in degrees, Java's native math class should
+     * include a function for converting degrees to radians.
+     */
+    public final double rotationalAngle;
 
     /**
      * "Is collidable exterior."
@@ -239,6 +292,15 @@ public class Rectangle implements Shape {
                 Math.average(positions[0].getX(), positions[3].getX()),
                 Math.average(positions[0].getY(), positions[3].getY())
         );
+        if (rotateCorner != Corners.CENTER) {
+            throw new IllegalArgumentException(
+                    "Please only use 'CENTER' as a draw corner parameter. Other " +
+                            "options as draw corners are currently not supported. " +
+                            "If you'd like to rotate from another corner, go to the " +
+                            "Rectangle.java file in the Pathfinder library to see " +
+                            "some of the math that you'll need. :)"
+            );
+        }
         switch (rotateCorner) {
             case FRONT_RIGHT:
                 // Front right is still the first position.
@@ -306,6 +368,13 @@ public class Rectangle implements Shape {
 
         _ICE = isCollidableExterior;
         _ICI = isCollidableInterior;
+
+        this.drawCorner = drawCorner;
+        this.rotateCorner = rotateCorner;
+        this.startingPoint = startingPoint;
+        this.xDraw = xDraw;
+        this.yDraw = yDraw;
+        this.rotationalAngle = rotationalAngle;
     }
 
     public boolean isCollidableExterior() {
