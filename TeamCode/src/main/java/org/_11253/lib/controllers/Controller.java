@@ -162,6 +162,26 @@ public class Controller {
      */
     private Gamepad gamepad;
 
+    private boolean a = false,
+            b = false,
+            x = false,
+            y = false,
+            dpadUp = false,
+            dpadDown = false,
+            dpadLeft = false,
+            dpadRight = false,
+            start = false,
+            select = false,
+            rightBumper = false,
+            leftBumper = false;
+
+    private double rightTrigger = 0.0,
+            leftTrigger = 0.0,
+            rightStickX = 0.0,
+            leftStickX = 0.0,
+            rightStickY = 0.0,
+            leftStickY = 0.0;
+
     /**
      * Create a new controller and a new controller map.
      *
@@ -179,7 +199,7 @@ public class Controller {
      * @return left stick's x value
      */
     public final double getLeftX() {
-        return CMP_DOUBLE(gamepad.left_stick_x);
+        return leftStickX;
     }
 
     /**
@@ -188,7 +208,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvLeftX() {
-        return CMP_DOUBLE(-gamepad.left_stick_x);
+        return -leftStickX;
     }
 
     /**
@@ -197,7 +217,7 @@ public class Controller {
      * @return left stick's y value
      */
     public final double getLeftY() {
-        return CMP_DOUBLE(gamepad.left_stick_y);
+        return leftStickY;
     }
 
     /**
@@ -206,7 +226,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvLeftY() {
-        return CMP_DOUBLE(-gamepad.left_stick_y);
+        return -leftStickY;
     }
 
     /**
@@ -215,7 +235,7 @@ public class Controller {
      * @return right stick's x value
      */
     public final double getRightX() {
-        return CMP_DOUBLE(gamepad.right_stick_x);
+        return rightStickX;
     }
 
     /**
@@ -224,7 +244,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvRightX() {
-        return CMP_DOUBLE(-gamepad.right_stick_x);
+        return -rightStickX;
     }
 
     /**
@@ -233,7 +253,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getRightY() {
-        return CMP_DOUBLE(gamepad.right_stick_y);
+        return rightStickY;
     }
 
     /**
@@ -242,7 +262,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvRightY() {
-        return CMP_DOUBLE(-gamepad.right_stick_y);
+        return -rightStickY;
     }
 
     /**
@@ -251,7 +271,7 @@ public class Controller {
      * @return the right trigger's value
      */
     public final double getRightTrigger() {
-        return CMP_DOUBLE(gamepad.right_trigger);
+        return rightTrigger;
     }
 
     /**
@@ -260,7 +280,7 @@ public class Controller {
      * @return the left trigger's value
      */
     public final double getLeftTrigger() {
-        return CMP_DOUBLE(gamepad.left_trigger);
+        return leftTrigger;
     }
 
     /**
@@ -269,7 +289,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getA() {
-        return CMP_BOOLEAN(gamepad.a);
+        return a;
     }
 
     /**
@@ -278,7 +298,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getB() {
-        return CMP_BOOLEAN(gamepad.b);
+        return b;
     }
 
     /**
@@ -287,7 +307,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getX() {
-        return CMP_BOOLEAN(gamepad.x);
+        return x;
     }
 
     /**
@@ -296,7 +316,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getY() {
-        return CMP_BOOLEAN(gamepad.y);
+        return y;
     }
 
     /**
@@ -305,7 +325,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadUp() {
-        return CMP_BOOLEAN(gamepad.dpad_up);
+        return dpadUp;
     }
 
     /**
@@ -314,7 +334,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadRight() {
-        return CMP_BOOLEAN(gamepad.dpad_right);
+        return dpadRight;
     }
 
     /**
@@ -323,7 +343,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadDown() {
-        return CMP_BOOLEAN(gamepad.dpad_down);
+        return dpadDown;
     }
 
     /**
@@ -332,7 +352,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadLeft() {
-        return CMP_BOOLEAN(gamepad.dpad_left);
+        return dpadLeft;
     }
 
     /**
@@ -341,7 +361,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getRightBumper() {
-        return CMP_BOOLEAN(gamepad.right_bumper);
+        return rightBumper;
     }
 
     /**
@@ -350,7 +370,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getLeftBumper() {
-        return CMP_BOOLEAN(gamepad.left_bumper);
+        return leftBumper;
     }
 
     /**
@@ -359,7 +379,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getStart() {
-        return CMP_BOOLEAN(gamepad.start);
+        return start;
     }
 
     /**
@@ -368,7 +388,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getSelect() {
-        return CMP_BOOLEAN(gamepad.guide);
+        return select;
     }
 
     /**
@@ -451,5 +471,81 @@ public class Controller {
      */
     public void setJoystickDeadZone(float deadZone) {
         gamepad.setJoystickDeadzone(deadZone);
+    }
+
+    public void setGamepad(Gamepad gamepad) {
+        this.gamepad = gamepad;
+    }
+
+    public void setA(boolean a) {
+        this.a = a;
+    }
+
+    public void setB(boolean b) {
+        this.b = b;
+    }
+
+    public void setX(boolean x) {
+        this.x = x;
+    }
+
+    public void setY(boolean y) {
+        this.y = y;
+    }
+
+    public void setDpadUp(boolean dpadUp) {
+        this.dpadUp = dpadUp;
+    }
+
+    public void setDpadDown(boolean dpadDown) {
+        this.dpadDown = dpadDown;
+    }
+
+    public void setDpadLeft(boolean dpadLeft) {
+        this.dpadLeft = dpadLeft;
+    }
+
+    public void setDpadRight(boolean dpadRight) {
+        this.dpadRight = dpadRight;
+    }
+
+    public void setStart(boolean start) {
+        this.start = start;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
+
+    public void setRightBumper(boolean rightBumper) {
+        this.rightBumper = rightBumper;
+    }
+
+    public void setLeftBumper(boolean leftBumper) {
+        this.leftBumper = leftBumper;
+    }
+
+    public void setRightTrigger(double rightTrigger) {
+        this.rightTrigger = rightTrigger;
+    }
+
+    public void setLeftTrigger(double leftTrigger) {
+        this.leftTrigger = leftTrigger;
+    }
+
+    public void setRightStickX(double rightStickX) {
+        this.rightStickX = rightStickX;
+    }
+
+    public void setLeftStickX(double leftStickX) {
+        this.leftStickX = leftStickX;
+    }
+
+    public void setRightStickY(double rightStickY) {
+        this.rightStickY = rightStickY;
+    }
+
+    public void setLeftStickY(double leftStickY) {
+        this.leftStickY = leftStickY;
     }
 }
