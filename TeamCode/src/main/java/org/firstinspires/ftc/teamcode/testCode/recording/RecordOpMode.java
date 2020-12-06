@@ -40,7 +40,7 @@ public class RecordOpMode extends OpMode {
             );
             StringEvents.schedule(
                     "ajdlfkajsdlfk",
-                    10000,
+                    11000,
                     0,
                     new Timed() {
                         @Override
