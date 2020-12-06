@@ -1,6 +1,7 @@
 package me.wobblyyyy.pathfinder;
 
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
+import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 
 // TODO actually finish this lmfao
 
@@ -12,6 +13,9 @@ public class Pathfinder {
     private PfRoute pfRoute;
 
     private HeadingCoordinate<Double> position;
+
+    // todo make this a member variable
+    public static PfMotorPower pfMotorPower = new PfMotorPower(0, 0, 0, 0);
 
     public Pathfinder() {
 

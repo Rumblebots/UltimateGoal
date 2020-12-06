@@ -2,6 +2,7 @@ package me.wobblyyyy.pathfinder.recording;
 
 import me.wobblyyyy.intra.ftc2.utils.Timed;
 import me.wobblyyyy.intra.ftc2.utils.async.event.StringEvents;
+import me.wobblyyyy.pathfinder.Pathfinder;
 import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 
 import java.util.HashMap;
@@ -76,7 +77,7 @@ public class Recorder {
     public static void execute() {
         for (HashMap.Entry<Long, PfMotorPower> entry : record.entrySet()) {
             long delay = entry.getKey();
-            PfMotorPower motorPower = entry.getValue();
+            final PfMotorPower motorPower = entry.getValue();
 
             StringEvents.schedule(
                     name,
@@ -89,6 +90,7 @@ public class Recorder {
                                 @Override
                                 public void run() {
                                     // TODO SET PATHFINDER SUGGESTED MOTOR POWER HERE !!
+                                    Pathfinder.pfMotorPower = motorPower;
                                 }
                             };
                         }
