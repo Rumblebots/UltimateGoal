@@ -66,6 +66,8 @@ public class Template extends LinearOpMode {
      */
     public ListWrapper<Runnable> onStart = new ListWrapper<>(new ArrayList<Runnable>());
 
+    public ListWrapper<Runnable> beforeStartRun = new ListWrapper<>(new ArrayList<Runnable>());
+
     /**
      * List of Runnables to run at the start of the loop.
      */
@@ -278,6 +280,10 @@ public class Template extends LinearOpMode {
             runList(onStart);
     }
 
+    private void fBeforeStartRun() {
+        runList(beforeStartRun);
+    }
+
     /**
      * Internal function, just don't mess with it and you're good.
      */
@@ -328,6 +334,14 @@ public class Template extends LinearOpMode {
 
     }
 
+    public void controllerUpdater() {
+
+    }
+
+    public void externalControllerUpdater() {
+
+    }
+
     /**
      * Base / template code that every op mode uses.
      * <p>
@@ -359,6 +373,10 @@ public class Template extends LinearOpMode {
 
         while (opModeIsActive()) {
             executionTime = (int) System.currentTimeMillis();
+
+            controllerUpdater();
+
+            fBeforeStart();
 
             fOnStartRun();
 

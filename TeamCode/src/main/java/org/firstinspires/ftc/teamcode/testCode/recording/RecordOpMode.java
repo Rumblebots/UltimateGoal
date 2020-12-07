@@ -34,7 +34,8 @@ public class RecordOpMode extends Template {
     private void _init() {
         playback = new Playback(
                 new Controller(gamepad1),
-                new Controller(gamepad2)
+                new Controller(gamepad2),
+                this
         );
     }
 

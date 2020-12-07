@@ -59,6 +59,24 @@ public class ControllerState {
         this.lsy = lsy;
     }
 
+    public boolean isStateEmpty() {
+        return !a &&
+                !b &&
+                !x &&
+                !y &&
+                !dpu &&
+                !dpd &&
+                !dpl &&
+                !dpr &&
+                !rb &&
+                rt == 0 &&
+                lt == 0 &&
+                rsx == 0 &&
+                lsx == 0 &&
+                rsy == 0 &&
+                lsy == 0;
+    }
+
     public ControllerState() {
 
     }

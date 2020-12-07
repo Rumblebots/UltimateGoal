@@ -162,25 +162,25 @@ public class Controller {
      */
     private Gamepad gamepad;
 
-    private boolean a = false,
+    protected boolean a = false,
             b = false,
             x = false,
             y = false,
-            dpadUp = false,
-            dpadDown = false,
-            dpadLeft = false,
-            dpadRight = false,
+            dpad_up = false,
+            dpad_down = false,
+            dpad_left = false,
+            dpad_right = false,
             start = false,
             select = false,
-            rightBumper = false,
-            leftBumper = false;
+            right_bumper = false,
+            left_bumper = false;
 
-    private double rightTrigger = 0.0,
-            leftTrigger = 0.0,
-            rightStickX = 0.0,
-            leftStickX = 0.0,
-            rightStickY = 0.0,
-            leftStickY = 0.0;
+    protected double right_trigger = 0.0,
+            left_trigger = 0.0,
+            right_stick_x = 0.0,
+            left_stick_x = 0.0,
+            right_stick_y = 0.0,
+            left_stick_y = 0.0;
 
     /**
      * Create a new controller and a new controller map.
@@ -189,7 +189,7 @@ public class Controller {
      */
     public Controller(Gamepad gamepad) {
         this.gamepad = gamepad;
-        map = new ControllerMap(gamepad);
+        map = new ControllerMap(gamepad, this);
         manager = new ControllerManager();
     }
 
@@ -199,7 +199,7 @@ public class Controller {
      * @return left stick's x value
      */
     public final double getLeftX() {
-        return leftStickX;
+        return left_stick_x;
     }
 
     /**
@@ -208,7 +208,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvLeftX() {
-        return -leftStickX;
+        return -left_stick_x;
     }
 
     /**
@@ -217,7 +217,7 @@ public class Controller {
      * @return left stick's y value
      */
     public final double getLeftY() {
-        return leftStickY;
+        return left_stick_y;
     }
 
     /**
@@ -226,7 +226,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvLeftY() {
-        return -leftStickY;
+        return -left_stick_y;
     }
 
     /**
@@ -235,7 +235,7 @@ public class Controller {
      * @return right stick's x value
      */
     public final double getRightX() {
-        return rightStickX;
+        return right_stick_x;
     }
 
     /**
@@ -244,7 +244,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvRightX() {
-        return -rightStickX;
+        return -right_stick_x;
     }
 
     /**
@@ -253,7 +253,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getRightY() {
-        return rightStickY;
+        return right_stick_y;
     }
 
     /**
@@ -262,7 +262,7 @@ public class Controller {
      * @return right stick's y value
      */
     public final double getInvRightY() {
-        return -rightStickY;
+        return -right_stick_y;
     }
 
     /**
@@ -271,7 +271,7 @@ public class Controller {
      * @return the right trigger's value
      */
     public final double getRightTrigger() {
-        return rightTrigger;
+        return right_trigger;
     }
 
     /**
@@ -280,7 +280,7 @@ public class Controller {
      * @return the left trigger's value
      */
     public final double getLeftTrigger() {
-        return leftTrigger;
+        return left_trigger;
     }
 
     /**
@@ -325,7 +325,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadUp() {
-        return dpadUp;
+        return dpad_up;
     }
 
     /**
@@ -334,7 +334,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadRight() {
-        return dpadRight;
+        return dpad_right;
     }
 
     /**
@@ -343,7 +343,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadDown() {
-        return dpadDown;
+        return dpad_down;
     }
 
     /**
@@ -352,7 +352,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getDpadLeft() {
-        return dpadLeft;
+        return dpad_left;
     }
 
     /**
@@ -361,7 +361,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getRightBumper() {
-        return rightBumper;
+        return right_bumper;
     }
 
     /**
@@ -370,7 +370,7 @@ public class Controller {
      * @return whether the button is pressed down or not (true = yes, false = no)
      */
     public final boolean getLeftBumper() {
-        return leftBumper;
+        return left_bumper;
     }
 
     /**
@@ -477,6 +477,27 @@ public class Controller {
         this.gamepad = gamepad;
     }
 
+    public void update() {
+        a = gamepad.a;
+        b = gamepad.b;
+        x = gamepad.x;
+        y = gamepad.y;
+        right_bumper = gamepad.right_bumper;
+        left_bumper = gamepad.left_bumper;
+        right_trigger = gamepad.right_trigger;
+        left_trigger = gamepad.left_trigger;
+        dpad_up = gamepad.dpad_up;
+        dpad_down = gamepad.dpad_down;
+        dpad_left = gamepad.dpad_left;
+        dpad_right = gamepad.dpad_right;
+        start = gamepad.start;
+        select = gamepad.guide;
+        right_stick_x = gamepad.right_stick_x;
+        right_stick_y = gamepad.right_stick_y;
+        left_stick_x = gamepad.left_stick_x;
+        left_stick_y = gamepad.left_stick_y;
+    }
+
     public void setA(boolean a) {
         this.a = a;
     }
@@ -493,20 +514,20 @@ public class Controller {
         this.y = y;
     }
 
-    public void setDpadUp(boolean dpadUp) {
-        this.dpadUp = dpadUp;
+    public void setDpadUp(boolean dpad_up) {
+        this.dpad_up = dpad_up;
     }
 
-    public void setDpadDown(boolean dpadDown) {
-        this.dpadDown = dpadDown;
+    public void setDpadDown(boolean dpad_down) {
+        this.dpad_down = dpad_down;
     }
 
-    public void setDpadLeft(boolean dpadLeft) {
-        this.dpadLeft = dpadLeft;
+    public void setDpadLeft(boolean dpad_left) {
+        this.dpad_left = dpad_left;
     }
 
-    public void setDpadRight(boolean dpadRight) {
-        this.dpadRight = dpadRight;
+    public void setDpadRight(boolean dpad_right) {
+        this.dpad_right = dpad_right;
     }
 
     public void setStart(boolean start) {
@@ -517,35 +538,35 @@ public class Controller {
         this.select = select;
     }
 
-    public void setRightBumper(boolean rightBumper) {
-        this.rightBumper = rightBumper;
+    public void setRightBumper(boolean right_bumper) {
+        this.right_bumper = right_bumper;
     }
 
-    public void setLeftBumper(boolean leftBumper) {
-        this.leftBumper = leftBumper;
+    public void setLeftBumper(boolean left_bumper) {
+        this.left_bumper = left_bumper;
     }
 
-    public void setRightTrigger(double rightTrigger) {
-        this.rightTrigger = rightTrigger;
+    public void setRightTrigger(double right_trigger) {
+        this.right_trigger = right_trigger;
     }
 
-    public void setLeftTrigger(double leftTrigger) {
-        this.leftTrigger = leftTrigger;
+    public void setLeftTrigger(double left_trigger) {
+        this.left_trigger = left_trigger;
     }
 
-    public void setRightStickX(double rightStickX) {
-        this.rightStickX = rightStickX;
+    public void setRightStickX(double right_stick_x) {
+        this.right_stick_x = right_stick_x;
     }
 
-    public void setLeftStickX(double leftStickX) {
-        this.leftStickX = leftStickX;
+    public void setLeftStickX(double left_stick_x) {
+        this.left_stick_x = left_stick_x;
     }
 
-    public void setRightStickY(double rightStickY) {
-        this.rightStickY = rightStickY;
+    public void setRightStickY(double right_stick_y) {
+        this.right_stick_y = right_stick_y;
     }
 
-    public void setLeftStickY(double leftStickY) {
-        this.leftStickY = leftStickY;
+    public void setLeftStickY(double left_stick_y) {
+        this.left_stick_y = left_stick_y;
     }
 }

@@ -57,6 +57,11 @@ public class ControllerMap {
     Gamepad gamepad;
 
     /**
+     * A reference to the parent controller class.
+     */
+    Controller controller;
+
+    /**
      * A map of all of the commands which should be executed.
      * <p>
      * This is interfaced through the functions bind and unbind.
@@ -69,8 +74,10 @@ public class ControllerMap {
      *
      * @param gamepad the gamepad which should be used.
      */
-    public ControllerMap(Gamepad gamepad) {
+    public ControllerMap(Gamepad gamepad,
+                         Controller controller) {
         this.gamepad = gamepad;
+        this.controller = controller;
     }
 
     /**
@@ -140,75 +147,71 @@ public class ControllerMap {
      */
     public final void runMap() {
         if (commandMap.containsKey(States.START))
-            Objects.requireNonNull(commandMap.get(States.START)).getRunnable(gamepad.start).run();
+            Objects.requireNonNull(commandMap.get(States.START)).getRunnable(controller.start).run();
         if (commandMap.containsKey(States.GUIDE))
-            Objects.requireNonNull(commandMap.get(States.GUIDE)).getRunnable(gamepad.guide).run();
+            Objects.requireNonNull(commandMap.get(States.GUIDE)).getRunnable(controller.select).run();
         if (commandMap.containsKey(States.A))
-            Objects.requireNonNull(commandMap.get(States.A)).getRunnable(gamepad.a).run();
+            Objects.requireNonNull(commandMap.get(States.A)).getRunnable(controller.a).run();
         if (commandMap.containsKey(States.B))
-            Objects.requireNonNull(commandMap.get(States.B)).getRunnable(gamepad.b).run();
+            Objects.requireNonNull(commandMap.get(States.B)).getRunnable(controller.b).run();
         if (commandMap.containsKey(States.X))
-            Objects.requireNonNull(commandMap.get(States.X)).getRunnable(gamepad.x).run();
+            Objects.requireNonNull(commandMap.get(States.X)).getRunnable(controller.x).run();
         if (commandMap.containsKey(States.Y))
-            Objects.requireNonNull(commandMap.get(States.Y)).getRunnable(gamepad.y).run();
+            Objects.requireNonNull(commandMap.get(States.Y)).getRunnable(controller.y).run();
         if (commandMap.containsKey(States.DPAD_UP))
-            Objects.requireNonNull(commandMap.get(States.DPAD_UP)).getRunnable(gamepad.dpad_up).run();
+            Objects.requireNonNull(commandMap.get(States.DPAD_UP)).getRunnable(controller.dpad_up).run();
         if (commandMap.containsKey(States.DPAD_RIGHT))
-            Objects.requireNonNull(commandMap.get(States.DPAD_RIGHT)).getRunnable(gamepad.dpad_right).run();
+            Objects.requireNonNull(commandMap.get(States.DPAD_RIGHT)).getRunnable(controller.dpad_right).run();
         if (commandMap.containsKey(States.DPAD_DOWN))
-            Objects.requireNonNull(commandMap.get(States.DPAD_DOWN)).getRunnable(gamepad.dpad_down).run();
+            Objects.requireNonNull(commandMap.get(States.DPAD_DOWN)).getRunnable(controller.dpad_down).run();
         if (commandMap.containsKey(States.DPAD_LEFT))
-            Objects.requireNonNull(commandMap.get(States.DPAD_LEFT)).getRunnable(gamepad.dpad_left).run();
+            Objects.requireNonNull(commandMap.get(States.DPAD_LEFT)).getRunnable(controller.dpad_left).run();
         if (commandMap.containsKey(States.RIGHT_BUMPER))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_BUMPER)).getRunnable(gamepad.right_bumper).run();
+            Objects.requireNonNull(commandMap.get(States.RIGHT_BUMPER)).getRunnable(controller.right_bumper).run();
         if (commandMap.containsKey(States.LEFT_BUMPER))
-            Objects.requireNonNull(commandMap.get(States.LEFT_BUMPER)).getRunnable(gamepad.left_bumper).run();
+            Objects.requireNonNull(commandMap.get(States.LEFT_BUMPER)).getRunnable(controller.left_bumper).run();
         if (commandMap.containsKey(States.RIGHT_STICK))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_STICK)).getRunnable(gamepad.right_stick_x != 0 || gamepad.right_stick_y != 0).run();
+            Objects.requireNonNull(commandMap.get(States.RIGHT_STICK)).getRunnable(controller.right_stick_x != 0 || controller.right_stick_y != 0).run();
         if (commandMap.containsKey(States.LEFT_STICK))
-            Objects.requireNonNull(commandMap.get(States.LEFT_STICK)).getRunnable(gamepad.left_stick_x != 0 || gamepad.left_stick_y != 0).run();
-        if (commandMap.containsKey(States.RIGHT_STICK_BUTTON))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_STICK_BUTTON)).getRunnable(gamepad.right_stick_button).run();
-        if (commandMap.containsKey(States.LEFT_STICK_BUTTON))
-            Objects.requireNonNull(commandMap.get(States.LEFT_STICK_BUTTON)).getRunnable(gamepad.left_stick_button).run();
+            Objects.requireNonNull(commandMap.get(States.LEFT_STICK)).getRunnable(controller.left_stick_x != 0 || controller.left_stick_y != 0).run();
         if (commandMap.containsKey(States.RIGHT_STICK_X))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_STICK_X)).getRunnable(gamepad.right_stick_x != 0).run();
+            Objects.requireNonNull(commandMap.get(States.RIGHT_STICK_X)).getRunnable(controller.right_stick_x != 0).run();
         if (commandMap.containsKey(States.RIGHT_STICK_Y))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_STICK_Y)).getRunnable(gamepad.right_stick_y != 0).run();
+            Objects.requireNonNull(commandMap.get(States.RIGHT_STICK_Y)).getRunnable(controller.right_stick_y != 0).run();
         if (commandMap.containsKey(States.LEFT_STICK_X))
-            Objects.requireNonNull(commandMap.get(States.LEFT_STICK_X)).getRunnable(gamepad.left_stick_x != 0).run();
+            Objects.requireNonNull(commandMap.get(States.LEFT_STICK_X)).getRunnable(controller.left_stick_x != 0).run();
         if (commandMap.containsKey(States.LEFT_STICK_Y))
-            Objects.requireNonNull(commandMap.get(States.LEFT_STICK_Y)).getRunnable(gamepad.left_stick_y != 0).run();
+            Objects.requireNonNull(commandMap.get(States.LEFT_STICK_Y)).getRunnable(controller.left_stick_y != 0).run();
         if (commandMap.containsKey(States.RIGHT_OR_LEFT_X))
             Objects.requireNonNull(commandMap.get(States.RIGHT_OR_LEFT_Y))
                     .getRunnable(
-                            gamepad.right_stick_y != 0 ||
-                                    gamepad.left_stick_y != 0
+                            controller.right_stick_y != 0 ||
+                                    controller.left_stick_y != 0
                     );
         if (commandMap.containsKey(States.RIGHT_OR_LEFT_Y))
             Objects.requireNonNull(commandMap.get(States.RIGHT_OR_LEFT_X))
                     .getRunnable(
-                            gamepad.right_stick_x != 0 ||
-                                    gamepad.left_stick_x != 0
+                            controller.right_stick_x != 0 ||
+                                    controller.left_stick_x != 0
                     );
         if (commandMap.containsKey(States.STICK))
-            Objects.requireNonNull(commandMap.get(States.STICK)).getRunnable(gamepad.right_stick_x != 0 || gamepad.right_stick_y != 0 || gamepad.left_stick_x != 0 || gamepad.left_stick_y != 0).run();
+            Objects.requireNonNull(commandMap.get(States.STICK)).getRunnable(controller.right_stick_x != 0 || controller.right_stick_y != 0 || controller.left_stick_x != 0 || controller.left_stick_y != 0).run();
         if (commandMap.containsKey(States.RIGHT_TRIGGER))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_TRIGGER)).getRunnable(gamepad.right_trigger != 0).run();
+            Objects.requireNonNull(commandMap.get(States.RIGHT_TRIGGER)).getRunnable(controller.right_trigger != 0).run();
         if (commandMap.containsKey(States.LEFT_TRIGGER))
-            Objects.requireNonNull(commandMap.get(States.LEFT_TRIGGER)).getRunnable(gamepad.left_trigger != 0).run();
+            Objects.requireNonNull(commandMap.get(States.LEFT_TRIGGER)).getRunnable(controller.left_trigger != 0).run();
         if (commandMap.containsKey(States.RIGHT_TRIGGER_HALF))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_TRIGGER_HALF)).getRunnable(gamepad.right_trigger > 0.5);
+            Objects.requireNonNull(commandMap.get(States.RIGHT_TRIGGER_HALF)).getRunnable(controller.right_trigger > 0.5);
         if (commandMap.containsKey(States.LEFT_TRIGGER_HALF))
-            Objects.requireNonNull(commandMap.get(States.LEFT_TRIGGER_HALF)).getRunnable(gamepad.left_trigger > 0.5);
+            Objects.requireNonNull(commandMap.get(States.LEFT_TRIGGER_HALF)).getRunnable(controller.left_trigger > 0.5);
         if (commandMap.containsKey(States.RIGHT_TRIGGER_QUARTER))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_TRIGGER_QUARTER)).getRunnable(gamepad.right_trigger > 0.25);
+            Objects.requireNonNull(commandMap.get(States.RIGHT_TRIGGER_QUARTER)).getRunnable(controller.right_trigger > 0.25);
         if (commandMap.containsKey(States.LEFT_TRIGGER_QUARTER))
-            Objects.requireNonNull(commandMap.get(States.LEFT_TRIGGER_QUARTER)).getRunnable(gamepad.left_trigger > 0.25);
+            Objects.requireNonNull(commandMap.get(States.LEFT_TRIGGER_QUARTER)).getRunnable(controller.left_trigger > 0.25);
         if (commandMap.containsKey(States.RIGHT_TRIGGER_THREE_QUARTERS))
-            Objects.requireNonNull(commandMap.get(States.RIGHT_TRIGGER_THREE_QUARTERS)).getRunnable(gamepad.right_trigger > 0.75);
+            Objects.requireNonNull(commandMap.get(States.RIGHT_TRIGGER_THREE_QUARTERS)).getRunnable(controller.right_trigger > 0.75);
         if (commandMap.containsKey(States.LEFT_TRIGGER_THREE_QUARTERS))
-            Objects.requireNonNull(commandMap.get(States.LEFT_TRIGGER_THREE_QUARTERS)).getRunnable(gamepad.left_trigger > 0.75);
+            Objects.requireNonNull(commandMap.get(States.LEFT_TRIGGER_THREE_QUARTERS)).getRunnable(controller.left_trigger > 0.75);
     }
 
     /**

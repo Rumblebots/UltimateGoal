@@ -156,4 +156,10 @@ public class TeleOp extends Template {
             }
         });
     }
+
+    @Override
+    public final void controllerUpdater() {
+        controller1.update();
+        controller2.update();
+    }
 }

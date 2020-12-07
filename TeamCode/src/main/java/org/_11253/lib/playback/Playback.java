@@ -1,13 +1,13 @@
 package org._11253.lib.playback;
 
 import org._11253.lib.controllers.Controller;
+import org._11253.lib.op.Template;
 import org._11253.lib.playback.data.RwInterface;
 import org._11253.lib.playback.gson.GsonLoad;
 import org._11253.lib.playback.gson.GsonSave;
 import org._11253.lib.utils.Timed;
 import org._11253.lib.utils.async.event.StringEvents;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class Playback {
@@ -25,9 +25,10 @@ public class Playback {
     private static String c2f = "c2f_data.json";
 
     public Playback(Controller controller1,
-                    Controller controller2) {
-        this.controller1 = new ControllerManager(controller1);
-        this.controller2 = new ControllerManager(controller2);
+                    Controller controller2,
+                    Template template) {
+        this.controller1 = new ControllerManager(controller1, template);
+        this.controller2 = new ControllerManager(controller2, template);
     }
 
     /**
