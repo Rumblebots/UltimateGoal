@@ -30,10 +30,11 @@ package org._11253.lib.drives;
 
 import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.motors.MotorPower;
+import org._11253.lib.motors.SourceType;
+import org._11253.lib.motors.SourcedMotorPower;
 import org._11253.lib.op.TeleOp;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 import org._11253.lib.utils.Command;
-import org._11253.lib.utils.math.Math;
 import org._11253.lib.utils.telem.Telemetry;
 
 /**
@@ -94,25 +95,76 @@ public class Meccanum extends TeleOp {
                                 return new Runnable() {
                                     @Override
                                     public void run() {
-//                                        if (!controller1.manager.isUserControlled()) return;
-                                        double speed = controller1.getLeftY();
-                                        double strafe = controller1.getLeftX();
-                                        double turn = controller1.getRightX();
-
+//                                        double x = controller1.getLeftX();
+//                                        double y = controller1.getLeftY();
+//
+//                                        double turn = Math.atan2(
+//                                                controller1.getRightY(),
+//                                                controller1.getRightX()
+//                                        );
+//                                        double magnitude = Math.sqrt(
+//                                                Math.pow(x, 2.0) + Math.pow(y, 2.0)
+//                                        );
+//
+//                                        double fr = (Math.sin(turn + (0.25 * Math.PI))) * magnitude + turn;
+//                                        double fl = (-Math.sin(turn - (0.25 * Math.PI))) * magnitude + turn;
+//                                        double br = (Math.sin(turn - (0.25 * Math.PI))) * magnitude + turn;
+//                                        double bl = (-Math.sin(turn + (0.25 * Math.PI))) * magnitude + turn;
+//
+//                                        double max = Math.max(
+//                                                Math.max(
+//                                                        Math.abs(fr),
+//                                                        Math.abs(fl)
+//                                                ),
+//                                                Math.max(
+//                                                        Math.abs(br),
+//                                                        Math.abs(bl)
+//                                                )
+//                                        );
+//                                        double factor = 1 / max;
+//
+//                                        // Motors need to be scaled down in terms of
+//                                        // maximum output power.
+//                                        if (max > 1) {
+//                                            fr *= factor;
+//                                            fl *= factor;
+//                                            br *= factor;
+//                                            bl *= factor;
+//                                        }
+//
+//                                        br *= -1;
+//                                        bl *= -1;
+//
+//                                        drivetrain.setPower(
+//                                                new SourcedMotorPower(
+//                                                        fr,
+//                                                        fl,
+//                                                        br,
+//                                                        bl,
+//                                                        SourceType.USER
+//                                                )
+//                                        );
+//
+//                                        Telemetry.addData(
+//                                                "_1125c_MOTORS",
+//                                                "Motors engaged",
+//                                                "? ",
+//                                                "true"
+//                                        );
+//                                        Telemetry.addData(
+//                                                "_1125c_MOTORS_2",
+//                                                "FR, FL, BR, BL",
+//                                                ": ",
+//                                                fr + " " + fl + " " + br + " " + bl
+//                                        );
                                         drivetrain.setPower(
-                                                new MotorPower(
-                                                        -speed + 0 + 0,
-                                                        speed + 0 + 0,
-                                                        -speed + 0 + 0,
-                                                        speed + 0 + 0
+                                                new SourcedMotorPower(
+                                                        controller1.getLeftY() + controller1.getRightX() + controller1.getLeftX(),
+                                                        -controller1.getLeftY() + controller1.getRightX() + controller1.getLeftX(),
+                                                        controller1.getLeftY() + controller1.getRightX() - controller1.getLeftX(),
+                                                        -controller1.getLeftY() + controller1.getRightX() - controller1.getLeftX(),
+                                                        SourceType.USER
                                                 )
-                                        );
-                                        Telemetry.addData("MSPEEd", "Motor Speed", ": ", String.valueOf(speed));
-                                        Telemetry.addData(
-                                                "_1125c_MOTORS",
-                                                "Motors engaged",
-                                                "? ",
-                                                "true"
                                         );
                                     }
                                 };

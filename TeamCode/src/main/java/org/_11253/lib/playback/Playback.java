@@ -11,6 +11,8 @@ import org._11253.lib.utils.async.event.StringEvents;
 import java.util.HashMap;
 
 public class Playback {
+    public static boolean isPlayingBack = false;
+
     private ControllerManager controller1;
     private ControllerManager controller2;
 
@@ -49,9 +51,9 @@ public class Playback {
      *                 any performance issues. A value of about 50 is fairly good.
      */
     public void record(final String name,
-                       long duration,
-                       long delay,
-                       long interval) {
+                       final long duration,
+                       final long delay,
+                       final long interval) {
         // Schedule the offset manager event.
         // Should have a duration equal to how long it takes for the delay to finish.
         StringEvents.schedule(
@@ -101,6 +103,33 @@ public class Playback {
             ptr++;
         }
 
+        // Schedule an empty event at the end to re-enable regular (non-playback based)
+        // motor control.
+        StringEvents.schedule(
+                recorderName,
+                delay + duration,
+                0,
+                new Timed() {
+                    @Override
+                    public Runnable close() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                controller1.getRecording().getRecording().put(
+                                        offset + delay + duration + 100,
+                                        new ControllerState()
+                                );
+                                controller2.getRecording().getRecording().put(
+                                        offset + delay + duration + 100,
+                                        new ControllerState()
+                                );
+                            }
+                        };
+                    }
+                },
+                false
+        );
+
         // Schedule the file saver.
         StringEvents.schedule(
                 saveName,
@@ -127,8 +156,11 @@ public class Playback {
      * @param name the name of the recording. This is used in saving the recording locally
      *             in order to enable loading the recording and eventually playing it back.
      */
-    public void play(String name) {
+    public void play(String name,
+                     long length) {
         loadRecording(name);
+
+        isPlayingBack = true;
 
         for (final HashMap.Entry<Long, ControllerState> entry : controller1.getRecording().getRecording().entrySet()) {
             StringEvents.schedule(
@@ -150,6 +182,24 @@ public class Playback {
                     false
             );
         }
+
+        StringEvents.schedule(
+                playbackName,
+                0,
+                length,
+                new Timed() {
+                    @Override
+                    public Runnable close() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                isPlayingBack = false;
+                            }
+                        };
+                    }
+                },
+                false
+        );
     }
 
     private void saveRecording(String name) {

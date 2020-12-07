@@ -17,12 +17,11 @@ public class ControllerManager {
                 new Runnable() {
                     @Override
                     public void run() {
-                        if (!stateToPlay.isStateEmpty()) {
-                            PlaybackControllerManager.setControllerState(
-                                    controller,
-                                    stateToPlay
-                            );
-                        }
+                        if (!Playback.isPlayingBack) return;
+                        PlaybackControllerManager.setControllerState(
+                                controller,
+                                stateToPlay
+                        );
                     }
                 }
         );

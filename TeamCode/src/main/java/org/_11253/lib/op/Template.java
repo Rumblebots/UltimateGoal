@@ -376,7 +376,7 @@ public class Template extends LinearOpMode {
 
             controllerUpdater();
 
-            fBeforeStart();
+            fBeforeStartRun();
 
             fOnStartRun();
 

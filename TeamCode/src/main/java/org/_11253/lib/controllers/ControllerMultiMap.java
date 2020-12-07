@@ -22,7 +22,7 @@ public class ControllerMultiMap {
     public ArrayList<ControllerMap> maps = new ArrayList<>();
 
     private ControllerMap createNewMap(Gamepad gamepad) {
-        return new ControllerMap(gamepad);
+        return new ControllerMap(gamepad, new Controller(gamepad));
     }
 
     /**
