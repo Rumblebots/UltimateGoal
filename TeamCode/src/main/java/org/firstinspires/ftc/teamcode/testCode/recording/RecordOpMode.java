@@ -1,45 +1,53 @@
 package org.firstinspires.ftc.teamcode.testCode.recording;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import me.wobblyyyy.intra.ftc2.utils.Timed;
-import me.wobblyyyy.intra.ftc2.utils.async.event.StringEvents;
-import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
-import me.wobblyyyy.pathfinder_ftc.RecorderAndroid;
-import org._11253.lib.utils.gen.Toggle;
+import org._11253.lib.controllers.Controller;
+import org._11253.lib.op.Template;
+import org._11253.lib.playback.Playback;
+import org._11253.lib.utils.Timed;
+import org._11253.lib.utils.async.event.StringEvents;
 
 @TeleOp(name = "Record", group = "Test")
-public class RecordOpMode extends OpMode {
-    public RecorderAndroid recorder = new RecorderAndroid();
+public class RecordOpMode extends Template {
+    private Playback playback;
+    private boolean hasExec = false;
 
-    boolean hasExec = false;
-
-    DcMotor frontRight;
-    DcMotor frontLeft;
-    DcMotor backRight;
-    DcMotor backLeft;
-
-    @Override
-    public void init() {
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
+    public RecordOpMode() {
+        onStart.add(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        _init();
+                    }
+                }
+        );
+        run.add(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        _loop();
+                    }
+                }
+        );
     }
 
-    @Override
-    public void loop() {
+    private void _init() {
+        playback = new Playback(
+                new Controller(gamepad1),
+                new Controller(gamepad2)
+        );
+    }
+
+    private void _loop() {
         if (!hasExec) {
-            recorder.startRecording(
+            playback.record(
+                    "demoRecording",
                     10000,
                     0,
                     50
             );
             StringEvents.schedule(
-                    "ajdlfkajsdlfk",
+                    "demoRecordingPlayback",
                     11000,
                     0,
                     new Timed() {
@@ -48,7 +56,7 @@ public class RecordOpMode extends OpMode {
                             return new Runnable() {
                                 @Override
                                 public void run() {
-                                    recorder.saveRecording("", "recording.json");
+                                    playback.play("demoRecording");
                                 }
                             };
                         }
@@ -57,17 +65,5 @@ public class RecordOpMode extends OpMode {
             );
             hasExec = true;
         }
-
-        frontRight.setPower(gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x);
-        backRight.setPower(gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x);
-        frontLeft.setPower(-gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x);
-        backLeft.setPower(-gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x);
-
-        recorder.update(new PfMotorPower(
-                frontRight.getPower(),
-                frontLeft.getPower(),
-                backRight.getPower(),
-                backLeft.getPower()
-        ));
     }
 }

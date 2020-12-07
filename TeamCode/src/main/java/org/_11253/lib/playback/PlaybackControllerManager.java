@@ -27,7 +27,7 @@ public class PlaybackControllerManager {
     }
 
     public static void setControllerState(Controller c,
-                                   ControllerState s) {
+                                          ControllerState s) {
         c.setA(s.a);
         c.setB(s.b);
         c.setX(s.x);

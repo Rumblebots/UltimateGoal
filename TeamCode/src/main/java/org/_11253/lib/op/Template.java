@@ -382,5 +382,7 @@ public class Template extends LinearOpMode {
         }
 
         fOnFinishRun();
+
+        StringEvents.events = new HashMap<>();
     }
 }
