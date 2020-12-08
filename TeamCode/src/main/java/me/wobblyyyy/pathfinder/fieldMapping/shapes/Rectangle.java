@@ -301,46 +301,21 @@ public class Rectangle implements Shape {
                             "some of the math that you'll need. :)"
             );
         }
-        switch (rotateCorner) {
-            case FRONT_RIGHT:
-                // Front right is still the first position.
-                // We don't need to rotate this back, as it stays in
-                // our so-called "default" position the whole entire
-                // time.
-                positions = rotateArray(positions, 0);
-                positions = rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
-                break;
-            case BACK_LEFT:
-                // The array has been rotated once, making the
-                // first position back left.
-                // Needs 3 rotations to go back.
-                positions = rotateArray(positions, 1);
-                positions = rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
-                positions = rotateArray(positions, 3);
-                break;
-            case BACK_RIGHT:
-                // Two rotations - back right.
-                // Needs two more rotations to go back.
-                positions = rotateArray(positions, 2);
-                positions = rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
-                positions = rotateArray(positions, 2);
-                break;
-            case FRONT_LEFT:
-                // Finally, front left.
-                // Needs just a single rotation to get back to normal.
-                positions = rotateArray(positions, 3);
-                positions = rotateAllPointsAroundFirstPoint(positions, rotationalAngle);
-                positions = rotateArray(positions, 1);
-                break;
-            case CENTER:
-                positions[0] = rotatePoint(midpoint, positions[0], rotationalAngle);
-                positions[1] = rotatePoint(midpoint, positions[1], rotationalAngle);
-                positions[2] = rotatePoint(midpoint, positions[2], rotationalAngle);
-                positions[3] = rotatePoint(midpoint, positions[3], rotationalAngle);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid corner!");
-        }
+        // Front right is still the first position.
+        // We don't need to rotate this back, as it stays in
+        // our so-called "default" position the whole entire
+        // time.
+        // The array has been rotated once, making the
+        // first position back left.
+        // Needs 3 rotations to go back.
+        // Two rotations - back right.
+        // Needs two more rotations to go back.
+        // Finally, front left.
+        // Needs just a single rotation to get back to normal.
+        positions[0] = rotatePoint(midpoint, positions[0], rotationalAngle);
+        positions[1] = rotatePoint(midpoint, positions[1], rotationalAngle);
+        positions[2] = rotatePoint(midpoint, positions[2], rotationalAngle);
+        positions[3] = rotatePoint(midpoint, positions[3], rotationalAngle);
         // Now that all of our coordinates are back in the same place, we
         // have to set all of the final variables at the top part of this
         // file - most notably lines, so we can work with collision detection
@@ -509,6 +484,12 @@ public class Rectangle implements Shape {
         // that is inside of the rectangle is considered valid.
         boolean xValid = minX <= p_x && p_x <= maxX;
         boolean yValid = minY <= p_y && p_y <= maxY;
+//        double longestLineLength = Math.max(
+//                new Line(center, top.midpoint).length,
+//                new Line(center, right.midpoint).length
+//        );
+//        boolean withinRange = new Line(center, point).length <= longestLineLength;
+//        boolean withinRange = new Line(center, point).length <= new Line(center, frontLeft).length;
         // Return whether or not the point's X and Y values are both
         // valid and inside the rectangle. If either of them are not,
         // this will return false, indicating that the given point

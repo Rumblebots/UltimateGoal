@@ -3,7 +3,6 @@ package me.wobblyyyy.pathfinder.fieldMapping.maps.ultimategoal;
 import me.wobblyyyy.pathfinder.fieldMapping.Map;
 import me.wobblyyyy.pathfinder.fieldMapping.maps.ultimategoal.zones.blue.*;
 import me.wobblyyyy.pathfinder.fieldMapping.maps.ultimategoal.zones.red.*;
-import me.wobblyyyy.pathfinder.fieldMapping.maps.ultimategoal.zones.shared.*;
 
 public class UltimateGoalMap extends Map {
     public UltimateGoalMap() {
@@ -23,12 +22,12 @@ public class UltimateGoalMap extends Map {
                 new RedTargetB(),
                 new RedTargetC(),
                 new RedWobbleGoalLeft(),
-                new RedWobbleGoalRight(),
-                new SharedBlueSide(),
-                new SharedCloseSide(),
-                new SharedFarSide(),
-                new SharedLaunchLine(),
-                new SharedRedSide()
+                new RedWobbleGoalRight()
+//                new SharedBlueSide(),
+//                new SharedCloseSide(),
+//                new SharedFarSide(),
+//                new SharedLaunchLine(),
+//                new SharedRedSide()
         );
     }
 }

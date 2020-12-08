@@ -12,7 +12,7 @@ public class PfcCells {
     /**
      * A bi-dimensional array of cells, used in implementing PathfindingCore.
      */
-    public GridCell[][] cells = new GridCell[1440][1440];
+    public GridCell[][] cells = new GridCell[144][144];
 
     /**
      * Empty constructor.
@@ -37,8 +37,8 @@ public class PfcCells {
      */
     public static Coordinate<Integer> doubleToInteger(Coordinate<Double> original) {
         return new Coordinate<>(
-                (int) Math.round(original.getX() * 10),
-                (int) Math.round(original.getY() * 10)
+                (int) Math.round(original.getX()),
+                (int) Math.round(original.getY())
         );
     }
 
@@ -56,8 +56,8 @@ public class PfcCells {
      */
     public static Coordinate<Double> integerToDouble(Coordinate<Integer> original) {
         return new Coordinate<>(
-                original.getX() / 10.0,
-                original.getY() / 10.0
+                original.getX() + 0.0,
+                original.getY() + 0.0
         );
     }
 }

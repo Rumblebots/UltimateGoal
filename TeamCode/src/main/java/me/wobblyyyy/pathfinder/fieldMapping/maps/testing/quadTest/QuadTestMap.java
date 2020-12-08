@@ -1,4 +1,12 @@
 package me.wobblyyyy.pathfinder.fieldMapping.maps.testing.quadTest;
 
-public class QuadTestMap {
+import me.wobblyyyy.pathfinder.fieldMapping.Map;
+import me.wobblyyyy.pathfinder.fieldMapping.maps.ultimategoal.zones.shared.SharedBlueSide;
+
+public class QuadTestMap extends Map {
+    public QuadTestMap() {
+        fieldZones.add(
+                new SharedBlueSide()
+        );
+    }
 }

@@ -86,10 +86,10 @@ public class ZoneGenerator {
 
     private void sortZones() {
         for (Zone z : originalZones) {
-//            if (isCollidable(z)) {
+            if (isCollidable(z)) {
                 if (isRectangle(z)) sortedRectangles.add(z);
                 if (isCircle(z)) sortedCircles.add(z);
-//            }
+            }
         }
     }
 

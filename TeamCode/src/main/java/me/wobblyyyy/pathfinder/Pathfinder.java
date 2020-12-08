@@ -1,6 +1,8 @@
 package me.wobblyyyy.pathfinder;
 
+import me.wobblyyyy.pathfinder.fieldMapping.Map;
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
+import me.wobblyyyy.pathfinder.localizer.Odometry;
 import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 
 // TODO actually finish this lmfao
@@ -9,6 +11,8 @@ import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
  * @author Colin Robertson
  */
 public class Pathfinder {
+    private Map map;
+    private Odometry odometry;
     private PfRobot pfRobot;
     private PfRoute pfRoute;
 
@@ -17,7 +21,8 @@ public class Pathfinder {
     // todo make this a member variable
     public static PfMotorPower pfMotorPower = new PfMotorPower(0, 0, 0, 0);
 
-    public Pathfinder() {
+    public Pathfinder(Map map,
+                      Odometry odometry) {
 
     }
 

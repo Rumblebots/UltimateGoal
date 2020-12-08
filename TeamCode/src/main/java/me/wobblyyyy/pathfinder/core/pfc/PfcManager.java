@@ -1,5 +1,7 @@
 package me.wobblyyyy.pathfinder.core.pfc;
 
+import org.xguzm.pathfinding.grid.GridCell;
+
 /**
  * A class, containing everything related to working with Xavier's pathfinding
  * library.
@@ -15,22 +17,23 @@ public class PfcManager {
     /**
      * Cells container.
      */
-    PfcCells cells = new PfcCells(this);
+    public PfcCells cells = new PfcCells(this);
 
     /**
      * Navigation container.
      */
-    PfcNav nav = new PfcNav(this);
+    public PfcNav nav = new PfcNav(this);
 
     /**
      * Finder container.
      */
-    PfcFinder finder = new PfcFinder(this);
+    public PfcFinder finder = new PfcFinder(this);
 
     /**
      * Create a new instance of PfcManager.
      */
-    public PfcManager() {
-
+    public PfcManager(GridCell[][] cells) {
+        this.cells.cells = cells;
+        nav.setGrid(cells);
     }
 }

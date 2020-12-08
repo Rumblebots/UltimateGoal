@@ -14,16 +14,16 @@ import java.util.ArrayList;
  */
 public class MapCellConvertor {
     public static GridCell[][] getCells(ArrayList<Zone> zones) {
-        GridCell[][] cells = new GridCell[1440][1440];
+        GridCell[][] cells = new GridCell[144][144];
 
         pass1(
                 zones,
                 cells
         );
-        pass2(
-                zones,
-                cells
-        );
+//        pass2(
+//                zones,
+//                cells
+//        );
 
         return cells;
     }
@@ -76,16 +76,19 @@ public class MapCellConvertor {
 
     private static Coordinate<Double> generateCoordinate(int x,
                                                          int y) {
-        return new Coordinate<>(
-                x / 10.0,
-                y / 10.0
+        return new Coordinate<Double>(
+                x + 0.0,
+                y + 0.0
         );
     }
 
     private static boolean checkCoordinate(ArrayList<Zone> zones,
                                            Coordinate<Double> coordinate) {
         for (Zone zone : zones) {
-            if (zone.isPointInZone(coordinate)) return false;
+//            if (zone.getParentShape().isCollidableExterior() ||
+//                    zone.getParentShape().isCollidableInterior()) {
+                if (zone.isPointInZone(coordinate)) return false;
+//            }
         }
 
         return true;
