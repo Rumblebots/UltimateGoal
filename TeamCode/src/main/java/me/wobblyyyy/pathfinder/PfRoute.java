@@ -21,6 +21,15 @@ public class PfRoute {
     }
 
     public void clear() {
-        targets = new ArrayList<>();
+        targets = new ArrayList<Coordinate<Double>>() {{
+            add(new Coordinate<Double>(
+                    -1.0,
+                    -1.0
+            ));
+        }};
+    }
+
+    public Coordinate<Double> getNextTarget() {
+        return targets.get(0);
     }
 }

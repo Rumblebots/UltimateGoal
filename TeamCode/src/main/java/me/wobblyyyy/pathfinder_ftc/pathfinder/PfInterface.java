@@ -1,8 +1,8 @@
 package me.wobblyyyy.pathfinder_ftc.pathfinder;
 
+import me.wobblyyyy.pathfinder.Pathfinder;
 import me.wobblyyyy.pathfinder.fieldMapping.Map;
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
-import me.wobblyyyy.pathfinder.pathfinding.Pathfinder;
 import me.wobblyyyy.pathfinder.localizer.PfMotorPower;
 import me.wobblyyyy.pathfinder_ftc.AbstractOdometry;
 import org._11253.lib.motors.SourceType;
@@ -46,7 +46,7 @@ public class PfInterface {
     /**
      * A reference to the {@link Pathfinder} that's used here.
      */
-    public Pathfinder pathfinder = new Pathfinder();
+    public Pathfinder pathfinder;
 
     /**
      * A lovely constructor for the lovely pathfinding interface.
@@ -69,10 +69,17 @@ public class PfInterface {
      *                   on. For 2020/2021, UltimateGoal was the competition title - thus, you
      *                   should probably use the pre-provided UltimateGoal map. Yaya!
      */
-    public PfInterface(AbstractOdometry odometry, Drivetrain drivetrain, Map map) {
+    public PfInterface(AbstractOdometry odometry,
+                       Drivetrain drivetrain,
+                       Map map) {
         PfManager.drivetrain = new PfDrivetrainManager(drivetrain);
         PfManager.map = new PfMapManager(map, odometry.getOdometry());
         PfManager.odometry = odometry.getOdometry();
+        pathfinder = new Pathfinder(
+                map,
+                odometry.getOdometry(),
+                50
+        );
     }
 
     /**
@@ -110,7 +117,7 @@ public class PfInterface {
                         return new Runnable() {
                             @Override
                             public void run() {
-                                pathfinder.tickPathfinder();
+
                             }
                         };
                     }
@@ -142,7 +149,7 @@ public class PfInterface {
      * </p>
      */
     public void setMotorPower() {
-        PfMotorPower mp = pathfinder.getPfMotorPower();
+        PfMotorPower mp = pathfinder.pfMotorPower;
         PfManager.drivetrain.setPower(
                 new SourcedMotorPower(
                         mp.getFr(),
