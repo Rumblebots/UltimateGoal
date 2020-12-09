@@ -21,11 +21,32 @@ import java.util.ArrayList;
  * @author Colin Robertson
  */
 public class Core {
+    /**
+     * The field's map.
+     */
     private Map map;
+
+    /**
+     * The odometry system of the robot.
+     */
     private Odometry odometry;
+
+    /**
+     * PathfindingCore manager.
+     */
     private PfcManager pfcManager;
+
+    /**
+     * Used to generate zones.
+     */
     private ZoneGenerator zoneGenerator;
 
+    /**
+     * Create a new instance of Core.
+     *
+     * @param map the field's map.
+     * @param odometry the odometry system to be used.
+     */
     public Core(Map map,
                 Odometry odometry) {
         this.map = map;
@@ -41,6 +62,13 @@ public class Core {
         pfcManager = new PfcManager(cells);
     }
 
+    /**
+     * Update the suggested power of the pathfinding system.
+     *
+     * @param startH the start HeadingCoordinate.
+     * @param endH the end HeadingCoordinate.
+     * @return the new suggested PfMotorPower.
+     */
     public PfMotorPower updatePower(HeadingCoordinate<Double> startH,
                                     HeadingCoordinate<Double> endH) {
         Coordinate<Double> start = startH.getCoordinate();
@@ -87,10 +115,22 @@ public class Core {
         }
     }
 
+    /**
+     * Get the current position of the robot.
+     *
+     * @return the current position of the robot.
+     */
     public HeadingCoordinate<Double> getPosition() {
         return odometry.getPosition();
     }
 
+    /**
+     * Get a path - to a point, from a point.
+     *
+     * @param start the start point.
+     * @param end the end point.
+     * @return an array list of points to follow.
+     */
     public ArrayList<Coordinate<Double>> getPathFromPoint(Coordinate<Double> start,
                                                           Coordinate<Double> end) {
         return pfcManager.finder.getCoordinatePath(
@@ -99,6 +139,12 @@ public class Core {
         );
     }
 
+    /**
+     * Get a path, from the robot's current position.
+     *
+     * @param target the target position.
+     * @return an array list of points to follow.
+     */
     public ArrayList<Coordinate<Double>> getPath(Coordinate<Double> target) {
         if (target.getX() == -1.0 && target.getY() == -1.0) {
             return new ArrayList<>();

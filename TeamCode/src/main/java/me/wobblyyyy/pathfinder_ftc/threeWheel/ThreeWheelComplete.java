@@ -1,6 +1,8 @@
 package me.wobblyyyy.pathfinder_ftc.threeWheel;
 
 import me.wobblyyyy.pathfinder.fieldMapping.Map;
+import me.wobblyyyy.pathfinder.fieldMapping.components.Coordinate;
+import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
 import me.wobblyyyy.pathfinder_ftc.Position;
 import me.wobblyyyy.pathfinder_ftc.pathfinder.PfInterface;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
@@ -114,6 +116,16 @@ public class ThreeWheelComplete {
                 threeWheel,
                 drivetrain,
                 map
+        );
+    }
+
+    public Position getPosition() {
+        return null;
+    }
+
+    public void goToPosition(HeadingCoordinate<Double> target) {
+        pfInterface.pathfinder.goToPosition(
+                target
         );
     }
 }
