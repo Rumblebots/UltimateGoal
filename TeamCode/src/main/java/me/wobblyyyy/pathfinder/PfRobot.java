@@ -11,9 +11,30 @@ import me.wobblyyyy.pathfinder.localizer.Odometry;
  * @author Colin Robertson
  */
 public class PfRobot {
+    /**
+     * The pathfinding core of the robot.
+     *
+     * <p>
+     * Interested in how this works? Check out the documentation in the core file.
+     * As usual, I'm kind enough to provide a link as to where you should go!
+     * {@link Core}
+     * </p>
+     */
     public final Core core;
+
+    /**
+     * The route manager of the robot.
+     */
     private final PfRoute route;
 
+    /**
+     * Create a new instance of a PfRobot.
+     *
+     * @param map      the map which the robot should use.
+     * @param odometry the odometry system the robot should use. Note that the odometry interface
+     *                 does nothing except for provide a getPosition method.
+     * @param route    the pf route manager which the robot should manage.
+     */
     public PfRobot(Map map,
                    Odometry odometry,
                    PfRoute route) {
@@ -21,6 +42,9 @@ public class PfRobot {
         this.route = route;
     }
 
+    /**
+     * Update the power of the pathfinding core.
+     */
     public void updatePower() {
         core.updatePower(
                 core.getPosition(),

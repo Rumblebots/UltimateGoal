@@ -121,4 +121,12 @@ public class Pathfinder {
                 pfRobot.core.getPath(end.getCoordinate())
         );
     }
+
+    /**
+     * Stop the pathfinder in its tracks.
+     */
+    public void stop() {
+        pfRoute.clear();
+        isActive = false;
+    }
 }

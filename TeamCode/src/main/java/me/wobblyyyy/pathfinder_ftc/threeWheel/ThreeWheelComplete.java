@@ -1,7 +1,6 @@
 package me.wobblyyyy.pathfinder_ftc.threeWheel;
 
 import me.wobblyyyy.pathfinder.fieldMapping.Map;
-import me.wobblyyyy.pathfinder.fieldMapping.components.Coordinate;
 import me.wobblyyyy.pathfinder.fieldMapping.components.HeadingCoordinate;
 import me.wobblyyyy.pathfinder_ftc.Position;
 import me.wobblyyyy.pathfinder_ftc.pathfinder.PfInterface;
@@ -119,13 +118,56 @@ public class ThreeWheelComplete {
         );
     }
 
+    /**
+     * Get the position of the robot.
+     *
+     * <p>
+     * The robot's position is represented through the {@link Position} class - meaning in
+     * order to get the {@link HeadingCoordinate} position of the robot, you need to call
+     * the {@link Position#getPosition()} method - thus giving you a heading coordinate.
+     * </p>
+     *
+     * @return a class, representing the position of the robot.
+     */
     public Position getPosition() {
         return null;
     }
 
+    /**
+     * Tell the pathfinder to go to a position.
+     *
+     * <p>
+     * The pathfinder, in a sense, 'takes control' over the drivetrain of the robot.
+     * Having a drivetrain (that's not controlled by the user) can lead to some pretty
+     * funky shit happening - if the pathfinder messes up in trying to find a position
+     * and ends up ramming into a wall, well, that's not good.
+     * </p>
+     *
+     * <p>
+     * Thankfully, we can counteract this by simply cancelling the pathfinder. You can
+     * bind this to a button, enable an automatic timeout, or anything like that. It's
+     * really up to you. The easiest way to cancel going to a position is simply to call
+     * the {@link #stop()} method - which will stop the pathfinder in its tracks.
+     * </p>
+     *
+     * @param target the target position - the position the robot should go to.
+     */
     public void goToPosition(HeadingCoordinate<Double> target) {
         pfInterface.pathfinder.goToPosition(
                 target
         );
+    }
+
+    /**
+     * Stop the pathfinder in its tracks.
+     *
+     * <p>
+     * The entire pathfinder will stop doing whatever it was doing before. Yeah.
+     * I don't know what else needs to be described here - probably not very much,
+     * but yeah. That's all.
+     * </p>
+     */
+    public void stop() {
+        pfInterface.stop();
     }
 }

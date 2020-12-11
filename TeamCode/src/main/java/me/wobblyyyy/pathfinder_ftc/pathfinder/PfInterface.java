@@ -239,4 +239,11 @@ public class PfInterface {
                 false
         );
     }
+
+    /**
+     * Stop the pathfinder in its tracks.
+     */
+    public void stop() {
+        pathfinder.stop();
+    }
 }

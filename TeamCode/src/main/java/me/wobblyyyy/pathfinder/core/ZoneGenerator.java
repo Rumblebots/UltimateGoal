@@ -30,17 +30,54 @@ import java.util.ArrayList;
  * @author Colin Robertson
  */
 public class ZoneGenerator {
+    /**
+     * The list of original zones.
+     */
     private final ArrayList<Zone> originalZones;
+
+    /**
+     * The newly-generated zones.
+     */
     private final ArrayList<Zone> newZones = new ArrayList<>();
+
+    /**
+     * The list of sorted rectangles.
+     */
     private final ArrayList<Zone> sortedRectangles = new ArrayList<>();
+
+    /**
+     * The list of sorted circles.
+     */
     private final ArrayList<Zone> sortedCircles = new ArrayList<>();
 
+    /**
+     * The width of the robot.
+     */
     private final double robotWidth;
+
+    /**
+     * The height of the robot.
+     */
     private final double robotHeight;
+
+    /**
+     * Half of the width of the robot.
+     */
     private final double halfRobotWidth;
+
+    /**
+     * Half of the height of the robot.
+     */
     private final double halfRobotHeight;
 
+    /**
+     * The default width of the robot.
+     */
     private static final double defaultRobotWidth = 18.0;
+
+    /**
+     * The default height of the robot.
+     */
     private static final double defaultRobotHeight = 18.0;
 
     public ZoneGenerator(ArrayList<Zone> originalZones) {
@@ -51,6 +88,14 @@ public class ZoneGenerator {
         );
     }
 
+    /**
+     * Create a new zone generator, thus generating a bunch of zones.
+     *
+     * @param originalZones the list of original zones. The new zones should be based
+     *                      on this list.
+     * @param robotWidth    the width of the robot (in inches).
+     * @param robotHeight   the height of the robot (in inches).
+     */
     public ZoneGenerator(ArrayList<Zone> originalZones,
                          double robotWidth,
                          double robotHeight) {
@@ -68,6 +113,12 @@ public class ZoneGenerator {
         clean();
     }
 
+    /**
+     * Is a zone collidable?
+     *
+     * @param zone the zone to check.
+     * @return whether or not the zone is collidable.
+     */
     private boolean isCollidable(Zone zone) {
         if (zone.isField()) {
             if (zone.getParentShape().isCollidableExterior()) return true;
@@ -264,6 +315,11 @@ public class ZoneGenerator {
 
     }
 
+    /**
+     * Get the list of newly-generated zones.
+     *
+     * @return the list of zones that have been generated.
+     */
     public ArrayList<Zone> getZones() {
         return newZones;
     }

@@ -13,6 +13,12 @@ import java.util.ArrayList;
  * @author Colin Robertson
  */
 public class MapCellConvertor {
+    /**
+     * Get a grid of cells, based on an array list of zones.
+     *
+     * @param zones the zones that are used as input.
+     * @return a bidimensional array of GridCells.
+     */
     public static GridCell[][] getCells(ArrayList<Zone> zones) {
         GridCell[][] cells = new GridCell[144][144];
 
