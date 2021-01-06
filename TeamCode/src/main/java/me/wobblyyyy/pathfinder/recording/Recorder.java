@@ -90,7 +90,7 @@ public class Recorder {
                                 @Override
                                 public void run() {
                                     // TODO SET PATHFINDER SUGGESTED MOTOR POWER HERE !!
-                                    Pathfinder.pfMotorPower = motorPower;
+//                                    Pathfinder.pfMotorPower = motorPower;
                                 }
                             };
                         }

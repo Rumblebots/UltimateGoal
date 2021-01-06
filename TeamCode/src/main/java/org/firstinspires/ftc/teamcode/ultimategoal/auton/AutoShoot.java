@@ -6,9 +6,29 @@
 package org.firstinspires.ftc.teamcode.ultimategoal.auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 //@Autonomous(name = "Main Auo", group = "Auton")
 public class AutoShoot extends GenericAuto {
+
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backRight;
+    DcMotor backLeft;
+    DcMotor shooter1;
+    DcMotor shooter2;
+    DcMotor intake;
+
+    Servo intakePush;
+    Servo magazine;
+    Servo flipper;
+
+    CRServo intakeCR;
+
+
+
 //    public AutoShoot() {
 ////        super(42);
 //        onStart.add(new Runnable() {
