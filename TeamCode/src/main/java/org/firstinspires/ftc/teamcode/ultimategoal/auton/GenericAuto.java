@@ -95,7 +95,7 @@ public class GenericAuto extends LinearOpMode {
     }
 
     public void odometryTurn(double x, double y) {
-        double radHeading = Math.atan2(Math.abs(x-getCurrentPos().getX()), Math.abs(y-getCurrentPos().getY())); // y:  114, x: 1.5
+        double radHeading = Math.atan2(Math.abs(x-getCurrentPos().getX()), Math.abs(y-getCurrentPos().getY()));
         System.out.println("RAD HEADING: " + radHeading);
         System.out.println("DEG HEADING: " + Math.toDegrees(radHeading));
         if (x > getCurrentPos().getX()) radHeading *= -1;
@@ -127,11 +127,11 @@ public class GenericAuto extends LinearOpMode {
     }
 
     public void shoot() {
-        loader.setPosition(26.0/180);
+        loader.setPosition((180.0-36.0)/180.0);
         sleep(500);
-        pusher.setPosition(0);
+        pusher.setPosition(1);
         sleep(1000);
-        pusher.setPosition(0.5);
+        pusher.setPosition(0.6);
         sleep(500);
     }
 
