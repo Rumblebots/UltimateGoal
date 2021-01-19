@@ -31,7 +31,21 @@ package org._11253.lib.robot.phys.components;
 import org._11253.lib.Global;
 
 /**
- * Template class for components, used internally in org._11253.lib.robot.phys.components package
+ * Template class for components, used internally in org._11253.lib.robot.phys.components package.
+ *
+ * <p>
+ * A component is defined as anything that's accessible via the hardware map
+ * and can be used by the robot to do some pretty cool stuff. Some of the most
+ * common examples of components include...
+ * <ul>
+ *     <li>Motors! Yay motors.</li>
+ *     <li>Servos! Yay servos.</li>
+ *     <li>Sensors! Yay sensors.</li>
+ * </ul>
+ * Of course, there's a million more examples of components that I'm not going
+ * to name because, well, let's be real here - nobody cares in the slightest.
+ * But you (hopefully) get what I'm saying.
+ * </p>
  *
  * @author Colin Robertson
  */
@@ -60,6 +74,7 @@ public class Component {
      * the hardware map MUST be initalized, and, if it's not, everything
      * will... well, fail.
      * </p>
+     *
      * <p>
      * It's unlikely this will ever fail if the user is using a template
      * op mode - if it somehow does fail, the user probably has fewer
