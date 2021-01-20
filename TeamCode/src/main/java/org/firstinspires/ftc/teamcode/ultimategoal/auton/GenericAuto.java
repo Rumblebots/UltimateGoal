@@ -38,6 +38,7 @@ public class GenericAuto extends LinearOpMode {
     DcMotor flywheel2;
     DcMotor intake;
     CRServo intakeServo;
+//    CRServo upperIntakeServo;
     Servo loader;
     Servo pusher;
 
@@ -189,7 +190,7 @@ public class GenericAuto extends LinearOpMode {
         System.out.println("HERE");
         getCurrentPos();
         waitForStart();
-        odometryMove(getCurrentPos().getX(), getCurrentPos().getY() + 18);
+        odometryMove(getCurrentPos().getX(), 60);
 //        odometryTurn(45, 126);
         flywheel1.setPower(1.0);
         flywheel2.setPower(1.0);
