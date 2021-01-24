@@ -48,6 +48,8 @@ public class TestDrive extends OpMode {
         t.state = false;
         loadToggle.state = false;
         pushToggle.state = false;
+        intakeMover.setPosition(0.35);
+
     }
 
     @Override
@@ -99,21 +101,20 @@ public class TestDrive extends OpMode {
         }
 
         if (pushToggle.state) {
-            pusher.setPosition(0);
+            pusher.setPosition(0.6);
         } else {
-            pusher.setPosition(.5);
+            pusher.setPosition(1);
         }
 
         if (loadToggle.state) {
-            loader.setPosition(26.0/180);
+            loader.setPosition((180.0-36.0)/180.0);
         } else {
-            loader.setPosition(0.3);
+            loader.setPosition(1);
         }
 
 //        pusher.setPosition(gamepad2.left_trigger-1);
         System.out.println(gamepad2.left_trigger);
         if (gamepad2.left_trigger != 0 && gamepad2.right_trigger == 0) {
-            loader.setPosition(1.0);
             intake.setPower(1.0);
             intakeServo.setPower(0.8);
             upperIntakeServo.setPower(-0.8);
@@ -124,7 +125,7 @@ public class TestDrive extends OpMode {
         }
 
         if (gamepad2.right_trigger != 0 && gamepad2.left_trigger == 0) {
-            loader.setPosition(1.0);
+            loader.setPosition(1);
             intake.setPower(-1);
             intakeServo.setPower(-0.8);
             upperIntakeServo.setPower(0.8);
