@@ -48,7 +48,7 @@ public class TestDrive extends OpMode {
         t.state = false;
         loadToggle.state = false;
         pushToggle.state = false;
-        intakeMover.setPosition(0.35);
+        intakeMover.setPosition(0.33);
 
     }
 
@@ -67,10 +67,10 @@ public class TestDrive extends OpMode {
             multiplier = 0.5;
         }
 
-        double fr = -gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
-        double br = -gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
-        double fl = gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
-        double bl = gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
+        double fr = -gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x;
+        double br = -gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x;
+        double fl = gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x;
+        double bl = gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x;
         frontRight.setPower(fr * multiplier);
         backRight.setPower(br * multiplier);
         frontLeft.setPower(fl * multiplier);
@@ -88,52 +88,65 @@ public class TestDrive extends OpMode {
             t.onRelease();
         }
 
-        if (gamepad2.b) {
-            loadToggle.onPress();
-        } else {
-            loadToggle.onRelease();
-        }
+//        if (gamepad2.b) {
+//            loadToggle.onPress();
+//        } else {
+//            loadToggle.onRelease();
+//        }
 
         if (gamepad2.right_bumper) {
-            pushToggle.onPress();
-        } else {
-            pushToggle.onRelease();
-        }
-
-        if (pushToggle.state) {
             pusher.setPosition(0.6);
         } else {
             pusher.setPosition(1);
         }
+//
+//        if (pushToggle.state) {
+//        } else {
+//            pusher.setPosition(1);
+//        }
 
-        if (loadToggle.state) {
-            loader.setPosition((180.0-36.0)/180.0);
-        } else {
-            loader.setPosition(1);
-        }
+//        if (loadToggle.state) {
+//            loader.setPosition((180.0-36.0)/180.0);
+//        } else {
+//            loader.setPosition(1);
+//        }
 
-//        pusher.setPosition(gamepad2.left_trigger-1);
-        System.out.println(gamepad2.left_trigger);
-        if (gamepad2.left_trigger != 0 && gamepad2.right_trigger == 0) {
+        if (gamepad2.left_trigger > gamepad2.right_trigger && gamepad2.left_trigger > 0.3) {
             intake.setPower(1.0);
             intakeServo.setPower(0.8);
             upperIntakeServo.setPower(-0.8);
-        } else {
-            intake.setPower(0);
-            intakeServo.setPower(0);
-            upperIntakeServo.setPower(0);
-        }
-
-        if (gamepad2.right_trigger != 0 && gamepad2.left_trigger == 0) {
+        } else if (gamepad2.right_trigger > gamepad2.left_trigger && gamepad2.right_trigger > 0.3) {
             loader.setPosition(1);
             intake.setPower(-1);
             intakeServo.setPower(-0.8);
             upperIntakeServo.setPower(0.8);
         } else {
+            loader.setPosition((180.0-36.0)/180.0);
             intake.setPower(0);
             intakeServo.setPower(0);
             upperIntakeServo.setPower(0);
         }
+
+//        if (gamepad2.left_trigger != 0 && gamepad2.right_trigger == 0) {
+//            intake.setPower(1.0);
+//            intakeServo.setPower(0.8);
+//            upperIntakeServo.setPower(-0.8);
+//        } else {
+//            intake.setPower(0);
+//            intakeServo.setPower(0);
+//            upperIntakeServo.setPower(0);
+//        }
+//
+//        if (gamepad2.right_trigger != 0 && gamepad2.left_trigger == 0) {
+//            loader.setPosition(1);
+//            intake.setPower(-1);
+//            intakeServo.setPower(-0.8);
+//            upperIntakeServo.setPower(0.8);
+//        } else {
+//            intake.setPower(0);
+//            intakeServo.setPower(0);
+//            upperIntakeServo.setPower(0);
+//        }
 
         if (t.state) {
             flywheel1.setPower(1);

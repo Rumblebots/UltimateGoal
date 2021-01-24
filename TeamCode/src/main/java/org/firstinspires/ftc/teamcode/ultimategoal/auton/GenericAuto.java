@@ -83,7 +83,7 @@ public class GenericAuto extends LinearOpMode {
             while (x < getCurrentPos().getX()) {
                 System.out.println("CXL: " + getCurrentPos().getX());
                 System.out.println("CTX: " + x);
-                meccanumDrive(MotionType.LEFT, 0.5);
+                meccanumDrive(MotionType.LEFT, 0.25);
             }
         }
 
@@ -178,6 +178,7 @@ public class GenericAuto extends LinearOpMode {
     public double getRPM() {
         int cpr = 28;
         double cPos = flywheel1.getCurrentPosition();
+        System.out.println("CPOS " + cPos);
         double rotations = cPos/cpr;
         double nowTime = System.currentTimeMillis();
         double rotationPSec = (rotations - (prevPos/cpr))/(nowTime-prevTime);
@@ -192,29 +193,29 @@ public class GenericAuto extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+        flywheel1 = hardwareMap.get(DcMotor.class, "flywheel1");
+        flywheel2 = hardwareMap.get(DcMotor.class, "flywheel2");
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        flywheel1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        flywheel2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        flywheel1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        flywheel2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        flywheel1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        flywheel2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        flywheel1 = hardwareMap.get(DcMotor.class, "flywheel1");
-        flywheel2 = hardwareMap.get(DcMotor.class, "flywheel2");
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    telemetry.addData("RPM", getRPM());
-                }
-            }
-        });
-        t.start();
+//        flywheel1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        flywheel2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        Thread t = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    telemetry.addData("RPM", getRPM());
+//                }
+//            }
+//        });
+//        t.start();
 //        intake = hardwareMap.get(DcMotor.class, "intake");
 //        intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
         loader = hardwareMap.get(Servo.class, "loader");
@@ -223,19 +224,30 @@ public class GenericAuto extends LinearOpMode {
         System.out.println("HERE");
         getCurrentPos();
         waitForStart();
-        odometryMove(getCurrentPos().getX()-8, 30);
+        pusher.setPosition(1);
+        odometryMove(getCurrentPos().getX()-2, 38);
 //        odometryTurn(45, 126);
+        flywheel1.setPower(0.9);
+        flywheel2.setPower(0.9);
+        sleep(1500);
+        shoot();
+        sleep(500);
+        flywheel1.setPower(0.0);
+        flywheel2.setPower(0.0);
+//        odometryMove(49, 14);
+//        odometryTurn(40, 128);
+        odometryMove(getCurrentPos().getX()+6, getCurrentPos().getY()-2);
         flywheel1.setPower(1.0);
         flywheel2.setPower(1.0);
         sleep(1500);
         shoot();
         sleep(500);
-//        odometryMove(49, 14);
-//        odometryTurn(40, 128);
-        odometryMove(getCurrentPos().getX()+4, getCurrentPos().getY());
-        shoot();
-        sleep(500);
-        odometryMove(getCurrentPos().getX()+4, getCurrentPos().getY());
+        flywheel1.setPower(0.0);
+        flywheel2.setPower(0.0);
+        odometryMove(getCurrentPos().getX()+6, getCurrentPos().getY()+1);
+        flywheel1.setPower(0.9);
+        flywheel2.setPower(0.9);
+        sleep(1500);
 //        odometryMove(65, 12);
 //        odometryTurn(40, 128);
         shoot();
@@ -244,6 +256,5 @@ public class GenericAuto extends LinearOpMode {
         flywheel2.setPower(0.0);
         odometryMove(getCurrentPos().getX(), 60);
         OdometryThread.getInstance().stopThread();
-        t.stop();
     }
 }
