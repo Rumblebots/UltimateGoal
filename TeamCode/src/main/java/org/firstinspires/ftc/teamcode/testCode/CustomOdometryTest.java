@@ -27,13 +27,13 @@ public class CustomOdometryTest extends Template {
         beforeStart.add(new Runnable() {
             @Override
             public void run() {
-                motor_right = hardwareMap.get(DcMotor.class, "backLeft");
+                motor_right = hardwareMap.get(DcMotor.class, "backRight");
 //                motor_right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //                motor_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                motor_left = hardwareMap.get(DcMotor.class, "frontLeft");
+                motor_left = hardwareMap.get(DcMotor.class, "backLeft");
 //                motor_left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //                motor_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                motor_back = hardwareMap.get(DcMotor.class, "backRight");
+                motor_back = hardwareMap.get(DcMotor.class, "frontRight");
 //                motor_back.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //                motor_back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 OdometryCore.initialize(1450, 1.5, 7.83, 7.83, 1);

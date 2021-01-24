@@ -36,8 +36,8 @@ public class GenericAuto extends LinearOpMode {
     DcMotor backLeft;
     DcMotor flywheel1;
     DcMotor flywheel2;
-    DcMotor intake;
-    CRServo intakeServo;
+//    DcMotor intake;
+//    CRServo intakeServo;
 //    CRServo upperIntakeServo;
     Servo loader;
     Servo pusher;
@@ -75,10 +75,14 @@ public class GenericAuto extends LinearOpMode {
         if (x + 2 > getCurrentPos().getX()) {
             System.out.println("X VAL R");
             while (x > getCurrentPos().getX()) {
+                System.out.println("CXR: " + getCurrentPos().getX());
+                System.out.println("CTX: " + x);
                 meccanumDrive(MotionType.RIGHT, 0.25);
             }
         } else if (x - 2 < getCurrentPos().getX()){
             while (x < getCurrentPos().getX()) {
+                System.out.println("CXL: " + getCurrentPos().getX());
+                System.out.println("CTX: " + x);
                 meccanumDrive(MotionType.LEFT, 0.5);
             }
         }
@@ -137,6 +141,7 @@ public class GenericAuto extends LinearOpMode {
     }
 
     public void meccanumDrive(MotionType type, double power) {
+        power = -power;
         switch (type) {
             case FORWARD:
                 setPower(-power, power, -power, power);
@@ -145,10 +150,10 @@ public class GenericAuto extends LinearOpMode {
                 setPower(power, -power, power, -power);
                 break;
             case LEFT:
-                setPower(power, -power, -power, power);
+                setPower(-power, power, power, -power);
                 break;
             case RIGHT:
-                setPower(-power, power, power, -power);
+                setPower(power, -power, -power, power);
                 break;
             case TURN_CW:
                 setPower(power, power, power, power);
@@ -166,6 +171,21 @@ public class GenericAuto extends LinearOpMode {
         backLeft.setPower(bl);
     }
 
+
+    double prevPos = 0;
+    double prevTime = System.currentTimeMillis();
+
+    public double getRPM() {
+        int cpr = 28;
+        double cPos = flywheel1.getCurrentPosition();
+        double rotations = cPos/cpr;
+        double nowTime = System.currentTimeMillis();
+        double rotationPSec = (rotations - (prevPos/cpr))/(nowTime-prevTime);
+        prevPos = cPos;
+        prevTime = nowTime;
+        return rotationPSec;
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -176,38 +196,54 @@ public class GenericAuto extends LinearOpMode {
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        flywheel1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        flywheel2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        flywheel1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        flywheel2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         flywheel1 = hardwareMap.get(DcMotor.class, "flywheel1");
         flywheel2 = hardwareMap.get(DcMotor.class, "flywheel2");
-        intake = hardwareMap.get(DcMotor.class, "intake");
-        intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    telemetry.addData("RPM", getRPM());
+                }
+            }
+        });
+        t.start();
+//        intake = hardwareMap.get(DcMotor.class, "intake");
+//        intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
         loader = hardwareMap.get(Servo.class, "loader");
         pusher = hardwareMap.get(Servo.class, "pusher");
-        OdometryThread.initialize(42, frontLeft, backLeft, backRight);
+        OdometryThread.initialize(42, backLeft, backRight, frontRight);
         System.out.println("HERE");
         getCurrentPos();
         waitForStart();
-        odometryMove(getCurrentPos().getX(), 60);
+        odometryMove(getCurrentPos().getX()-8, 30);
 //        odometryTurn(45, 126);
         flywheel1.setPower(1.0);
         flywheel2.setPower(1.0);
-        sleep(500);
+        sleep(1500);
         shoot();
         sleep(500);
 //        odometryMove(49, 14);
-        odometryTurn(44, 126);
+//        odometryTurn(40, 128);
+        odometryMove(getCurrentPos().getX()+4, getCurrentPos().getY());
         shoot();
         sleep(500);
+        odometryMove(getCurrentPos().getX()+4, getCurrentPos().getY());
 //        odometryMove(65, 12);
-        odometryTurn(44, 126);
+//        odometryTurn(40, 128);
         shoot();
         sleep(500);
         flywheel1.setPower(0.0);
         flywheel2.setPower(0.0);
         odometryMove(getCurrentPos().getX(), 60);
         OdometryThread.getInstance().stopThread();
+        t.stop();
     }
 }
