@@ -61,10 +61,10 @@ public class TestDrive extends OpMode {
             multiplier = 0.5;
         }
 
-        double fr = gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
-        double br = gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
-        double fl = -gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
-        double bl = -gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
+        double fr = -gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
+        double br = -gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
+        double fl = gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
+        double bl = gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
         frontRight.setPower(fr * multiplier);
         backRight.setPower(br * multiplier);
         frontLeft.setPower(fl * multiplier);

@@ -407,4 +407,29 @@ public class Shooter {
         loader = new Servo(loaderName);
         pusher = new Servo(pusherName);
     }
+
+    public void setShooterPower(double power) {
+        flywheel1.setPower(power);
+        flywheel2.setPower(power);
+    }
+
+    public double getShooterPower() {
+        return flywheel1.getPower();
+    }
+
+    public void setLoaderPosition(double position) {
+        loader.setPosition(position);
+    }
+
+    public double getLoaderPosition() {
+        return loader.getPosition();
+    }
+
+    public void setPusherPosition(double position) {
+        pusher.setPosition(position);
+    }
+
+    public double getPusherPosition() {
+        return pusher.getPosition();
+    }
 }

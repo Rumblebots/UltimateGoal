@@ -34,6 +34,6 @@ public class Intake {
 
     public void setPower(double motorPower) {
         intakeMotor.setPower(motorPower);
-        intakeServo.setPower(motorPower);
+        intakeServo.setPower(-motorPower);
     }
 }

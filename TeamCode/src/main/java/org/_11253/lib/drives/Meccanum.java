@@ -157,12 +157,16 @@ public class Meccanum extends TeleOp {
 //                                                ": ",
 //                                                fr + " " + fl + " " + br + " " + bl
 //                                        );
+//                                        double fr = -gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
+//                                        double br = -gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
+//                                        double fl = gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
+//                                        double bl = gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
                                         drivetrain.setPower(
                                                 new SourcedMotorPower(
+                                                        -controller1.getLeftY() + controller1.getRightX() - controller1.getLeftX(),
                                                         controller1.getLeftY() + controller1.getRightX() + controller1.getLeftX(),
                                                         -controller1.getLeftY() + controller1.getRightX() + controller1.getLeftX(),
                                                         controller1.getLeftY() + controller1.getRightX() - controller1.getLeftX(),
-                                                        -controller1.getLeftY() + controller1.getRightX() - controller1.getLeftX(),
                                                         SourceType.USER
                                                 )
                                         );

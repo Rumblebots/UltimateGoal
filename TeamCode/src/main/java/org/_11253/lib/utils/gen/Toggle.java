@@ -97,6 +97,14 @@ public class Toggle {
      */
     public boolean canBeChanged = true;
 
+    public Toggle() {
+
+    }
+
+    public Toggle(boolean state) {
+        this.state = state;
+    }
+
     /**
      * Should be called once the button is pressed.
      * <p>
