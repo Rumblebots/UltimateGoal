@@ -127,49 +127,12 @@ public class TestDrive extends OpMode {
             upperIntakeServo.setPower(0);
         }
 
-//        if (gamepad2.left_trigger != 0 && gamepad2.right_trigger == 0) {
-//            intake.setPower(1.0);
-//            intakeServo.setPower(0.8);
-//            upperIntakeServo.setPower(-0.8);
-//        } else {
-//            intake.setPower(0);
-//            intakeServo.setPower(0);
-//            upperIntakeServo.setPower(0);
-//        }
-//
-//        if (gamepad2.right_trigger != 0 && gamepad2.left_trigger == 0) {
-//            loader.setPosition(1);
-//            intake.setPower(-1);
-//            intakeServo.setPower(-0.8);
-//            upperIntakeServo.setPower(0.8);
-//        } else {
-//            intake.setPower(0);
-//            intakeServo.setPower(0);
-//            upperIntakeServo.setPower(0);
-//        }
-
         if (t.state) {
             flywheel1.setPower(1);
             flywheel2.setPower(1);
         } else {
             flywheel1.setPower(0);
             flywheel2.setPower(0);
-        }
-
-//        if (gamepad2.right_bumper && !gamepad2.left_bumper) {
-//            intake.setPower(1);
-//            intakeServo.setPower(-1);
-//        } else {
-//            intake.setPower(0);
-//            intakeServo.setPower(0);
-//        }
-
-        if (gamepad2.left_bumper && !gamepad2.right_bumper) {
-            intake.setPower(-1);
-            intakeServo.setPower(1);
-        } else {
-            intake.setPower(0);
-            intakeServo.setPower(0);
         }
 
     }
