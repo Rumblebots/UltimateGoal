@@ -112,12 +112,12 @@ public class TestDrive extends OpMode {
 //        }
 
         if (gamepad2.left_trigger > gamepad2.right_trigger && gamepad2.left_trigger > 0.3) {
-            intake.setPower(1.0);
+            intake.setPower(-1.0);
             intakeServo.setPower(0.8);
             upperIntakeServo.setPower(-0.8);
         } else if (gamepad2.right_trigger > gamepad2.left_trigger && gamepad2.right_trigger > 0.3) {
             loader.setPosition(1);
-            intake.setPower(-1);
+            intake.setPower(1);
             intakeServo.setPower(-0.8);
             upperIntakeServo.setPower(0.8);
         } else {
