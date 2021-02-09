@@ -100,7 +100,7 @@ public class TwoCamera {
      * @return the FPS of the webcams, you fucking moron. What did you expect?
      */
     public int[] getFps() {
-        return new int[] {
+    return new int[] {
                 (int) camera1.getFps(),
                 (int) camera2.getFps()
         };

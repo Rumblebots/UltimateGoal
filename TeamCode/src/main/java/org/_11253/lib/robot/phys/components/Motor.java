@@ -140,7 +140,7 @@ public class Motor extends Component {
     public Motor(String name) {
         super(DcMotor.class, name);
         dcMotorComponent = (DcMotor) component;
-        dcMotorComponent.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // is this required?
+//        dcMotorComponent.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // is this required?
     }
 
     /**
@@ -207,8 +207,8 @@ public class Motor extends Component {
      * Reset the motor's encoders.
      */
     public void resetEncoders() {
-        dcMotorComponent.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dcMotorComponent.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        dcMotorComponent.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        dcMotorComponent.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /**

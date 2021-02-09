@@ -23,6 +23,8 @@ public class TestDrive extends OpMode {
     DcMotor flywheel2;
     DcMotor intake;
     CRServo intakeServo;
+    CRServo upperIntakeServo;
+    Servo intakeMover;
     Servo loader;
     Servo pusher;
     double multiplier = 0.5;
@@ -37,13 +39,17 @@ public class TestDrive extends OpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         flywheel1 = hardwareMap.get(DcMotor.class, "flywheel1");
         flywheel2 = hardwareMap.get(DcMotor.class, "flywheel2");
-        intake = hardwareMap.get(DcMotor.class, "intake");
+        intake = hardwareMap.get(DcMotor.class, "intakeMotor");
         intakeServo = hardwareMap.get(CRServo.class, "intakeServo");
+        upperIntakeServo = hardwareMap.get(CRServo.class, "upperIntakeServo");
+        intakeMover = hardwareMap.get(Servo.class, "intakeMover");
         loader = hardwareMap.get(Servo.class, "loader");
         pusher = hardwareMap.get(Servo.class, "pusher");
         t.state = false;
         loadToggle.state = false;
         pushToggle.state = false;
+        intakeMover.setPosition(0.33);
+
     }
 
     @Override
@@ -61,10 +67,10 @@ public class TestDrive extends OpMode {
             multiplier = 0.5;
         }
 
-        double fr = gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
-        double br = gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
-        double fl = -gamepad1.left_stick_y + gamepad1.right_stick_x + gamepad1.left_stick_x;
-        double bl = -gamepad1.left_stick_y + gamepad1.right_stick_x - gamepad1.left_stick_x;
+        double fr = -gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x;
+        double br = -gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x;
+        double fl = gamepad1.left_stick_y - gamepad1.right_stick_x + gamepad1.left_stick_x;
+        double bl = gamepad1.left_stick_y - gamepad1.right_stick_x - gamepad1.left_stick_x;
         frontRight.setPower(fr * multiplier);
         backRight.setPower(br * multiplier);
         frontLeft.setPower(fl * multiplier);
@@ -82,48 +88,43 @@ public class TestDrive extends OpMode {
             t.onRelease();
         }
 
-        if (gamepad2.b) {
-            loadToggle.onPress();
-        } else {
-            loadToggle.onRelease();
-        }
+//        if (gamepad2.b) {
+//            loadToggle.onPress();
+//        } else {
+//            loadToggle.onRelease();
+//        }
 
         if (gamepad2.right_bumper) {
-            pushToggle.onPress();
+            pusher.setPosition(0.6);
         } else {
-            pushToggle.onRelease();
+            pusher.setPosition(1);
         }
+//
+//        if (pushToggle.state) {
+//        } else {
+//            pusher.setPosition(1);
+//        }
 
-        if (pushToggle.state) {
-            pusher.setPosition(0);
-        } else {
-            pusher.setPosition(.5);
-        }
+//        if (loadToggle.state) {
+//            loader.setPosition((180.0-36.0)/180.0);
+//        } else {
+//            loader.setPosition(1);
+//        }
 
-        if (loadToggle.state) {
-            loader.setPosition(26.0/180);
-        } else {
-            loader.setPosition(0.3);
-        }
-
-//        pusher.setPosition(gamepad2.left_trigger-1);
-        System.out.println(gamepad2.left_trigger);
-        if (gamepad2.left_trigger != 0 && gamepad2.right_trigger == 0) {
-            loader.setPosition(0.3);
+        if (gamepad2.left_trigger > gamepad2.right_trigger && gamepad2.left_trigger > 0.3) {
+            intake.setPower(-1.0);
+            intakeServo.setPower(0.8);
+            upperIntakeServo.setPower(-0.8);
+        } else if (gamepad2.right_trigger > gamepad2.left_trigger && gamepad2.right_trigger > 0.3) {
+            loader.setPosition(1);
             intake.setPower(1);
-            intakeServo.setPower(-1);
+            intakeServo.setPower(-0.8);
+            upperIntakeServo.setPower(0.8);
         } else {
+            loader.setPosition((180.0-36.0)/180.0);
             intake.setPower(0);
             intakeServo.setPower(0);
-        }
-
-        if (gamepad2.right_trigger != 0 && gamepad2.left_trigger == 0) {
-            loader.setPosition(0.3);
-            intake.setPower(-1);
-            intakeServo.setPower(1);
-        } else {
-            intake.setPower(0);
-            intakeServo.setPower(0);
+            upperIntakeServo.setPower(0);
         }
 
         if (t.state) {
@@ -132,22 +133,6 @@ public class TestDrive extends OpMode {
         } else {
             flywheel1.setPower(0);
             flywheel2.setPower(0);
-        }
-
-//        if (gamepad2.right_bumper && !gamepad2.left_bumper) {
-//            intake.setPower(1);
-//            intakeServo.setPower(-1);
-//        } else {
-//            intake.setPower(0);
-//            intakeServo.setPower(0);
-//        }
-
-        if (gamepad2.left_bumper && !gamepad2.right_bumper) {
-            intake.setPower(-1);
-            intakeServo.setPower(1);
-        } else {
-            intake.setPower(0);
-            intakeServo.setPower(0);
         }
 
     }

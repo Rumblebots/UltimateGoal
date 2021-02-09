@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.ultimategoal.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org._11253.lib.controllers.ControllerMap;
 import org._11253.lib.drives.ShifterMeccanum;
+import org._11253.lib.utils.gen.Toggle;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Intake;
 import org._11253.lib.utils.Command;
 import org._11253.lib.utils.Timed;
@@ -30,7 +31,73 @@ public class MeccanumDrive extends ShifterMeccanum {
             Lengths.pushDelay
     );
 
+    private Toggle intakeToggle = new Toggle(false);
+    private Toggle storageToggle = new Toggle(false);
+    private Toggle shooterToggle = new Toggle(false);
+
     private boolean canBeChanged;
+
+    private void bindIntake() {
+        controller2.map.bind(
+                ControllerMap.States.LEFT_TRIGGER,
+                new Command() {
+                    @Override
+                    public Runnable active() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                intake.setPower(1.0);
+                            }
+                        };
+                    }
+                }
+        );
+        controller2.map.bind(
+                ControllerMap.States.RIGHT_TRIGGER,
+                new Command() {
+                    @Override
+                    public Runnable active() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                intake.setPower(-1.0);
+                            }
+                        };
+                    }
+
+                    @Override
+                    public Runnable inactive() {
+                        return new Runnable() {
+                            @Override
+                            public void run() {
+                                intake.setPower(0.0);
+                            }
+                        };
+                    }
+                }
+        );
+    }
+
+    private void bindStorage() {
+
+    }
+
+    private void bindShooter() {
+        controller2.map.bind(
+                ControllerMap.States.A,
+                new Command() {
+                    @Override
+                    public Runnable active() {
+                        return super.active();
+                    }
+
+                    @Override
+                    public Runnable inactive() {
+                        return super.inactive();
+                    }
+                }
+        );
+    }
 
     public MeccanumDrive() {
         beforeStart.add(new Runnable() {
@@ -45,40 +112,6 @@ public class MeccanumDrive extends ShifterMeccanum {
                 new Runnable() {
                     @Override
                     public void run() {
-                        controller2.map.bind(ControllerMap.States.RIGHT_BUMPER, new Command() {
-                            @Override
-                            public Runnable active() {
-                                return new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        intake.setPower(1.0);
-                                    }
-                                };
-                            }
-                        });
-                        controller2.map.bind(ControllerMap.States.LEFT_BUMPER, new Command() {
-                            @Override
-                            public Runnable active() {
-                                return new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        intake.setPower(-1.0);
-                                    }
-                                };
-                            }
-
-                            @Override
-                            public Runnable inactive() {
-                                return new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (!controller2.getRightBumper()) {
-                                            intake.setPower(0.0);
-                                        }
-                                    }
-                                };
-                            }
-                        });
                         controller2.map.bind(ControllerMap.States.A, new Command() {
                             @Override
                             public Runnable active() {
