@@ -8,7 +8,8 @@ dependencies {
     implementation (name: 'tensorflow-lite-0.0.0-nightly', ext: 'aar')
     implementation 'com.acmerobotics.roadrunner:core:0.5.2'
 //    implementation files('libs/Pathfinder.jar')
-    implementation files('libs/PathfindingCore.jar')
+//    implementation files('libs/PathfindingCore.jar')
+    implementation files('libs/Pathfinder.jar')
     implementation 'com.github.tmthecoder:OdometryCore:1.0.0'
     implementation 'org.openftc:easyopencv:1.4.1'
 }
