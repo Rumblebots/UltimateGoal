@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org._11253.lib.utils.gen.Toggle;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.RPMThread;
 
 @TeleOp(name = "Actual Meccanum", group = "Test")
 public class TestDrive extends OpMode {
@@ -31,6 +32,7 @@ public class TestDrive extends OpMode {
     Toggle t = new Toggle();
     Toggle loadToggle = new Toggle();
     Toggle pushToggle = new Toggle();
+    RPMThread rpmThread;
     @Override
     public void init() {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -45,16 +47,20 @@ public class TestDrive extends OpMode {
         intakeMover = hardwareMap.get(Servo.class, "intakeMover");
         loader = hardwareMap.get(Servo.class, "loader");
         pusher = hardwareMap.get(Servo.class, "pusher");
+        flywheel1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        flywheel2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        flywheel1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheel2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         t.state = false;
         loadToggle.state = false;
         pushToggle.state = false;
         intakeMover.setPosition(0.33);
-
+        rpmThread = new RPMThread(flywheel2);
+        rpmThread.start();
     }
 
     @Override
     public void loop() {
-
         if (gamepad1.left_trigger != 0 && gamepad1.right_trigger == 0) {
             multiplier = 0.25;
         } else {
@@ -112,14 +118,14 @@ public class TestDrive extends OpMode {
 //        }
 
         if (gamepad2.left_trigger > gamepad2.right_trigger && gamepad2.left_trigger > 0.3) {
-            intake.setPower(-1.0);
+            intake.setPower(1.0);
             intakeServo.setPower(0.8);
-            upperIntakeServo.setPower(-0.8);
+            upperIntakeServo.setPower(0.8);
         } else if (gamepad2.right_trigger > gamepad2.left_trigger && gamepad2.right_trigger > 0.3) {
             loader.setPosition(1);
-            intake.setPower(1);
+            intake.setPower(-1);
             intakeServo.setPower(-0.8);
-            upperIntakeServo.setPower(0.8);
+            upperIntakeServo.setPower(-0.8);
         } else {
             loader.setPosition((180.0-36.0)/180.0);
             intake.setPower(0);
@@ -134,6 +140,14 @@ public class TestDrive extends OpMode {
             flywheel1.setPower(0);
             flywheel2.setPower(0);
         }
+        telemetry.addData("RPM: ", rpmThread.getRPM());
+        telemetry.update();
 
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        rpmThread.stopThread();
     }
 }
