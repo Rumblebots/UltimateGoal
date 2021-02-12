@@ -12,14 +12,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class RPMThread extends Thread {
+public class ShooterThread extends Thread {
     DcMotor encoder;
     boolean running = false;
     double prevPos;
-    double rpm = 0;
+    double rps = 0;
     ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 
-    public RPMThread(DcMotor encoder) {
+    public ShooterThread(DcMotor encoder) {
         this.encoder = encoder;
         prevPos = encoder.getCurrentPosition();
         running = true;
@@ -32,7 +32,9 @@ public class RPMThread extends Thread {
                 @Override
                 public void run() {
                     double cpos = encoder.getCurrentPosition();
-                    rpm = (((cpos - prevPos) / 500.0) * 1000.0 * 60.0)/(28.0 * 3/2);
+                    rps = (((cpos - prevPos) / 500.0) * 1000.0)/(28.0 * 3/2);
+                    double angularVelocity = rps * 2 * Math.PI;
+                    double linearVelocity = angularVelocity * 1.5; //TODO change radius
 //            Telemetry.addData("RPM", "RPM", ":", String.valueOf(rpm));
                     prevPos = cpos;
                 }
@@ -42,8 +44,8 @@ public class RPMThread extends Thread {
 //        }
     }
 
-    public double getRPM() {
-        return rpm;
+    public double getSpeed() {
+        return rps; // TODO get to generated speed
     }
 
     public void stopThread() {

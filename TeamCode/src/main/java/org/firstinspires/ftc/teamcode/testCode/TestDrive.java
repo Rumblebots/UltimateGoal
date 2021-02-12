@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org._11253.lib.utils.gen.Toggle;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.RPMThread;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.ShooterThread;
 
 @TeleOp(name = "Actual Meccanum", group = "Test")
 public class TestDrive extends OpMode {
@@ -32,7 +32,7 @@ public class TestDrive extends OpMode {
     Toggle t = new Toggle();
     Toggle loadToggle = new Toggle();
     Toggle pushToggle = new Toggle();
-    RPMThread rpmThread;
+    ShooterThread shooterThread;
     @Override
     public void init() {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -55,8 +55,8 @@ public class TestDrive extends OpMode {
         loadToggle.state = false;
         pushToggle.state = false;
         intakeMover.setPosition(0.33);
-        rpmThread = new RPMThread(flywheel2);
-        rpmThread.start();
+        shooterThread = new ShooterThread(flywheel2);
+        shooterThread.start();
     }
 
     @Override
@@ -140,7 +140,7 @@ public class TestDrive extends OpMode {
             flywheel1.setPower(0);
             flywheel2.setPower(0);
         }
-        telemetry.addData("RPM: ", rpmThread.getRPM());
+        telemetry.addData("RPM: ", shooterThread.getSpeed());
         telemetry.update();
 
     }
@@ -148,6 +148,6 @@ public class TestDrive extends OpMode {
     @Override
     public void stop() {
         super.stop();
-        rpmThread.stopThread();
+        shooterThread.stopThread();
     }
 }

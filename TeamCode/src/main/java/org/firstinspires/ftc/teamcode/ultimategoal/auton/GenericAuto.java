@@ -7,22 +7,12 @@ package org.firstinspires.ftc.teamcode.ultimategoal.auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.tejasmehta.OdometryCore.OdometryCore;
-import com.tejasmehta.OdometryCore.localization.EncoderPositions;
-import com.tejasmehta.OdometryCore.localization.HeadingUnit;
 import com.tejasmehta.OdometryCore.localization.OdometryPosition;
-import org._11253.lib.op.Auton;
-import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 import org._11253.lib.robot.phys.assm.drivetrain.MotionType;
-import org._11253.lib.robot.phys.components.Motor;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.RPMThread;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.ShooterThread;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryThread;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Shooter;
-import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.Storage;
 
 @Autonomous(name = "Main Auo", group = "Auton")
 
@@ -222,8 +212,8 @@ public class GenericAuto extends LinearOpMode {
         loader = hardwareMap.get(Servo.class, "loader");
         pusher = hardwareMap.get(Servo.class, "pusher");
         OdometryThread.initialize(42, backLeft, backRight, frontRight);
-        RPMThread rpmThread = new RPMThread(flywheel2);
-        rpmThread.start();
+        ShooterThread shooterThread = new ShooterThread(flywheel2);
+        shooterThread.start();
         System.out.println("HERE");
         getCurrentPos();
         waitForStart();
