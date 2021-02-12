@@ -13,6 +13,10 @@ import com.tejasmehta.OdometryCore.localization.OdometryPosition;
 import org._11253.lib.robot.phys.assm.drivetrain.Drivetrain;
 import org._11253.lib.utils.telem.Telemetry;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class OdometryThread extends Thread{
 
     private final DcMotor encoderLeft;
@@ -22,6 +26,7 @@ public class OdometryThread extends Thread{
     private OdometryPosition currentPosition;
     private boolean running = true;
     private static OdometryThread currentInstance;
+    ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 
     public static void initialize(double offset, DcMotor encoderLeft, DcMotor encoderRight, DcMotor encoderBack) {
         System.out.println("INITING");
@@ -38,6 +43,7 @@ public class OdometryThread extends Thread{
 
     public void stopThread() {
         running = false;
+        exec.shutdown();
     }
 
     public void startThread() {
@@ -62,10 +68,18 @@ public class OdometryThread extends Thread{
     @Override
     public void run() {
         System.out.println("STARTING");
-        while (running) {
-            OdometryPosition rawPos = OdometryCore.getInstance().getCurrentPosition(new EncoderPositions(-encoderLeft.getCurrentPosition(), encoderRight.getCurrentPosition(), encoderBack.getCurrentPosition()));
-            currentPosition = new OdometryPosition(rawPos.getX() + offset, rawPos.getY(), rawPos.getHeadingRadians(), HeadingUnit.RADIANS);
-            Telemetry.addData("ODOM_POS", "Odometry Pos", ":", "x: " + currentPosition.getX() + ", y: " + currentPosition.getY() + ", heading: " + currentPosition.getHeadingDegrees());
-        }
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                OdometryPosition rawPos = OdometryCore.getInstance().getCurrentPosition(new EncoderPositions(-encoderLeft.getCurrentPosition(), encoderRight.getCurrentPosition(), encoderBack.getCurrentPosition()));
+                currentPosition = new OdometryPosition(rawPos.getX() + offset, rawPos.getY(), rawPos.getHeadingRadians(), HeadingUnit.RADIANS);
+                Telemetry.addData("ODOM_POS", "Odometry Pos", ":", "x: " + currentPosition.getX() + ", y: " + currentPosition.getY() + ", heading: " + currentPosition.getHeadingDegrees());
+            }
+        }, 0, 10, TimeUnit.MILLISECONDS);
+//        while (running) {
+//            OdometryPosition rawPos = OdometryCore.getInstance().getCurrentPosition(new EncoderPositions(-encoderLeft.getCurrentPosition(), encoderRight.getCurrentPosition(), encoderBack.getCurrentPosition()));
+//            currentPosition = new OdometryPosition(rawPos.getX() + offset, rawPos.getY(), rawPos.getHeadingRadians(), HeadingUnit.RADIANS);
+//            Telemetry.addData("ODOM_POS", "Odometry Pos", ":", "x: " + currentPosition.getX() + ", y: " + currentPosition.getY() + ", heading: " + currentPosition.getHeadingDegrees());
+//        }
     }
 }
