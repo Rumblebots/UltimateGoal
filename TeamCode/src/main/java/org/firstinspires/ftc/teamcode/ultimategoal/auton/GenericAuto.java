@@ -32,6 +32,7 @@ public class GenericAuto extends LinearOpMode {
 //    CRServo upperIntakeServo;
     Servo loader;
     Servo pusher;
+    ShooterThread shooterThread = new ShooterThread(flywheel2);
 
 //    public GenericAuto(final double offsetPos) {
 //        onFinish.add(new Runnable() {
@@ -163,21 +164,6 @@ public class GenericAuto extends LinearOpMode {
     }
 
 
-    double prevPos = 0;
-    double prevTime = System.currentTimeMillis();
-
-    public double getRPM() {
-        int cpr = 28;
-        double cPos = flywheel1.getCurrentPosition();
-        System.out.println("CPOS " + cPos);
-        double rotations = cPos/cpr;
-        double nowTime = System.currentTimeMillis();
-        double rotationPSec = (rotations - (prevPos/cpr))/(nowTime-prevTime);
-        prevPos = cPos;
-        prevTime = nowTime;
-        return rotationPSec;
-    }
-
     @Override
     public void runOpMode() throws InterruptedException {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -212,7 +198,6 @@ public class GenericAuto extends LinearOpMode {
         loader = hardwareMap.get(Servo.class, "loader");
         pusher = hardwareMap.get(Servo.class, "pusher");
         OdometryThread.initialize(42, backLeft, backRight, frontRight);
-        ShooterThread shooterThread = new ShooterThread(flywheel2);
         shooterThread.start();
         System.out.println("HERE");
         getCurrentPos();
@@ -249,5 +234,41 @@ public class GenericAuto extends LinearOpMode {
         flywheel2.setPower(0.0);
         odometryMove(getCurrentPos().getX(), 60);
         OdometryThread.getInstance().stopThread();
+    }
+
+    // Angle: 45
+    // Horizontal from center (x dist): 144.5 mm
+    // Vertical to bottom (offset): 258.823 mm -- 10.18in
+    // Goal to top 33 in, 35.5 to middle of top goal
+    // Goal to mid 21 in, 27 to middle of middle goal
+    // yDist = 30
+    // xDist = Calculated below
+    // Equation: .64(v * cos(45))^2 - (v * cos(45))^2 * x + 4.9x^2 = 0 <-- Solve for distance
+    // Equation: (v * cos(45))^2 = -4.9x^2 / (.64 - x)
+    double calculateMissing(boolean vMode) {
+        double startToGoal = 135.5;
+        double angleRads = Math.toRadians(45);
+        double cosCalc = Math.cos(angleRads);
+        double tanCalc = Math.tan(angleRads);
+        if (vMode) {
+            double distToGoal = startToGoal - getCurrentPos().getY();
+            double constant = -4.9 * (distToGoal * distToGoal);
+            double vVal = (.64 * cosCalc) - (cosCalc * distToGoal * tanCalc);
+            double rootable = constant/vVal;
+            return Math.sqrt(rootable);
+        } else {
+            double speed = shooterThread.getSpeed();
+            double constant = .64 * Math.pow(speed * cosCalc, 2); // C value in a quadratic
+            double singleCoefficient = Math.pow(speed * cosCalc * tanCalc, 2); // B value in a quadratic
+            double quadraticCoefficient = 4.9;
+            double radicand = (singleCoefficient * singleCoefficient) - (4 * quadraticCoefficient * constant);
+            if (radicand < 0) {
+                return -1;
+            }
+            double rooted = Math.sqrt(radicand);
+            double sol1 = ((-singleCoefficient + rooted)/(2 * quadraticCoefficient)) * 3.281;
+            double sol2 = ((-singleCoefficient - rooted)/(2 * quadraticCoefficient)) * 3.281;
+            return Math.max(sol1, sol2);
+        }
     }
 }

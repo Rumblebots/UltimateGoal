@@ -29,21 +29,22 @@ public class ShooterThread extends Thread {
             new Runnable() {
                 @Override
                 public void run() {
-                    double cpos = encoder.getCurrentPosition();
-                    double rps = (((cpos - prevPos) / 500.0) * 1000.0)/(28.0 * 3/2);
+                    double cPos = encoder.getCurrentPosition();
+                    double rps = (((cPos - prevPos) / 250.0) * 1000.0)/(28.0 * 3/2);
                     double angularVelocity = rps * 2 * Math.PI;
-                    speed = angularVelocity * 2; //Angular velocity (inches/sec)
-//            Telemetry.addData("RPM", "RPM", ":", String.valueOf(rpm));
-                    prevPos = cpos;
+                    speed = angularVelocity * 2/3.281; //Angular velocity (m/sec)
+                    // Angle: 45
+                    // Horizontal from center (x dist): 144.5
+                    // Vertical to bottom (offset): 258.823
+                    // Goal to top 33 in, 35.5 to middle of top goal
+                    // Goal to mid 21 in, 27 to middle of middle goal
+                    prevPos = cPos;
                 }
             }, 0, 250, TimeUnit.MILLISECONDS);
-//        while (running) {
-//
-//        }
     }
 
     public double getSpeed() {
-        return speed; // TODO get to generated speed
+        return speed;
     }
 
     public void stopThread() {
