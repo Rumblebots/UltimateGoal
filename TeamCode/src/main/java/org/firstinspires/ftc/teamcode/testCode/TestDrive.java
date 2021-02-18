@@ -10,8 +10,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.tejasmehta.OdometryCore.localization.OdometryPosition;
 import org._11253.lib.utils.gen.Toggle;
 import org.firstinspires.ftc.teamcode.ultimategoal.shared.ShooterThread;
+import org.firstinspires.ftc.teamcode.ultimategoal.shared.subystems.OdometryThread;
 
 @TeleOp(name = "Actual Meccanum", group = "Test")
 public class TestDrive extends OpMode {
@@ -134,8 +136,11 @@ public class TestDrive extends OpMode {
         }
 
         if (t.state) {
-            flywheel1.setPower(1);
-            flywheel2.setPower(1);
+            double neededVel = calculateMissing(true, 27);
+            if (neededVel == -1) {
+                System.out.println("BAD");
+            }
+            spinToSpeed(neededVel);
         } else {
             flywheel1.setPower(0);
             flywheel2.setPower(0);
@@ -149,5 +154,62 @@ public class TestDrive extends OpMode {
     public void stop() {
         super.stop();
         shooterThread.stopThread();
+    }
+
+    void spinToSpeed(double neededVelocity) {
+        double speed = 0.7;
+        while (neededVelocity > shooterThread.getSpeed()) {
+            speed+=0.05;
+            flywheel1.setPower(speed);
+            flywheel2.setPower(speed);
+        }
+    }
+
+    // Angle: 45
+    // Horizontal from center (x dist): 144.5 mm
+    // Vertical to bottom (offset): 258.823 mm -- 10.18in -- .258823 m
+    // Goal to top 33 in, 35.5 to middle of top goal
+    // Goal to mid 21 in, 27 to middle of middle goal
+    // yDist = 30
+    // xDist = Calculated below
+    // Equation: .64(v * cos(45))^2 - (v * cos(45))^2 * x + 4.9x^2 = 0 <-- Solve for distance
+    // Equation: (v * cos(45))^2 = -4.9x^2 / (.64 - x) <-- Solve for velocity
+    double calculateMissing(boolean vMode, double yDist) {
+        double height = (yDist/3.281) - .258823;
+        double startToGoal = 135.5;
+        double angleRads = Math.toRadians(45);
+        double cosCalc = Math.cos(angleRads);
+        double tanCalc = Math.tan(angleRads);
+        if (vMode) {
+            double distToGoal = (startToGoal - getCurrentPos().getY())/3.281;
+            double constant = -4.9 * (distToGoal * distToGoal);
+            double vVal = (height * cosCalc) - (cosCalc * distToGoal * tanCalc);
+            double rootable = constant/vVal;
+            if (rootable < 0) {
+                return -1;
+            }
+            return Math.sqrt(rootable);
+        } else {
+            double speed = shooterThread.getSpeed();
+            double constant = height * Math.pow(speed * cosCalc, 2); // C value in a quadratic
+            double singleCoefficient = Math.pow(speed * cosCalc * tanCalc, 2); // B value in a quadratic
+            double quadraticCoefficient = 4.9;
+            double radicand = (singleCoefficient * singleCoefficient) - (4 * quadraticCoefficient * constant);
+            if (radicand < 0) {
+                return -1;
+            }
+            double rooted = Math.sqrt(radicand);
+            double sol1 = ((-singleCoefficient + rooted)/(2 * quadraticCoefficient)) * 3.281;
+            double sol2 = ((-singleCoefficient - rooted)/(2 * quadraticCoefficient)) * 3.281;
+            return Math.max(sol1, sol2);
+        }
+    }
+
+    public OdometryPosition getCurrentPos() {
+        OdometryPosition currentPosition = OdometryThread.getInstance().getCurrentPosition();
+        System.out.println(currentPosition);
+        telemetry.addData("Odometry Pos: ", "x: " + currentPosition.getX() + ", y: " + currentPosition.getY() + ", heading: " + currentPosition.getHeadingDegrees());
+        telemetry.update();
+        return OdometryThread.getInstance().getCurrentPosition();
     }
 }
