@@ -215,6 +215,7 @@ public class GenericAuto extends LinearOpMode {
 //        odometryMove(49, 14);
 //        odometryTurn(40, 128);
         odometryMove(getCurrentPos().getX()+6, getCurrentPos().getY()-2);
+        double neededVel = calculateMissing(true, 27);
         flywheel1.setPower(1.0);
         flywheel2.setPower(1.0);
         sleep(1500);
@@ -238,27 +239,31 @@ public class GenericAuto extends LinearOpMode {
 
     // Angle: 45
     // Horizontal from center (x dist): 144.5 mm
-    // Vertical to bottom (offset): 258.823 mm -- 10.18in
+    // Vertical to bottom (offset): 258.823 mm -- 10.18in -- .258823 m
     // Goal to top 33 in, 35.5 to middle of top goal
     // Goal to mid 21 in, 27 to middle of middle goal
     // yDist = 30
     // xDist = Calculated below
     // Equation: .64(v * cos(45))^2 - (v * cos(45))^2 * x + 4.9x^2 = 0 <-- Solve for distance
-    // Equation: (v * cos(45))^2 = -4.9x^2 / (.64 - x)
-    double calculateMissing(boolean vMode) {
+    // Equation: (v * cos(45))^2 = -4.9x^2 / (.64 - x) <-- Solve for velocity
+    double calculateMissing(boolean vMode, double yDist) {
+        double height = (yDist/3.281) - .258823;
         double startToGoal = 135.5;
         double angleRads = Math.toRadians(45);
         double cosCalc = Math.cos(angleRads);
         double tanCalc = Math.tan(angleRads);
         if (vMode) {
-            double distToGoal = startToGoal - getCurrentPos().getY();
+            double distToGoal = (startToGoal - getCurrentPos().getY())/3.281;
             double constant = -4.9 * (distToGoal * distToGoal);
-            double vVal = (.64 * cosCalc) - (cosCalc * distToGoal * tanCalc);
+            double vVal = (height * cosCalc) - (cosCalc * distToGoal * tanCalc);
             double rootable = constant/vVal;
+            if (rootable < 0) {
+                return -1;
+            }
             return Math.sqrt(rootable);
         } else {
             double speed = shooterThread.getSpeed();
-            double constant = .64 * Math.pow(speed * cosCalc, 2); // C value in a quadratic
+            double constant = height * Math.pow(speed * cosCalc, 2); // C value in a quadratic
             double singleCoefficient = Math.pow(speed * cosCalc * tanCalc, 2); // B value in a quadratic
             double quadraticCoefficient = 4.9;
             double radicand = (singleCoefficient * singleCoefficient) - (4 * quadraticCoefficient * constant);
