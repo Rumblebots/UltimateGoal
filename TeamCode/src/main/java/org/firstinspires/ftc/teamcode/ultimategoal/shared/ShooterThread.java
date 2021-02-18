@@ -30,7 +30,9 @@ public class ShooterThread extends Thread {
                 @Override
                 public void run() {
                     double cPos = encoder.getCurrentPosition();
-                    double rps = (((cPos - prevPos) / 250.0) * 1000.0)/(28.0 * 3/2);
+                    double countsToRotations = 28.0 * 3.0/2.0; // cpr * gear ratio
+                    double rotations = (cPos - prevPos)/countsToRotations; // Get rotation count
+                    double rps = (rotations / 250.0) * 1000.0; // Get rotations per second
                     double angularVelocity = rps * 2 * Math.PI;
                     speed = angularVelocity * 2/3.281; //Angular velocity (m/sec)
                     // Angle: 45

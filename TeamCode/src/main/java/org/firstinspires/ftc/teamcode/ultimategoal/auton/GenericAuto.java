@@ -216,8 +216,12 @@ public class GenericAuto extends LinearOpMode {
 //        odometryTurn(40, 128);
         odometryMove(getCurrentPos().getX()+6, getCurrentPos().getY()-2);
         double neededVel = calculateMissing(true, 27);
-        flywheel1.setPower(1.0);
-        flywheel2.setPower(1.0);
+        if (neededVel == -1) {
+            System.out.println("BAD");
+        }
+        spinToSpeed(neededVel);
+//        flywheel1.setPower(1.0);
+//        flywheel2.setPower(1.0);
         sleep(1500);
         shoot();
         sleep(500);
@@ -274,6 +278,15 @@ public class GenericAuto extends LinearOpMode {
             double sol1 = ((-singleCoefficient + rooted)/(2 * quadraticCoefficient)) * 3.281;
             double sol2 = ((-singleCoefficient - rooted)/(2 * quadraticCoefficient)) * 3.281;
             return Math.max(sol1, sol2);
+        }
+    }
+
+    void spinToSpeed(double neededVelocity) {
+        double speed = 0.7;
+        while (neededVelocity > shooterThread.getSpeed()) {
+            speed+=0.05;
+            flywheel1.setPower(speed);
+            flywheel2.setPower(speed);
         }
     }
 }
