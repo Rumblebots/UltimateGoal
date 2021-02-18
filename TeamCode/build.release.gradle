@@ -10,6 +10,6 @@ dependencies {
 //    implementation files('libs/Pathfinder.jar')
 //    implementation files('libs/PathfindingCore.jar')
     implementation files('libs/Pathfinder.jar')
-    implementation 'com.github.tmthecoder:OdometryCore:1.0.0'
+//    implementation 'com.github.tmthecoder:OdometryCore:1.0.0'
     implementation 'org.openftc:easyopencv:1.4.1'
 }
