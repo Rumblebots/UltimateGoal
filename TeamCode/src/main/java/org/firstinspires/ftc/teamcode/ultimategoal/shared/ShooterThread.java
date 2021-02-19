@@ -26,23 +26,26 @@ public class ShooterThread extends Thread {
     @Override
     public void run() {
         exec.scheduleAtFixedRate(
-            new Runnable() {
-                @Override
-                public void run() {
+                () -> {
                     double cPos = encoder.getCurrentPosition();
                     double countsToRotations = 28.0 * 3.0/2.0; // cpr * gear ratio
+                    System.out.println("CTR:"+countsToRotations);
                     double rotations = (cPos - prevPos)/countsToRotations; // Get rotation count
-                    double rps = (rotations / 250.0) * 1000.0; // Get rotations per second
-                    double angularVelocity = rps * 2 * Math.PI;
-                    speed = angularVelocity * 2/3.281; //Angular velocity (m/sec)
+                    System.out.println("Rotations " + rotations);
+//                    double rps = (rotations * 4); // Get rotations per second
+                    double period = (250.0/rotations) / 1000;
+//                    System.out.println("RPS: " + rps);
+                    double angularVelocity = ((2.0/39.37) * 2 * Math.PI)/period;
+                    System.out.println("ANGLEV: " + angularVelocity);
+//                    speed = angularVelocity * (2.0/39.37); //Angular velocity (m/sec)
+                    speed = angularVelocity/1.5;
+                    prevPos = cPos;
                     // Angle: 45
                     // Horizontal from center (x dist): 144.5
                     // Vertical to bottom (offset): 258.823
                     // Goal to top 33 in, 35.5 to middle of top goal
                     // Goal to mid 21 in, 27 to middle of middle goal
-                    prevPos = cPos;
-                }
-            }, 0, 250, TimeUnit.MILLISECONDS);
+                }, 0, 250, TimeUnit.MILLISECONDS);
     }
 
     public double getSpeed() {

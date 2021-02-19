@@ -59,6 +59,11 @@ public class TestDrive extends OpMode {
         intakeMover.setPosition(0.33);
         shooterThread = new ShooterThread(flywheel2);
         shooterThread.start();
+        try {
+            OdometryThread.getInstance();
+        } catch (Exception e) {
+            OdometryThread.initialize(42, backLeft, backRight, frontRight);
+        }
     }
 
     @Override
@@ -83,11 +88,6 @@ public class TestDrive extends OpMode {
         backRight.setPower(br * multiplier);
         frontLeft.setPower(fl * multiplier);
         backLeft.setPower(bl * multiplier);
-
-        System.out.println("FRPOW: " + fr);
-        System.out.println("BRPOW: " + br);
-        System.out.println("FLPOW: " + fl);
-        System.out.println("BLPOW: " + bl);
 
 
         if (gamepad2.a) {
@@ -145,7 +145,7 @@ public class TestDrive extends OpMode {
             flywheel1.setPower(0);
             flywheel2.setPower(0);
         }
-        telemetry.addData("RPM: ", shooterThread.getSpeed());
+        telemetry.addData("Shooter Speed: ", shooterThread.getSpeed());
         telemetry.update();
 
     }
@@ -158,11 +158,15 @@ public class TestDrive extends OpMode {
 
     void spinToSpeed(double neededVelocity) {
         double speed = 0.7;
-        while (neededVelocity > shooterThread.getSpeed()) {
+        System.out.println("NEEDED VEL: " + neededVelocity);
+        do {
+            System.out.println("Calcd: " + calculateMissing(false, 27));
             speed+=0.05;
+            System.out.println("cSpeed: " + speed);
+            System.out.println("CVEL: " + shooterThread.getSpeed());
             flywheel1.setPower(speed);
             flywheel2.setPower(speed);
-        }
+        } while (calculateMissing(false, 27) > (80/39.37) && speed <= 1.0);
     }
 
     // Angle: 45
@@ -175,13 +179,13 @@ public class TestDrive extends OpMode {
     // Equation: .64(v * cos(45))^2 - (v * cos(45))^2 * x + 4.9x^2 = 0 <-- Solve for distance
     // Equation: (v * cos(45))^2 = -4.9x^2 / (.64 - x) <-- Solve for velocity
     double calculateMissing(boolean vMode, double yDist) {
-        double height = (yDist/3.281) - .258823;
+        double height = (yDist/39.37) - .258823;
         double startToGoal = 135.5;
         double angleRads = Math.toRadians(45);
         double cosCalc = Math.cos(angleRads);
         double tanCalc = Math.tan(angleRads);
         if (vMode) {
-            double distToGoal = (startToGoal - getCurrentPos().getY())/3.281;
+            double distToGoal = (startToGoal - getCurrentPos().getY() -55.5)/39.37;
             double constant = -4.9 * (distToGoal * distToGoal);
             double vVal = (height * cosCalc) - (cosCalc * distToGoal * tanCalc);
             double rootable = constant/vVal;
@@ -191,25 +195,33 @@ public class TestDrive extends OpMode {
             return Math.sqrt(rootable);
         } else {
             double speed = shooterThread.getSpeed();
-            double constant = height * Math.pow(speed * cosCalc, 2); // C value in a quadratic
-            double singleCoefficient = Math.pow(speed * cosCalc * tanCalc, 2); // B value in a quadratic
-            double quadraticCoefficient = 4.9;
-            double radicand = (singleCoefficient * singleCoefficient) - (4 * quadraticCoefficient * constant);
-            if (radicand < 0) {
-                return -1;
-            }
-            double rooted = Math.sqrt(radicand);
-            double sol1 = ((-singleCoefficient + rooted)/(2 * quadraticCoefficient)) * 3.281;
-            double sol2 = ((-singleCoefficient - rooted)/(2 * quadraticCoefficient)) * 3.281;
-            return Math.max(sol1, sol2);
+            System.out.println("SPeed: " + speed);
+            double aVal = 4.9;
+            double bVal = -speed * Math.sin(angleRads);
+            double cVal = -.258823;
+            double root = (bVal * bVal) - 4 * aVal * cVal;
+            System.out.println("Root: " + root);
+            double rooted = Math.sqrt(root);
+            double sol1 = (-bVal + rooted) / (2 * aVal);
+            double sol2 = (-bVal - rooted) / (2 * aVal);
+            double t = Math.max(sol1, sol2);
+            return speed * cosCalc * t;
+//            double constant = height * Math.pow(speed * cosCalc, 2); // C value in a quadratic
+//            double singleCoefficient = Math.pow(speed * cosCalc * tanCalc, 2); // B value in a quadratic
+//            double quadraticCoefficient = 4.9;
+//            double radicand = (singleCoefficient * singleCoefficient) - (4 * quadraticCoefficient * constant);
+//            if (radicand < 0) {
+//                return -1;
+//            }
+//            double rooted = Math.sqrt(radicand);
+//            double sol1 = ((-singleCoefficient + rooted)/(2 * quadraticCoefficient)) * 3.281;
+//            double sol2 = ((-singleCoefficient - rooted)/(2 * quadraticCoefficient)) * 3.281;
+//            return Math.max(sol1, sol2);
         }
     }
 
     public OdometryPosition getCurrentPos() {
         OdometryPosition currentPosition = OdometryThread.getInstance().getCurrentPosition();
-        System.out.println(currentPosition);
-        telemetry.addData("Odometry Pos: ", "x: " + currentPosition.getX() + ", y: " + currentPosition.getY() + ", heading: " + currentPosition.getHeadingDegrees());
-        telemetry.update();
         return OdometryThread.getInstance().getCurrentPosition();
     }
 }
