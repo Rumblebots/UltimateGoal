@@ -29,7 +29,6 @@ public class ShooterThread extends Thread {
                 () -> {
                     double cPos = encoder.getCurrentPosition();
                     double countsToRotations = 28.0 * 3.0/2.0; // cpr * gear ratio
-                    System.out.println("CTR:"+countsToRotations);
                     double rotations = (cPos - prevPos)/countsToRotations; // Get rotation count
                     System.out.println("Rotations " + rotations);
 //                    double rps = (rotations * 4); // Get rotations per second
@@ -38,7 +37,7 @@ public class ShooterThread extends Thread {
                     double angularVelocity = ((2.0/39.37) * 2 * Math.PI)/period;
                     System.out.println("ANGLEV: " + angularVelocity);
 //                    speed = angularVelocity * (2.0/39.37); //Angular velocity (m/sec)
-                    speed = angularVelocity/1.5;
+                    speed = angularVelocity/2.5;
                     prevPos = cPos;
                     // Angle: 45
                     // Horizontal from center (x dist): 144.5
