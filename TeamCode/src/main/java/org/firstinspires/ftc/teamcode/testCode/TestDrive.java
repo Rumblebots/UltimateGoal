@@ -103,7 +103,8 @@ public class TestDrive extends OpMode {
 //        }
 
         if (gamepad2.right_bumper) {
-            pusher.setPosition(0.6);
+            System.out.println("SHOOT PRESS");
+            pusher.setPosition(0.65);
         } else {
             pusher.setPosition(1);
         }
@@ -158,6 +159,7 @@ public class TestDrive extends OpMode {
 
     void spinToSpeed(double neededVelocity) {
         double speed = 0.7;
+        double desiredRps = (5000.0/37.0) * 27;
         System.out.println("NEEDED VEL: " + neededVelocity);
         do {
             System.out.println("Calcd: " + calculateMissing(false, 27));
@@ -166,7 +168,7 @@ public class TestDrive extends OpMode {
             System.out.println("CVEL: " + shooterThread.getSpeed());
             flywheel1.setPower(speed);
             flywheel2.setPower(speed);
-        } while (calculateMissing(false, 27) > (80/39.37) && speed <= 1.0);
+        } while (desiredRps < shooterThread.getSpeed() && shooterThread.getSpeed() < shooterThread.getMaxRps());
     }
 
     // Angle: 45
