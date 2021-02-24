@@ -38,14 +38,17 @@ public class ShooterThread extends Thread {
                     double cPos = encoder.getCurrentPosition();
                     double countsToRotations = 28.0 * 3.0/2.0; // cpr * gear ratio
                     double rotations = (cPos - prevPos)/countsToRotations; // Get rotation count
-                    System.out.println("Rotations " + rotations);
+//                    System.out.println("Rotations " + rotations);
                     rps = rotations * 4.0;
                     power = encoder.getPower();
 //                    double rps = (rotations * 4); // Get rotations per second
                     double period = (250.0/rotations) / 1000;
 //                    System.out.println("RPS: " + rps);
                     double angularVelocity = ((2.0/39.37) * 2 * Math.PI)/period;
-                    System.out.println("ANGLEV: " + angularVelocity);
+//                    System.out.println("ANGLEV: " + angularVelocity);
+//                    if (rps > 2) {
+//                        System.out.println(rps);
+//                    }
 //                    speed = angularVelocity * (2.0/39.37); //Angular velocity (m/sec)
                     speed = angularVelocity/2;
                     prevPos = cPos;
@@ -82,8 +85,9 @@ public class ShooterThread extends Thread {
     }
 
     public double getMaxRps() {
-        if (power == 0) return -1;
-        return rps/power;
+//        System.out.println(power);
+//        if (power == 0) return -1;
+        return rps;
     }
     public double getSpeed() {
         return speed;
@@ -120,12 +124,12 @@ public class ShooterThread extends Thread {
             return Math.sqrt(rootable);
         } else {
             double speed = getSpeed();
-            System.out.println("SPeed: " + speed);
+//            System.out.println("SPeed: " + speed);
             double aVal = 4.9;
             double bVal = -speed * Math.sin(angleRads);
             double cVal = -.258823;
             double root = (bVal * bVal) - 4 * aVal * cVal;
-            System.out.println("Root: " + root);
+//            System.out.println("Root: " + root);
             double rooted = Math.sqrt(root);
             double sol1 = (-bVal + rooted) / (2 * aVal);
             double sol2 = (-bVal - rooted) / (2 * aVal);

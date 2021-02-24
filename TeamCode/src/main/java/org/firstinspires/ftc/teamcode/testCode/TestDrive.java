@@ -137,11 +137,13 @@ public class TestDrive extends OpMode {
         }
 
         if (t.state) {
-            double neededVel = calculateMissing(true, 27);
-            if (neededVel == -1) {
-                System.out.println("BAD");
-            }
-            spinToSpeed(neededVel);
+//            double neededVel = calculateMissing(true, 27);
+//            if (neededVel == -1) {
+//                System.out.println("BAD");
+//            }
+//            spinToSpeed(neededVel);
+            flywheel1.setPower(1.0);
+            flywheel2.setPower(1.0);
         } else {
             flywheel1.setPower(0);
             flywheel2.setPower(0);
