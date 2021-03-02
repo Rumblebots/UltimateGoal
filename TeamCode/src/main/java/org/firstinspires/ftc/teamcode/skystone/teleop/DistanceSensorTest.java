@@ -29,6 +29,7 @@ import static org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive.F
 @Disabled
 
 @TeleOp(name="Distance Sensor Test", group="default")
+@Deprecated
 public class DistanceSensorTest extends LinearOpMode
 {
     private Motors_Drive motorsDrive = new Motors_Drive();

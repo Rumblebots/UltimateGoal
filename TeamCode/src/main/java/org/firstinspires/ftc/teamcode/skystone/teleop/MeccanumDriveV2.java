@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Sensors.Sensors;
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Servos;
 
 @Disabled
+@Deprecated
 public class MeccanumDriveV2 extends LinearOpMode {
     private Motors_Drive motorsDrive = new Motors_Drive();
     private Motors_Aux motorsAux = new Motors_Aux();

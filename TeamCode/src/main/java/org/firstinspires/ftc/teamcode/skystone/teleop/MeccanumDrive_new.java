@@ -18,6 +18,7 @@ import java.util.Map;
 
  @Disabled
  @TeleOp(name="New Meccanum Drive", group="default")
+ @Deprecated
 public class MeccanumDrive_new extends OpMode
 {
     public TouchSensor extenderlimit;

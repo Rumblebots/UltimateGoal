@@ -5,6 +5,7 @@
  * Package: org.firstinspires.ftc.teamcode.testCode*/
 package org.firstinspires.ftc.teamcode.testCode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.tejasmehta.OdometryCore.OdometryCore;
@@ -15,6 +16,8 @@ import org._11253.lib.utils.telem.Telemetry;
 import com.tejasmehta.OdometryCore.localization.OdometryPosition;
 
 @TeleOp(name = "Odometry Custom Test", group = "Test")
+@Deprecated
+@Disabled
 public class CustomOdometryTest extends Template {
     final double WHEEL_DIAMETER = 1.5;
     final double CPR = 1440;

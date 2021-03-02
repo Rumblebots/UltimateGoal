@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 @Disabled
 @TeleOp(name="MagLim Sensor Test", group="default")
+@Deprecated
 public class MagLimTest extends LinearOpMode
 {
     public TouchSensor liftertouch;

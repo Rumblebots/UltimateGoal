@@ -5,6 +5,7 @@
  * Package: org.firstinspires.ftc.teamcode.testCode*/
 package org.firstinspires.ftc.teamcode.testCode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -14,6 +15,8 @@ import org._11253.lib.utils.gen.Toggle;
 
 
 @TeleOp(name = "Shooter Test", group = "Test")
+@Deprecated
+@Disabled
 public class ShooterTest extends OpMode {
     DcMotor shooter1;
     DcMotor shooter2;

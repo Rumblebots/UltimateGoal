@@ -5,11 +5,14 @@
  * Package: org.firstinspires.ftc.teamcode*/
 package org.firstinspires.ftc.teamcode.testCode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "Motor Tester", group = "Test")
+@Deprecated
+@Disabled
 public class MotorTester extends OpMode {
     public static DcMotor motor1;
     public static DcMotor motor2;

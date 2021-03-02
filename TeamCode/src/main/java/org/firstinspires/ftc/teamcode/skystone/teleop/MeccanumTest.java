@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Motors_Drive;
 import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Sensors.Sensors;
 @Disabled
 @TeleOp(name = "test", group = "default")
+@Deprecated
 public class MeccanumTest extends OpMode
 {
     private Motors_Drive MotorsDriveReference = new Motors_Drive();

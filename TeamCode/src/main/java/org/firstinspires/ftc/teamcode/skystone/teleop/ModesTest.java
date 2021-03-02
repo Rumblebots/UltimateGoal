@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.skystone.hardware.v2.Sensors.Sensors;
 
 @Disabled
 @TeleOp (name = "Modes Test", group = "default")
+@Deprecated
 public class ModesTest extends LinearOpMode
 {
     public enum RobotModes
