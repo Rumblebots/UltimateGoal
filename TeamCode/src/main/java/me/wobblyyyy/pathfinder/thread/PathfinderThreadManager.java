@@ -70,7 +70,15 @@ public class PathfinderThreadManager {
     /**
      * Stop the pathfinder thread.
      */
+    @SuppressWarnings("deprecation")
     public void stop() {
         thread.stop();
+    }
+
+    /**
+     * Gently shut down the pathfinder thread.
+     */
+    public void close() {
+        thread.close();
     }
 }

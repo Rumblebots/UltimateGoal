@@ -27,48 +27,40 @@
  *
  */
 
-package me.wobblyyyy.pathfinder.util;
+package me.wobblyyyy.pathfinder.drive.swerve;
 
-import me.wobblyyyy.edt.DynamicArray;
-import me.wobblyyyy.pathfinder.geometry.Point;
-
-import java.util.concurrent.atomic.AtomicBoolean;
+import me.wobblyyyy.intra.ftc2.utils.math.PidController;
 
 /**
- * Random utilities that don't have a specific classification.
+ * PID controller wrapper class used in determining the suggested power for
+ * swerve modules based on a target and a current measurement. This class makes
+ * uses of the functional interface pattern included in Java - the
+ * {@link #calculate(double, double)} has the same signature as the signature
+ * required by the {@link SwerveTurn} functional interface.
  *
  * @author Colin Robertson
- * @version 1.0.0
- * @since 0.1.0
  */
-public class Extra {
+public class SwerveModulePid {
     /**
-     * Remove any duplicates from an array list.
-     *
-     * @param list the list.
-     * @param <T>  the list.
-     * @return the list, without duplicates.
+     * Internal PID controller. These measurements were based off tests I
+     * had run at my own high school's robotics team.
      */
-    public static <T> DynamicArray<T> removeDuplicates(DynamicArray<T> list) {
-        DynamicArray<T> newList = new DynamicArray<T>();
-        list.itr().forEach(element -> {
-            if (!newList.contains(element)) newList.add(element);
-        });
-        return newList;
-    }
+    private static final PidController controller = new PidController(
+            0.009599311,
+            0.000000000,
+            0.005000000
+    );
 
-    public static DynamicArray<Point> removeDuplicatePoints(
-            DynamicArray<Point> points) {
-        DynamicArray<Point> cleaned = new DynamicArray<>();
-
-        points.itr().forEach(point -> {
-            AtomicBoolean canAdd = new AtomicBoolean(true);
-            cleaned.itr().forEach(cleanedPoint -> {
-                if (Point.isSame(point, cleanedPoint)) canAdd.set(false);
-            });
-            if (canAdd.get()) cleaned.add(point);
-        });
-
-        return cleaned;
+    /**
+     * Implement the {@link SwerveTurn} functional interface - provide a
+     * default way to determine power from angle.
+     *
+     * @param current the current angle of the swerve module.
+     * @param target the target angle of the swerve module.
+     * @return a calculated power value based on the current and target values.
+     * This power value is calculated by the {@link #controller} PID controller.
+     */
+    public static double calculate(double current, double target) {
+        return controller.calculate(current, target);
     }
 }

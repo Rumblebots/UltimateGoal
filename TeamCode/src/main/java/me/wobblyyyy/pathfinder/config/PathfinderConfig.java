@@ -71,7 +71,7 @@ public class PathfinderConfig {
      * to actually navigate anywhere?
      * </p>
      */
-    private final Odometry odometry;
+    private Odometry odometry;
 
     /**
      * The height of the field.
@@ -99,7 +99,7 @@ public class PathfinderConfig {
      * </ul>
      * </p>
      */
-    private final int fieldHeight;
+    private int fieldHeight;
 
     /**
      * The height of the field.
@@ -127,7 +127,7 @@ public class PathfinderConfig {
      * </ul>
      * </p>
      */
-    private final int fieldWidth;
+    private int fieldWidth;
 
     /**
      * The field's "specificity" factor, which determines how double to
@@ -180,7 +180,7 @@ public class PathfinderConfig {
      * I use a specificity of 2, because the field is so fucking big.
      * </p>
      */
-    private final int specificity;
+    private int specificity;
 
     /**
      * The robot's X dimension.
@@ -197,7 +197,7 @@ public class PathfinderConfig {
      * units of measurement be in inches unless otherwise specified.
      * </p>
      */
-    private final double robotX;
+    private double robotX;
 
     /**
      * The robot's Y dimension.
@@ -214,21 +214,21 @@ public class PathfinderConfig {
      * units of measurement be in inches unless otherwise specified.
      * </p>
      */
-    private final double robotY;
+    private double robotY;
 
     /**
      * The X distance, measured in inches, between the FR-FL pair of swerve
      * modules. This distance should be measured from the very center of the
      * swerve module's rotational radius.
      */
-    private final double gapX;
+    private double gapX;
 
     /**
      * The X distance, measured in inches, between the FR-BR pair of swerve
      * modules. This distance should be measured from the very center of the
      * swerve module's rotational radius.
      */
-    private final double gapY;
+    private double gapY;
 
     /**
      * The robot's motion file, used in motion profiling and planning.
@@ -246,7 +246,7 @@ public class PathfinderConfig {
      * {@link RobotProfile}
      * </p>
      */
-    private final RobotProfile profile;
+    private RobotProfile profile;
 
     /**
      * The robot's drivetrain.
@@ -268,7 +268,7 @@ public class PathfinderConfig {
      * </ul>
      * </p>
      */
-    private final Drive drive;
+    private Drive drive;
 
     /**
      * The field's map.
@@ -278,7 +278,7 @@ public class PathfinderConfig {
      * {@link Map}
      * </p>
      */
-    private final Map map;
+    private Map map;
 
     /**
      * What type of follower does the pathfinder use?
@@ -289,7 +289,7 @@ public class PathfinderConfig {
      * {@link Followers}
      * </p>
      */
-    private final Followers follower;
+    private Followers follower;
 
     /**
      * Should the pathfinder use the lightning finder, or skip it entirely?
@@ -301,7 +301,7 @@ public class PathfinderConfig {
      * not - you don't have to.
      * </p>
      */
-    private final boolean usesLightning;
+    private boolean usesLightning;
 
     /**
      * Should the pathfinder use the fast finder, or skip it entirely?
@@ -313,7 +313,7 @@ public class PathfinderConfig {
      * not - you don't have to.
      * </p>
      */
-    private final boolean usesFast;
+    private boolean usesFast;
 
     /**
      * Should the pathfinder use a theta star pathfinding algorithm?
@@ -324,7 +324,20 @@ public class PathfinderConfig {
      * rather than just running quick potential collision detection.
      * </p>
      */
-    private final boolean usesThetaStar;
+    private boolean usesThetaStar;
+
+    /**
+     * The speed that certain types of linear followers should run at.
+     */
+    private double speed = 0.5;
+
+    /**
+     * Create a new {@code PathfinderConfig} without any configuration elements
+     * set.
+     */
+    public PathfinderConfig() {
+
+    }
 
     /**
      * Create a new PathfinderConfig to be fed to a Pathfinder.
@@ -370,6 +383,7 @@ public class PathfinderConfig {
      *                      a game field with all your different obstacles and
      *                      what not.
      * @param follower      what type of follower the pathfinder uses.
+     * @param speed         the speed that linear followers should run at.
      * @param usesLightning see: {@link PathfinderConfig#usesLightning}
      * @param usesFast      see: {@link PathfinderConfig#usesFast}
      * @param usesThetaStar see: {@link PathfinderConfig#usesThetaStar}
@@ -386,6 +400,7 @@ public class PathfinderConfig {
                             Drive drive,
                             Map map,
                             Followers follower,
+                            double speed,
                             boolean usesLightning,
                             boolean usesFast,
                             boolean usesThetaStar) {
@@ -401,6 +416,7 @@ public class PathfinderConfig {
         this.drive = drive;
         this.map = map;
         this.follower = follower;
+        this.speed = speed;
         this.usesLightning = usesLightning;
         this.usesFast = usesFast;
         this.usesThetaStar = usesThetaStar;
@@ -423,6 +439,26 @@ public class PathfinderConfig {
         }
     }
 
+    public PathfinderConfig setFollower(Followers follower) {
+        this.follower = follower;
+        return this;
+    }
+
+    public PathfinderConfig setUsesLightning(boolean usesLightning) {
+        this.usesLightning = usesLightning;
+        return this;
+    }
+
+    public PathfinderConfig setUsesFast(boolean usesFast) {
+        this.usesFast = usesFast;
+        return this;
+    }
+
+    public PathfinderConfig setUsesThetaStar(boolean usesThetaStar) {
+        this.usesThetaStar = usesThetaStar;
+        return this;
+    }
+
     /**
      * Get the fieldHeight of the field.
      *
@@ -430,6 +466,11 @@ public class PathfinderConfig {
      */
     public int getFieldHeight() {
         return fieldHeight;
+    }
+
+    public PathfinderConfig setFieldHeight(int fieldHeight) {
+        this.fieldHeight = fieldHeight;
+        return this;
     }
 
     /**
@@ -441,6 +482,11 @@ public class PathfinderConfig {
         return fieldWidth;
     }
 
+    public PathfinderConfig setFieldWidth(int fieldWidth) {
+        this.fieldWidth = fieldWidth;
+        return this;
+    }
+
     /**
      * Get the field's specificity.
      *
@@ -448,6 +494,11 @@ public class PathfinderConfig {
      */
     public int getSpecificity() {
         return specificity;
+    }
+
+    public PathfinderConfig setSpecificity(int specificity) {
+        this.specificity = specificity;
+        return this;
     }
 
     /**
@@ -459,6 +510,11 @@ public class PathfinderConfig {
         return robotX;
     }
 
+    public PathfinderConfig setRobotX(double robotX) {
+        this.robotX = robotX;
+        return this;
+    }
+
     /**
      * Get the robot's Y value.
      *
@@ -466,6 +522,11 @@ public class PathfinderConfig {
      */
     public double getRobotY() {
         return robotY;
+    }
+
+    public PathfinderConfig setRobotY(double robotY) {
+        this.robotY = robotY;
+        return this;
     }
 
     /**
@@ -477,6 +538,11 @@ public class PathfinderConfig {
         return gapX;
     }
 
+    public PathfinderConfig setGapX(double gapX) {
+        this.gapX = gapX;
+        return this;
+    }
+
     /**
      * The robot's Y gap.
      *
@@ -484,6 +550,11 @@ public class PathfinderConfig {
      */
     public double getGapY() {
         return gapY;
+    }
+
+    public PathfinderConfig setGapY(double gapY) {
+        this.gapY = gapY;
+        return this;
     }
 
     /**
@@ -495,6 +566,11 @@ public class PathfinderConfig {
         return odometry;
     }
 
+    public PathfinderConfig setOdometry(Odometry odometry) {
+        this.odometry = odometry;
+        return this;
+    }
+
     /**
      * Get the robot's motion profile.
      *
@@ -502,6 +578,11 @@ public class PathfinderConfig {
      */
     public RobotProfile getProfile() {
         return profile;
+    }
+
+    public PathfinderConfig setProfile(RobotProfile profile) {
+        this.profile = profile;
+        return this;
     }
 
     /**
@@ -513,6 +594,11 @@ public class PathfinderConfig {
         return drive;
     }
 
+    public PathfinderConfig setDrive(Drive drive) {
+        this.drive = drive;
+        return this;
+    }
+
     /**
      * Get the field's map.
      *
@@ -522,6 +608,11 @@ public class PathfinderConfig {
         return map;
     }
 
+    public PathfinderConfig setMap(Map map) {
+        this.map = map;
+        return this;
+    }
+
     /**
      * Get what type of follower the pathfinder uses.
      *
@@ -529,6 +620,24 @@ public class PathfinderConfig {
      */
     public Followers getFollowerType() {
         return follower;
+    }
+
+    /**
+     * Set the speed that linear followers will be executed at.
+     *
+     * @param speed the speed that linear followers will be executed at.
+     */
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    /**
+     * Get the speed that linear followers should run at.
+     *
+     * @return the speed linear followers should run at.
+     */
+    public double getSpeed() {
+        return speed;
     }
 
     /**

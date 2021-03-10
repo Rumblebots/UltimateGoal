@@ -27,48 +27,9 @@
  *
  */
 
-package me.wobblyyyy.pathfinder.util;
+package me.wobblyyyy.pathfinder.drive.swerve;
 
-import me.wobblyyyy.edt.DynamicArray;
-import me.wobblyyyy.pathfinder.geometry.Point;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-
-/**
- * Random utilities that don't have a specific classification.
- *
- * @author Colin Robertson
- * @version 1.0.0
- * @since 0.1.0
- */
-public class Extra {
-    /**
-     * Remove any duplicates from an array list.
-     *
-     * @param list the list.
-     * @param <T>  the list.
-     * @return the list, without duplicates.
-     */
-    public static <T> DynamicArray<T> removeDuplicates(DynamicArray<T> list) {
-        DynamicArray<T> newList = new DynamicArray<T>();
-        list.itr().forEach(element -> {
-            if (!newList.contains(element)) newList.add(element);
-        });
-        return newList;
-    }
-
-    public static DynamicArray<Point> removeDuplicatePoints(
-            DynamicArray<Point> points) {
-        DynamicArray<Point> cleaned = new DynamicArray<>();
-
-        points.itr().forEach(point -> {
-            AtomicBoolean canAdd = new AtomicBoolean(true);
-            cleaned.itr().forEach(cleanedPoint -> {
-                if (Point.isSame(point, cleanedPoint)) canAdd.set(false);
-            });
-            if (canAdd.get()) cleaned.add(point);
-        });
-
-        return cleaned;
-    }
+@FunctionalInterface
+public interface SwerveTurn {
+    double calculate(double current, double target);
 }

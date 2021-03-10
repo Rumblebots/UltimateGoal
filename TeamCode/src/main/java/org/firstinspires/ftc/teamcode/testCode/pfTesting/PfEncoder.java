@@ -4,9 +4,11 @@ import me.wobblyyyy.pathfinder.robot.Encoder;
 
 public class PfEncoder implements Encoder {
     private final PfMotor motor;
+    private final boolean invert;
 
-    public PfEncoder(PfMotor motor) {
+    public PfEncoder(PfMotor motor, boolean invert) {
         this.motor = motor;
+        this.invert = invert;
     }
 
     /**
@@ -16,7 +18,7 @@ public class PfEncoder implements Encoder {
      */
     @Override
     public int getCount() {
-        return motor.getCount();
+        return invert ? motor.getCount() * -1 : motor.getCount();
     }
 
     /**

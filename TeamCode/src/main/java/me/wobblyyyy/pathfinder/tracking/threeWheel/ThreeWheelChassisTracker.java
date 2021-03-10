@@ -248,7 +248,7 @@ public class ThreeWheelChassisTracker implements Tracker {
      */
     @Override
     public HeadingPoint getPos() {
-        return position;
+        return position == null ? new HeadingPoint(0, 0, 0) : position;
     }
 
     /**
@@ -260,18 +260,22 @@ public class ThreeWheelChassisTracker implements Tracker {
      */
     @Override
     public void update() {
-        encoderPositions = new EncoderPositions(
-                left.getCount(),
-                right.getCount(),
-                middle.getCount()
-        );
-        odometryPosition = OdometryCore
-                .getInstance()
-                .getCurrentPosition(encoderPositions);
-        position = new HeadingPoint(
-                odometryPosition.getX(),
-                odometryPosition.getY(),
-                odometryPosition.getHeadingDegrees()
-        );
+        try {
+            encoderPositions = new EncoderPositions(
+                    left.getCount(),
+                    right.getCount(),
+                    middle.getCount()
+            );
+            odometryPosition = OdometryCore
+                    .getInstance()
+                    .getCurrentPosition(encoderPositions);
+            position = new HeadingPoint(
+                    odometryPosition.getX(),
+                    odometryPosition.getY(),
+                    odometryPosition.getHeadingDegrees()
+            );
+        } catch (Exception ignored) {
+
+        }
     }
 }

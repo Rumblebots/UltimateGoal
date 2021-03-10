@@ -113,7 +113,7 @@ public class Telemetry {
      * Telem, meaning there will always be a getMessage method.
      * </p>
      */
-    public static HashMap<String, Telem> telemetry = new HashMap<String, Telem>();
+    public static volatile HashMap<String, Telem> telemetry = new HashMap<String, Telem>();
 
     /**
      * The highest number temp there is / can be
@@ -146,7 +146,7 @@ public class Telemetry {
      * @param data    the data you want
      * @return the key of the newly created thingy
      */
-    public static String addData(String caption, String data) {
+    public static synchronized String addData(String caption, String data) {
         int number = currentTemporaryCap;
         String name = "temp_" + number;
         addData(name, caption, data);
@@ -167,7 +167,7 @@ public class Telemetry {
      * @param data    the data portion of the data
      * @return the key you're using
      */
-    public static String addData(String key, String caption, String data) {
+    public static synchronized String addData(String key, String caption, String data) {
         return addData(key, caption, ": ", data);
     }
 
@@ -181,7 +181,7 @@ public class Telemetry {
      * @param data      the actual data portion of the data
      * @return the key you're using
      */
-    public static String addData(String key, String caption, String separator, String data) {
+    public static synchronized String addData(String key, String caption, String separator, String data) {
         Data dataTelem;
         if (telemetry.containsKey(key)) {
             dataTelem = (Data) telemetry.get(key);
@@ -201,7 +201,7 @@ public class Telemetry {
      * @param line the text you're using.
      * @return the String key.
      */
-    public static String addLine(Object line) {
+    public static synchronized String addLine(Object line) {
         int number = currentTemporaryCap;
         String name = "temp_" + number;
         currentTemporaryCap++;
@@ -220,7 +220,7 @@ public class Telemetry {
      * @param line the text of the line
      * @return the key which you're using
      */
-    public static String addLine(String key, Object line) {
+    public static synchronized String addLine(String key, Object line) {
         Line lineTelem;
         if (telemetry.containsKey(key)) {
             lineTelem = (Line) telemetry.get(key);
@@ -237,7 +237,7 @@ public class Telemetry {
      * @param key the key of the data you'd like to remove.
      * @return the key you're using
      */
-    public static String removeData(String... key) {
+    public static synchronized String removeData(String... key) {
         return remove(key);
     }
 
@@ -247,7 +247,7 @@ public class Telemetry {
      * @param key the key of the line you'd like to remove.
      * @return the key you're using
      */
-    public static String removeLine(String... key) {
+    public static synchronized String removeLine(String... key) {
         return remove(key);
     }
 
@@ -256,7 +256,7 @@ public class Telemetry {
      *
      * @return string
      */
-    public static String remove() {
+    public static synchronized String remove() {
         return remove("");
     }
 
@@ -266,7 +266,7 @@ public class Telemetry {
      * @param key varargs argument so you can remove a lot of things.
      * @return the very first key you're removing
      */
-    public static String remove(String... key) {
+    public static synchronized String remove(String... key) {
         for (String k : key) {
             telemetry.remove(k);
         }
@@ -276,7 +276,7 @@ public class Telemetry {
     /**
      * Clear all of the telemetry.
      */
-    public static void clear() {
+    public static synchronized void clear() {
         telemetry = new HashMap<String, Telem>();
         currentTemporaryCap = 0;
     }
@@ -290,7 +290,7 @@ public class Telemetry {
      * to use.
      * </p>
      */
-    public static void printTelemetry() {
+    public static synchronized void printTelemetry() {
         org.firstinspires.ftc.robotcore.external.Telemetry t = Global.getTelem();
         for (HashMap.Entry<String, Telem> entry : telemetry.entrySet()) {
             t.addLine(entry.getValue().getMessage());
@@ -307,7 +307,7 @@ public class Telemetry {
      * software should go.
      * @param ms a delay, in ms
      */
-    public static void setUpdateInterval(int ms) {
+    public static synchronized void setUpdateInterval(int ms) {
         updateInterval = ms;
     }
 
@@ -316,7 +316,7 @@ public class Telemetry {
      * usage in a <b>WONDERFUL</b> balance with keeping all of
      * the data that could possibly be used updated.
      */
-    public static void scheduleTelemetryUpdater() {
+    public static synchronized void scheduleTelemetryUpdater() {
         StringEvents.schedule(
                 "_1125c_AUTOTELEMETRY",
                 updateInterval,
@@ -341,7 +341,7 @@ public class Telemetry {
      * presumably only be used to modify the delay between
      * telemetry updates, but hey... you do you.
      */
-    public static void unscheduleTelemetryUpdater() {
+    public static synchronized void unscheduleTelemetryUpdater() {
         StringEvents.clear("_1125c_AUTOTELENETRY");
     }
 

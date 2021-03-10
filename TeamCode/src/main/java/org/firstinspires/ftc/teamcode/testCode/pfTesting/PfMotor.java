@@ -5,6 +5,7 @@ import org._11253.lib.robot.phys.components.Motor;
 public class PfMotor extends Motor
         implements me.wobblyyyy.pathfinder.robot.Motor {
     private boolean isUserControlEnabled = true;
+    private final boolean invert;
 
     /**
      * Create a new Motor.
@@ -15,8 +16,9 @@ public class PfMotor extends Motor
      *
      * @param name the name of the motor to look for.
      */
-    public PfMotor(String name) {
+    public PfMotor(String name, boolean invert) {
         super(name);
+        this.invert = invert;
     }
 
     /**
@@ -84,9 +86,10 @@ public class PfMotor extends Motor
      */
     @Override
     public void setPower(double power, boolean user) {
-        if ((user && isUserControlEnabled) ||
-                ((!user) && (!isUserControlEnabled))) {
-            super.setPower(power);
-        }
+//        if ((user && isUserControlEnabled) ||
+//                ((!user) && (!isUserControlEnabled))) {
+//            super.setPower(invert ? power * -1 : power);
+//        }
+        super.setPower(invert ? power * -1 : power);
     }
 }

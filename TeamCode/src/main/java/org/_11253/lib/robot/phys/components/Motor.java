@@ -162,10 +162,14 @@ public class Motor extends Component {
      * @param power the new power level
      */
     public void setPower(double power) {
-        if (!isRound) {
-            dcMotorComponent.setPower(power * multiplier);
-        } else {
-            dcMotorComponent.setPower(Math.average(power * multiplier, getPower()));
+        try {
+            if (!isRound) {
+                dcMotorComponent.setPower(power * multiplier);
+            } else {
+                dcMotorComponent.setPower(Math.average(power * multiplier, getPower()));
+            }
+        } catch (Exception ignored) {
+
         }
     }
 
@@ -189,8 +193,14 @@ public class Motor extends Component {
      * @return the current encoder count
      */
     public int getCount() {
-        count = dcMotorComponent.getCurrentPosition() - differential;
-        return count;
+        try {
+            count = dcMotorComponent.getCurrentPosition() - differential;
+            return count;
+        } catch (Exception ignored) {
+
+        }
+
+        return 0;
     }
 
     /**

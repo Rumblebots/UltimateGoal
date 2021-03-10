@@ -32,6 +32,8 @@ package me.wobblyyyy.pathfinder.drive.meccanum;
 import me.wobblyyyy.pathfinder.drive.Drive;
 import me.wobblyyyy.pathfinder.geometry.HeadingPoint;
 import me.wobblyyyy.pathfinder.robot.Motor;
+import org._11253.lib.utils.telem.Telem;
+import org._11253.lib.utils.telem.Telemetry;
 
 /**
  * Meccanum drivetrains are surprisingly annoying to work with, let me
@@ -146,7 +148,8 @@ public class Meccanum implements Drive {
 
         int ctr = 0;
         for (double d : fixed) {
-            scaled[ctr] = d * absScale;
+            final double c;
+            scaled[ctr] = (!(Math.abs(c = d * absScale) > 0)) ? 0 : c;
             ctr++;
         }
 
@@ -225,6 +228,12 @@ public class Meccanum implements Drive {
         this.fl.setPower(powers[1]);
         this.br.setPower(powers[2]);
         this.bl.setPower(powers[3]);
+
+        Telemetry.addData("FR power", fr + "");
+        Telemetry.addData("FL power", fl + "");
+        Telemetry.addData("BR power", br + "");
+        Telemetry.addData("BL power", bl + "");
+        Telemetry.printTelemetry();
     }
 
     /**

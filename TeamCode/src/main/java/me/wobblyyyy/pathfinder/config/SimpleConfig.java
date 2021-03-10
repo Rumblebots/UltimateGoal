@@ -56,6 +56,23 @@ public class SimpleConfig extends PathfinderConfig {
     private static final boolean FAST = true;
     private static final boolean THETA = true;
 
+    public SimpleConfig() {
+        this(
+                null,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                new RobotProfile(0, 0, 0, 0, 0, 0),
+                null,
+                null,
+                Followers.LINEAR,
+                0.5
+        );
+    }
+
     /**
      * Create a new PathfinderConfig to be fed to a Pathfinder.
      *
@@ -95,6 +112,7 @@ public class SimpleConfig extends PathfinderConfig {
      *                      a game field with all your different obstacles and
      *                      what not.
      * @param follower      what type of follower the pathfinder uses.
+     * @param speed         the speed that linear followers should run at.
      */
     public SimpleConfig(Odometry odometry,
                         int fieldWidth,
@@ -106,7 +124,8 @@ public class SimpleConfig extends PathfinderConfig {
                         RobotProfile profile,
                         Drive drive,
                         Map map,
-                        Followers follower) {
+                        Followers follower,
+                        double speed) {
         super(
                 odometry,
                 fieldWidth,
@@ -120,6 +139,7 @@ public class SimpleConfig extends PathfinderConfig {
                 drive,
                 map,
                 follower,
+                speed,
                 LIGHTNING,
                 FAST,
                 THETA

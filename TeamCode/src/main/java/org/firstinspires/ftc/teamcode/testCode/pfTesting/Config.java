@@ -56,7 +56,7 @@ public class Config extends PathfinderConfig {
      * @param usesFast      see: {@link PathfinderConfig}
      * @param usesThetaStar see: {@link PathfinderConfig}
      */
-    public Config(Odometry odometry, int fieldWidth, int fieldHeight, int specificity, double robotX, double robotY, double gapX, double gapY, RobotProfile profile, Drive drive, Map map, Followers follower, boolean usesLightning, boolean usesFast, boolean usesThetaStar) {
-        super(odometry, fieldWidth, fieldHeight, specificity, robotX, robotY, gapX, gapY, profile, drive, map, follower, usesLightning, usesFast, usesThetaStar);
+    public Config(Odometry odometry, int fieldWidth, int fieldHeight, int specificity, double robotX, double robotY, double gapX, double gapY, RobotProfile profile, Drive drive, Map map, Followers follower, double speed, boolean usesLightning, boolean usesFast, boolean usesThetaStar) {
+        super(odometry, fieldWidth, fieldHeight, specificity, robotX, robotY, gapX, gapY, profile, drive, map, follower, speed, usesLightning, usesFast, usesThetaStar);
     }
 }

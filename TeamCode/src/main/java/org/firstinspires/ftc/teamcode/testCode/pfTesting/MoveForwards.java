@@ -6,6 +6,7 @@ import me.wobblyyyy.pathfinder.api.Pathfinder;
 import me.wobblyyyy.pathfinder.core.Followers;
 import me.wobblyyyy.pathfinder.geometry.HeadingPoint;
 import me.wobblyyyy.pathfinder.util.RobotProfile;
+import org._11253.lib.Global;
 import org._11253.lib.utils.telem.Telemetry;
 
 import java.util.ArrayList;
@@ -68,14 +69,14 @@ public class MoveForwards extends LinearOpMode {
     private boolean showPos = true;
 
     private void initComponents() {
-        motorFr = new PfMotor("frontRight");
-        motorFl = new PfMotor("frontLeft");
-        motorBr = new PfMotor("backRight");
-        motorBl = new PfMotor("backLeft");
+        motorFr = new PfMotor("frontRight", false);
+        motorFl = new PfMotor("frontLeft", true);
+        motorBr = new PfMotor("backRight", false);
+        motorBl = new PfMotor("backLeft", true);
 
-        encoderRight = new PfEncoder(motorBr);
-        encoderLeft = new PfEncoder(motorBl);
-        encoderCenter = new PfEncoder(motorFr);
+        encoderRight = new PfEncoder(motorBr, false);
+        encoderLeft = new PfEncoder(motorBl, true);
+        encoderCenter = new PfEncoder(motorFr, false);
 
         field = new Field();
         odometry = new Odometry(
@@ -100,7 +101,8 @@ public class MoveForwards extends LinearOpMode {
                 new RobotProfile(0, 0, 0, 0, 0, 0),
                 drive,
                 field,
-                Followers.LINEAR,
+                Followers.DUAL_PID,
+                0.5,
                 true,
                 true,
                 true
@@ -110,11 +112,11 @@ public class MoveForwards extends LinearOpMode {
     }
 
     private void displayRobotPosition() {
-        Telemetry.addData(
-                "Robot Position",
-                pathfinder.getPosition().toString()
-        );
-        Telemetry.printTelemetry();
+//        Telemetry.addData(
+//                "Robot Position",
+//                pathfinder.getPosition().toString()
+//        );
+//        Telemetry.printTelemetry();
     }
 
     private void enablePositionThread() {
@@ -130,15 +132,33 @@ public class MoveForwards extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        Global.setHwMap(hardwareMap);
+        Global.setTelem(telemetry);
         initComponents();
-        enablePositionThread();
-
         waitForStart();
 
+//        enablePositionThread();
+
+//        pathfinder.open();
+
+//        pathfinder.goToPosition(targets.get(0));
+
+//        showPos = true;
+
+        Thread.sleep(500);
+
+        pathfinder.open();
         pathfinder.goToPosition(targets.get(0));
 
-        showPos = true;
-        pathfinder.lock();
-        showPos = false;
+        while (opModeIsActive()) {
+            displayRobotPosition();
+        }
+
+        pathfinder.close();
+
+//        pathfinder.lock();
+//        showPos = false;
+//
+//        pathfinder.close();
     }
 }

@@ -29,15 +29,14 @@
 
 package me.wobblyyyy.pathfinder.api;
 
+import me.wobblyyyy.edt.DynamicArray;
+import me.wobblyyyy.pathfinder.annotations.Async;
+import me.wobblyyyy.pathfinder.annotations.Sync;
+import me.wobblyyyy.pathfinder.annotations.Wait;
 import me.wobblyyyy.pathfinder.config.PathfinderConfig;
 import me.wobblyyyy.pathfinder.core.PathfinderManager;
 import me.wobblyyyy.pathfinder.core.PromisedFinder;
-import me.wobblyyyy.pathfinder.followers.PIDFollower;
-import me.wobblyyyy.pathfinder.followers.SwerveFollower;
 import me.wobblyyyy.pathfinder.geometry.HeadingPoint;
-import me.wobblyyyy.pathfinder.thread.FollowerExecutor;
-
-import java.util.ArrayList;
 
 /**
  * The highest-level Pathfinder available.
@@ -76,6 +75,7 @@ import java.util.ArrayList;
  * @see PathfinderManager
  * @since 0.1.0
  */
+@SuppressWarnings("ALL")
 public class Pathfinder {
     /**
      * The pathfinder's configuration.
@@ -110,6 +110,7 @@ public class Pathfinder {
      *               class if you're at all confused about what each of these
      *               configuration options do.
      */
+    @Sync
     public Pathfinder(PathfinderConfig config) {
         /*
          * Set variables that are initialized in the constructor.
@@ -134,6 +135,7 @@ public class Pathfinder {
      *
      * @return the robot's position.
      */
+    @Sync
     public HeadingPoint getPosition() {
         /*
          * Get the odometry subsystem from the Pathfinder configuration, and
@@ -193,6 +195,7 @@ public class Pathfinder {
      * @return a chainable PromisedFinder object.
      * @see PathfinderManager#goToPosition(HeadingPoint)
      */
+    @Async
     public PromisedFinder goToPosition(HeadingPoint target) {
         /*
          * As a wrapper class, Pathfinder doesn't do very much.
@@ -239,7 +242,8 @@ public class Pathfinder {
      * @return a chainable PromisedFinder object.
      * @see PathfinderManager#followPath(HeadingPoint...)
      */
-    public PromisedFinder followPath(ArrayList<HeadingPoint> points) {
+    @Async
+    public PromisedFinder followPath(DynamicArray<HeadingPoint> points) {
         /*
          * As a wrapper class, Pathfinder provides very little functionality.
          *
@@ -248,6 +252,41 @@ public class Pathfinder {
          * simplify the implementation of Pathfinder, not add to it.
          */
         return getManager().followPath(points);
+    }
+
+    /**
+     * Wait for a path to finish being followed before continuing. In addition
+     * to waiting for the path's completion, this method will halt the robot's
+     * drivetrain after the path has been completed.
+     *
+     * @param path the path that will be waited for. If there was an issue with
+     *             generating the path itself, this method will do nothing,
+     *             and, instead of waiting, will immediately return.
+     */
+    @Sync
+    @Wait
+    public void waitFor(PromisedFinder path) {
+        if (path.getPath().size() > 0) {
+            lock();
+        }
+    }
+
+    /**
+     * Wait for a path's completion, stop the robot, and then continue. This
+     * method can best be described as a fusion of these two methods:
+     * {@link #lock()} and {@link #stopRobot()}. The robot's drivetrain will
+     * be stopped after the path has finished execution or after the path's
+     * generation fails.
+     *
+     * @param path the path that should be waited for. That didn't really make
+     *             sense, but yeah - the promised result of a path that should
+     *             be waited for.
+     */
+    @Sync
+    @Wait
+    public void waitForAndStop(PromisedFinder path) {
+        waitFor(path);
+        stopRobot();
     }
 
     /**
@@ -278,6 +317,8 @@ public class Pathfinder {
      * @see PathfinderManager#lock()
      * @see FollowerExecutor#lock()
      */
+    @Sync
+    @Wait
     public void lock() {
         /*
          * Lock the current thread until the pathfinder's execution has
@@ -291,6 +332,45 @@ public class Pathfinder {
     }
 
     /**
+     * Stop the robot's drivetrain from moving. This doesn't stop anything
+     * other than the robot's drivetrain - Pathfinder's threads will still
+     * be just as active as ever.
+     */
+    @Sync
+    public void stopRobot() {
+        getManager().stopRobot();
+    }
+
+    /**
+     * Open the {@code PathfinderManager}'s threads and make it start doing
+     * its thing. The {@code PathfinderManager} or {@code Pathfinder} MUST be
+     * opened before it can be used - not opening the {@code PathfinderManager}
+     * will result in {@link NullPointerException}s being thrown. And we all
+     * know those aren't very fun.
+     */
+    @Sync
+    public void open() {
+        pathfinderManager.open();
+    }
+
+    /**
+     * Finish this instance of the {@code PathfinderManager}'s execution. This
+     * will stop any of the threads that are still active, or at least try to
+     * do so. Threads spawned by followers can't be managed through here, but
+     * follower execution and general execution/odometry updating can be.
+     *
+     * <p>
+     * This method will close both the execution and general pathfinder threads.
+     * Before finishing using a pathfinder, remember to call the close methods.
+     * Otherwise, you might have dangling threads that can eat up a lot of CPU.
+     * </p>
+     */
+    @Sync
+    public void close() {
+        pathfinderManager.close();
+    }
+
+    /**
      * Get the PathfinderManager that Pathfinder uses.
      *
      * <p>
@@ -300,6 +380,7 @@ public class Pathfinder {
      *
      * @return this instance of Pathfinder's manager class.
      */
+    @Sync
     public PathfinderManager getManager() {
         return pathfinderManager;
     }
